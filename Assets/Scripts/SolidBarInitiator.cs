@@ -15,7 +15,6 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
     public Transform pointParent;
 
     public void OnPointerDown(PointerEventData eventData) {
-        Debug.Log("Detected");
         if (!startedInit) {
             // the bar is not initialized
             InitializeBar(Camera.main.ScreenToWorldPoint(eventData.position));
@@ -23,6 +22,7 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
             // the beginPoint is initialized
             if (eventData.button == PointerEventData.InputButton.Left) {
                 FinalizeBar(Camera.main.ScreenToWorldPoint(eventData.position));
+                //FinalizeBar(endPoint.transform.position);
             } else if (eventData.button == PointerEventData.InputButton.Right) {
                 DeleteBar();
             }
@@ -33,36 +33,64 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
     private void InitializeBar(Vector2 headPos) {
         startedInit = true;
         currentBar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
-        currentBar.headPosition = headPos;
-        beginPoint = Instantiate(pointTemplate, headPos, Quaternion.identity, pointParent).GetComponent<Point>();
+        
+        // check if beginPoint already exists
+        if (PointManager.HasPoint(headPos)) {
+            //Debug.Log("Land on old vert");
+            beginPoint = PointManager.GetPoint(headPos);
+            currentBar.SetHead(beginPoint.transform.position);
+        } else {
+            beginPoint = Instantiate(pointTemplate, headPos, Quaternion.identity, pointParent).GetComponent<Point>();
+            PointManager.AddPoint(headPos, beginPoint);
+            currentBar.SetHead(headPos);
+        }
+        
         endPoint = Instantiate(pointTemplate, headPos, Quaternion.identity, pointParent).GetComponent<Point>();
     }
 
     private void FinalizeBar(Vector2 tailPos) {
         startedInit = false;
-        beginPoint.connectedBars.Add(currentBar);
-        endPoint.connectedBars.Add(currentBar);
-        //endPoint.transform.position = tailPos;
+        Vector2 cutOffVector = currentBar.CutOff(tailPos);
+
+        // check if endPoint already exists
+        if (PointManager.HasPoint(cutOffVector)) {
+            Destroy(endPoint.gameObject);
+            endPoint = PointManager.GetPoint(cutOffVector);
+        } else {
+            endPoint.transform.position = cutOffVector; 
+            PointManager.AddPoint(cutOffVector, endPoint);
+        }
+
+        beginPoint.AddConnectedBar(currentBar);
+        endPoint.AddConnectedBar(currentBar);
+        
         // continue to the next bar
         InitializeBar(endPoint.transform.position);
     }
 
     private void DeleteBar() {
         Destroy(currentBar.gameObject);
-        if (beginPoint.connectedBars.Count == 0) {
+        if (beginPoint.isSingle()) {
             Destroy(beginPoint.gameObject);
         }
-        if (endPoint.connectedBars.Count == 0) {
+        if (endPoint.isSingle()) {
             Destroy(endPoint.gameObject);
         }
         startedInit = false;
     }
 
     public void Update() {
-        Vector2 v = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
         if (startedInit && !Input.GetMouseButton(0)) {
-            endPoint.transform.position = v;
-            currentBar.UpdateSolidBar(v);
+            // cut off the bar at a maximun length
+            Vector2 cutOffVector = currentBar.CutOff(cursor);
+            // Debug.Log(cutOffVector);
+            // Debug.Log(currentBar.GetHead());
+            // Debug.Log(cursor);
+            // Debug.Log("-----------------------");
+            endPoint.transform.position = cutOffVector;
+            currentBar.UpdateSolidBar(cutOffVector);
         } //else if (startedInit && Input.GetMouseButton(0)) {
          //   FinalizeBar(v);
         //}
