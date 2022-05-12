@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class DragHandler : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IEndDragHandler, IDragHandler {
 
-    [SerializeField] private Canvas canvas;
+    //[SerializeField] private Canvas canvas;
 
     private RectTransform rectTransform;
 
@@ -27,8 +27,6 @@ public class DragHandler : MonoBehaviour, IPointerDownHandler, IBeginDragHandler
 
     public void OnDrag(PointerEventData eventData) {
         Debug.Log("onDrag");
-        rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
+        rectTransform.anchoredPosition += eventData.delta;/// canvas.scaleFactor;
     }
-
-
 }
