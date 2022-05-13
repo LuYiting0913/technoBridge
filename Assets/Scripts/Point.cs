@@ -6,7 +6,7 @@ public class Point : MonoBehaviour {
     //public bool isDragging = false;
     private List<SolidBar> connectedBars = new List<SolidBar>(); 
     private Vector2 pointId;
-    private bool isStantionary;
+    private bool isStantionary = false;
 
     public void Start() {
         pointId = transform.position;
@@ -33,6 +33,14 @@ public class Point : MonoBehaviour {
 
     public bool Equal(Point p) {
         return (this.pointId.x == p.pointId.x) && (this.pointId.y == p.pointId.y);
+    }
+
+    public bool isFixed() {
+        return isStantionary;
+    }
+
+    public void fixPoint() {
+        isStantionary = true;
     }
         
     public void Update() {

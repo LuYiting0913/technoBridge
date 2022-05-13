@@ -87,15 +87,9 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
         if (startedInit && !Input.GetMouseButton(0)) {
             // cut off the bar at a maximun length
             Vector2 cutOffVector = currentBar.CutOff(cursor);
-            // Debug.Log(cutOffVector);
-            // Debug.Log(currentBar.GetHead());
-            // Debug.Log(cursor);
-            // Debug.Log("-----------------------");
+
             endPoint.transform.position = cutOffVector;
             currentBar.UpdateSolidBar(cutOffVector);
-        } //else if (startedInit && Input.GetMouseButton(0)) {
-         //   FinalizeBar(v);
-        //}
-        
+        } 
     }
 }

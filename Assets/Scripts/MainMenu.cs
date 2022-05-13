@@ -13,6 +13,18 @@ public class MainMenu : MonoBehaviour {
         Debug.Log("go to settings");
     }
 
+    public void BackToMain() {
+        SceneManager.LoadScene(0);
+    }
+
+    public void LoadLevel0() {
+        //List<Point>
+        Debug.Log("level0");
+        LevelInitiator.InitLevel(Level0.GetFixedPoints());
+        //Debug.Log(fixedPoints[0]);
+        SceneManager.LoadScene(1);
+    }
+
     public void Go() {
         Debug.Log("Go");
         SceneInitiator.InitScene(PointManager.GetAllPos(), SolidBarManager.GetAll());
