@@ -63,7 +63,7 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
 
         beginPoint.AddConnectedBar(currentBar);
         endPoint.AddConnectedBar(currentBar);
-        
+        SolidBarManager.AddBar(currentBar);
         // continue to the next bar
         InitializeBar(endPoint.transform.position);
     }
@@ -72,9 +72,11 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
         Destroy(currentBar.gameObject);
         if (beginPoint.isSingle()) {
             Destroy(beginPoint.gameObject);
+            PointManager.DeletePoint(beginPoint);
         }
         if (endPoint.isSingle()) {
             Destroy(endPoint.gameObject);
+            PointManager.DeletePoint(endPoint);
         }
         startedInit = false;
     }

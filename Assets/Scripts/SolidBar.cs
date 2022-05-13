@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class SolidBar : MonoBehaviour {
     private Vector2 headPosition;
+    private Vector2 tailPosition;
     public SpriteRenderer barRenderer;
-    private float maxLength = 100f; 
+    private float maxLength = 200f; 
 
-    public void UpdateSolidBar(Vector2 tailPosition) {
+    public void UpdateSolidBar(Vector2 tailPos) {
+        tailPosition = tailPos;
         transform.position = (headPosition + tailPosition) / 2;
 
         Vector2 dir = tailPosition - headPosition;
@@ -22,13 +24,20 @@ public class SolidBar : MonoBehaviour {
         headPosition = vector;
     }
 
+    public void SetTail(Vector2 vector) {
+        tailPosition = vector;
+    }
+
     public Vector2 GetHead() {
         return headPosition;
     }  
 
+    public Vector2 GetTail() {
+        return tailPosition;
+    }
+
     public Vector2 CutOff(Vector2 cursor) {
         Vector2 offset = cursor - headPosition;
-        Debug.Log(maxLength);
         return headPosition + Vector2.ClampMagnitude(offset, maxLength); 
     }
 

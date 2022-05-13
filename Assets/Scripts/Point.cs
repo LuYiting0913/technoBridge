@@ -30,6 +30,10 @@ public class Point : MonoBehaviour {
     public bool isSingle() {
         return ConnectedBarCount() == 0;
     }
+
+    public bool Equal(Point p) {
+        return (this.pointId.x == p.pointId.x) && (this.pointId.y == p.pointId.y);
+    }
         
     public void Update() {
 

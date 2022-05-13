@@ -5,8 +5,8 @@ using System;
 
 public class PointManager : MonoBehaviour {
     private static Dictionary<Vector2, Point> allPoints = new Dictionary<Vector2, Point>();
-    private static double XOffset = 5.0;
-    private static double YOffset = 5.0;
+    private static double XOffset = 10.0;
+    private static double YOffset = 10.0;
 
     public void Awake() {
         allPoints.Clear();
@@ -34,7 +34,15 @@ public class PointManager : MonoBehaviour {
         allPoints.Add(v, p);
     }
 
-    // public bool IsPresent(Point pt) {
-    //     return pt.transform.position
-    // }
+    public static List<Vector2> GetAllPos() {
+        List<Vector2> all = new List<Vector2>();
+        foreach (Point p in allPoints.Values) {
+            all.Add(p.transform.position);
+        }
+        return all;
+    }
+
+    public static void DeletePoint(Point p) {
+        allPoints.Remove(p.transform.position);
+    }
 }

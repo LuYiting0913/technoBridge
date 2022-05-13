@@ -12,4 +12,10 @@ public class MainMenu : MonoBehaviour {
     public void Settings() {
         Debug.Log("go to settings");
     }
-}
+
+    public void Go() {
+        Debug.Log("Go");
+        SceneInitiator.InitScene(PointManager.GetAllPos(), SolidBarManager.GetAll());
+        SceneManager.LoadScene(2);
+    }
+}   
