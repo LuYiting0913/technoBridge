@@ -5,18 +5,20 @@ using UnityEngine;
 public class Point : MonoBehaviour {
     //public bool isDragging = false;
     private List<SolidBar> connectedBars = new List<SolidBar>(); 
-    private Vector2 pointId;
-    private bool isStantionary = false;
+    private Vector3 pointPosition;
+    private bool isStationary = false;
+    private static int threshold = 5;
 
     public void Start() {
-        pointId = transform.position;
-        if (!PointManager.HasPoint(pointId)) {
-            PointManager.AddPoint(pointId, this);
-        }
+        pointPosition = transform.position;
     }
 
-    public Vector2 GetId() {
-        return pointId;
+    public void UpdatePosition() {
+        pointPosition = transform.position;
+    }
+
+    public Vector3 GetPosition() {
+        return pointPosition;
     }
 
     public void AddConnectedBar(SolidBar bar) {
@@ -31,20 +33,20 @@ public class Point : MonoBehaviour {
         return ConnectedBarCount() == 0;
     }
 
-    public bool Equal(Point p) {
-        return (this.pointId.x == p.pointId.x) && (this.pointId.y == p.pointId.y);
+    public bool Contain(Vector3 v) {
+        return (pointPosition - v).magnitude < threshold;
     }
 
-    public bool isFixed() {
-        return isStantionary;
+    public bool IsFixed() {
+        return isStationary;
     }
 
-    public void fixPoint() {
-        isStantionary = true;
+    public void SetFixed() {
+        isStationary = true;
     }
         
-    public void Update() {
-
-    }
+    // public void Update() {
+    //     pointPosition = transform.position;
+    // }
     
 }

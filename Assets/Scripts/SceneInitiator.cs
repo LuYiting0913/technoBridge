@@ -3,68 +3,76 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneInitiator : MonoBehaviour {
-    public GameObject barTemplate;
-    public GameObject pointTemplate;
+    public SolidBar barTemplate;
+    public Point pointTemplate;
     public Transform pointParent;
     public Transform barParent;
 
-    private static List<SolidBar3D> bar = new List<SolidBar3D>();
-    //private static List<Point3D> point = new List<Point3D>();
+    //private static List<SolidBar3D> bar = new List<SolidBar3D>();
 
-    public static List<Vector2> pointPos = new List<Vector2>();
-    public static List<SolidBar> bar2D = new List<SolidBar>();
+    public static List<PointReference>  pointToInit = new List<PointReference>();
+    public static List<SolidBarReference> barToInit = new List<SolidBarReference>();
     private static float scaleFactor = 10f;
 
     public void Awake() {
-        //point.Clear();
-        //bar.Clear();
     }
 
     public void Start() {
-        Debug.Log(pointPos.Count);
-        // init components
-        foreach (Vector2 v in pointPos) {
-            Vector3 pos = new Vector3(v.x, v.y, 0);
-            GameObject scaledTemplate = pointTemplate;
-            scaledTemplate.transform.localScale = new Vector3(2, 2, 2);
+        // temp stored all the points in a dictionary
+        List<Point> allPoints = new List<Point>();
+        // render all points
+        foreach (PointReference p in pointToInit) {
+            Debug.Log(p.GetPosition());
+            Vector3 pos = p.GetPosition();
+            Point scaledTemplate = pointTemplate;
+            scaledTemplate.transform.localScale = new Vector3(10, 10, 10);
 
-            Rigidbody point = Instantiate(scaledTemplate, pos, Quaternion.identity, pointParent).GetComponent<Rigidbody>();
-            
-            //point.isKinemtic = PointManager.GetPoint(v).isFixed();
-            Point3DManager.AddPoint(pos, point);
-            
+            Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.identity, pointParent);
+            Rigidbody pointRb = pointInstantiated.GetComponent<Rigidbody>();
+            pointRb.isKinematic = p.IsFixed();
+            pointInstantiated.UpdatePosition();
+            allPoints.Add(pointInstantiated);
         }    
-        
-        foreach (SolidBar b in bar2D) {
-            Vector3 headPos = new Vector3(b.GetHead().x, b.GetHead().y, 0);
-            Vector3 tailPos = new Vector3(b.GetTail().x, b.GetTail().y, 0);
 
-            // calculate position and rotation
+        foreach (SolidBarReference b in barToInit) {
+            Vector3 headPos = b.GetHead3D();
+            Vector3 tailPos = b.GetTail3D();
+            Vector2 dir = b.GetDirection();
             Vector3 midPoint = (headPos + tailPos) / 2;
-            Vector2 dir = (headPos - tailPos);
-            GameObject scaledTemplate = barTemplate;
-            scaledTemplate.transform.localScale = new Vector3(1, dir.magnitude / 2, 1);
             float angle = Vector2.SignedAngle(Vector2.up, dir);
+            
+            SolidBar scaledTemplate = barTemplate;
+            scaledTemplate.transform.localScale = new Vector3(5, dir.magnitude / 2, 5);
 
-            SolidBar3D newBar = Instantiate(scaledTemplate, midPoint, 
+            SolidBar newBar = Instantiate(scaledTemplate, midPoint, 
                                             Quaternion.Euler(new Vector3(0, 0, angle)), barParent).
-                                            GetComponent<SolidBar3D>();
+                                            GetComponent<SolidBar>();
 
-            newBar.InitSolidBar(Point3DManager.GetPoint(headPos), Point3DManager.GetPoint(tailPos));
-            bar.Add(newBar);
+            // find head and tail point, not very efficient
+            foreach (Point p in allPoints) {
+                if (p.Contain(headPos)) {
+                    newBar.InitBarHead(p);
+                }
+                if (p.Contain(tailPos)) {
+                    newBar.InitBarTail(p);
+                }
+            }
+            // newBar.SetAnchors();
         }
     }
 
     // transfer all the data from 2d UI
-    public static void InitScene(List<Vector2> points, List<SolidBar> bars) {
-        bar2D = bars;
-        foreach (Vector2 vec in points) {
-            pointPos.Add(vec / scaleFactor);
-        }
-        foreach (SolidBar b in bar2D) {
-            b.SetHead(b.GetHead() / scaleFactor);
-            b.SetTail(b.GetTail() / scaleFactor);
-        }
+    public static void InitScene(int level) {
+        pointToInit = Levels.GetPointData(level);
+        barToInit = Levels.GetBarData(level);
+        // foreach (Point p in pointToInit) {
+        //     p.transform.position.x /= scaleFactor;
+        //     p.transform.position.y /= scaleFactor;
+        // }
+        // foreach (SolidBar b in barToInit) {
+        //     b.SetHead(b.GetHead() / scaleFactor);
+        //     b.SetTail(b.GetTail() / scaleFactor);
+        // }
     }
 
 }

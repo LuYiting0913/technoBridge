@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelInitiator : MonoBehaviour {
-    private static List<Vector2> fixedPoints = new List<Vector2>();
-    public Transform pointParent;
-    public Point pointTemplate;
+    //private List<Vector3> fixedPoints = new List<Vector3>();
+    //public Transform pointParent;
+    //public Point pointTemplate;
+    // public int level;
 
-    public static void InitLevel(List<Vector2> points) {
-        fixedPoints = points;
-        Debug.Log("inited");
-    }
+    // public void InitLevel(int l) {
+    //     level = l;
+    //     Level0.LoadFixedPoints();
+    //     Debug.Log("inited");
+    // }
 
-    public void Start() {
-        foreach (Vector2 v in fixedPoints) {
-            Point p = Instantiate(pointTemplate, v, Quaternion.identity, pointParent).GetComponent<Point>();
-            p.fixPoint();
-            PointManager.AddPoint(v, p);
-        }
-         Debug.Log("loeaded");
-    }
+    // public void Start() {
+    //     foreach (Vector2 v in fixedPoints) {
+    //         Point p = Instantiate(pointTemplate, v, Quaternion.identity, pointParent).GetComponent<Point>();
+    //         p.FixPoint();
+    //         PointManager.AddPoint(v, p);
+    //     }
+    //      Debug.Log("loaded");
+    // }
 }

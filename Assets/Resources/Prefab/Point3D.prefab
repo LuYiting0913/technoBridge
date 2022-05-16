@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8103325597520395599}
   - component: {fileID: 1547700007835143567}
   - component: {fileID: 4844901115003397246}
-  - component: {fileID: -3465724817423229250}
+  - component: {fileID: 7793943448874819990}
   m_Layer: 0
   m_Name: Point3D
   m_TagString: Untagged
@@ -115,7 +115,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-3465724817423229250
+--- !u!114 &7793943448874819990
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,6 +124,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 9092830945500340069}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e314a872da62bfd41ab721147b09ab9c, type: 3}
+  m_Script: {fileID: 11500000, guid: cba39b71cff6a2d40ae59d471158ce03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
