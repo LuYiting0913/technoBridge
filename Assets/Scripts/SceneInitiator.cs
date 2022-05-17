@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneInitiator : MonoBehaviour {
-    public SolidBar barTemplate;
+    public GameObject barTemplate;
     public Point pointTemplate;
     public Transform pointParent;
     public Transform barParent;
@@ -22,7 +22,6 @@ public class SceneInitiator : MonoBehaviour {
         List<Point> allPoints = new List<Point>();
         // render all points
         foreach (PointReference p in pointToInit) {
-            Debug.Log(p.GetPosition());
             Vector3 pos = p.GetPosition();
             Point scaledTemplate = pointTemplate;
             scaledTemplate.transform.localScale = new Vector3(10, 10, 10);
@@ -41,7 +40,8 @@ public class SceneInitiator : MonoBehaviour {
             Vector3 midPoint = (headPos + tailPos) / 2;
             float angle = Vector2.SignedAngle(Vector2.up, dir);
             
-            SolidBar scaledTemplate = barTemplate;
+            GameObject scaledTemplate = MaterialManager.GetTemplate3D(b.GetMaterial());
+            barTemplate = scaledTemplate;
             scaledTemplate.transform.localScale = new Vector3(5, dir.magnitude / 2, 5);
 
             SolidBar newBar = Instantiate(scaledTemplate, midPoint, 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6732681414615645855}
   - component: {fileID: -3887562963994492289}
   m_Layer: 0
-  m_Name: WoodBar
+  m_Name: SteelBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 79d33f0a153db084cbd99667ae82efa9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1912456056343364b892e23cb3c31a5c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,4 +97,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db15c67a9e016b74894dc709a2dba72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: 1
+  material: 2
