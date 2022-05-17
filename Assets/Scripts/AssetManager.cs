@@ -15,10 +15,6 @@ public class AssetManager : MonoBehaviour {
             allPoints.Add(p);
         }
         allBars = bars;
-        // Debug.Log("bars in init");
-        // foreach (SolidBar b in bars) {
-        //     Debug.Log(b);
-        // }
     }
 
     public static List<SolidBarReference> GenerateBarReference() {

@@ -7,18 +7,15 @@ public class SolidBar : MonoBehaviour {
     private Vector3 tailPosition;
     private Point head;
     private Point tail;
-    //public int type;
     private HingeJoint headJoint;
     private HingeJoint tailJoint;
+    public int material; 
 
     private SpriteRenderer barRenderer;
-    private float maxLength = 200f; 
-
-    public void Start() {
-    }
+    // private float maxLength = 200f; 
 
     public void InitRenderer() {
-        Sprite sp = Resources.Load<Sprite>("Sprite/WoodSprite");
+        Sprite sp = MaterialManager.GetSprite(material);
         barRenderer = GetComponent<SpriteRenderer>();
         barRenderer.drawMode = SpriteDrawMode.Tiled;
         barRenderer.sprite = sp;
@@ -56,10 +53,9 @@ public class SolidBar : MonoBehaviour {
         tailJoint.axis = new Vector3(0, 0, 1); 
     }
 
-    // public void SetAnchors() {
-    //     headJoint.anchor = new Vector3(0, GetLength() / 2, 0);
-    //     tailJoint.anchor = new Vector3(0, -(GetLength() / 2), 0);
-    // } 
+    public void SetMaterial(int m) {
+        material = m;
+    }
 
     public void SetHead(Vector3 vector) {
         headPosition = vector;
@@ -79,7 +75,7 @@ public class SolidBar : MonoBehaviour {
 
     public Vector3 CutOff(Vector3 cursor) {
         Vector3 offset = cursor - headPosition;
-        return headPosition + Vector3.ClampMagnitude(offset, maxLength); 
+        return headPosition + Vector3.ClampMagnitude(offset, MaterialManager.GetMaxLength(material)); 
     }
 
     public Vector2 GetDirection() {
