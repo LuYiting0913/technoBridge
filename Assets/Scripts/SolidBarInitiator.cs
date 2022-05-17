@@ -8,6 +8,7 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
     private SolidBar currentBar;
     private Point beginPoint;
     private Point endPoint;
+    private int currentMaterial = 1;
 
     public int level;
     public GameObject barTemplate;
@@ -21,6 +22,7 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
         List<SolidBarReference> barData = Levels.GetBarData(level);
         List<Point> existingPoints = new List<Point>();
         List<SolidBar> existingBars = new List<SolidBar>();
+        barTemplate = MaterialManager.GetTemplate2D(1);
 
         // render all existing points
         foreach (PointReference p in pointData) {
@@ -58,7 +60,6 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
         }
     }
 
-    // create the beginPoint
     private void InitializeBar(Vector2 headPos) {
         startedInit = true;
         currentBar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
@@ -105,14 +106,24 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
         startedInit = false;
         Destroy(currentBar.gameObject);
         //AssetManager.DeleteBar(currentBar);
-        if (beginPoint.isSingle()) {
+        if (beginPoint.isSingle() && !beginPoint.IsFixed()) {
             Destroy(beginPoint.gameObject);
             AssetManager.DeletePoint(beginPoint);
         }
-        if (endPoint.isSingle()) {
+        if (endPoint.isSingle() && !beginPoint.IsFixed()) {
             Destroy(endPoint.gameObject);
             AssetManager.DeletePoint(endPoint);
         }
+    }
+
+    public void SetMaterialWood() {
+        currentMaterial = 1;
+        barTemplate = MaterialManager.GetTemplate2D(1);
+    }
+
+    public void SetMaterialSteel() {
+        currentMaterial = 2;
+        barTemplate = MaterialManager.GetTemplate2D(2);
     }
 
     public void Update() {
