@@ -5,19 +5,19 @@ using UnityEngine;
 public class SolidBarReference {
     private Vector2 headPosition;
     private Vector2 tailPosition;
-    //public int type;
+    private int material;
     private float maxLength = 200f; 
 
     public static SolidBarReference of(SolidBar bar) {
         SolidBarReference reference = new SolidBarReference();
-        reference.SetReference(bar.GetHead(), bar.GetTail());
+        reference.SetReference(bar.GetHead(), bar.GetTail(), bar.material);
         return reference;
     }
 
-
-    public void SetReference(Vector2 head, Vector2 tail) {
+    public void SetReference(Vector2 head, Vector2 tail, int m) {
         headPosition = head;
         tailPosition = tail;
+        material = m;
     }
 
     public void SetHead(Vector2 vector) {
@@ -46,5 +46,9 @@ public class SolidBarReference {
 
     public Vector2 GetDirection() {
         return new Vector2(tailPosition.x - headPosition.x, tailPosition.y - headPosition.y);
+    }
+
+    public int GetMaterial() {
+        return material;
     }
 }
