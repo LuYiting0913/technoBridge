@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SolidBar : MonoBehaviour {
     private Vector3 headPosition;
@@ -38,9 +39,8 @@ public class SolidBar : MonoBehaviour {
         headJoint = gameObject.AddComponent<HingeJoint>();
         headJoint.connectedBody = head.GetComponent<Rigidbody>();
         headJoint.anchor = new Vector3(0, -1, 0);
-        // headJoint.autoConfigureConnectedAnchor = false;
-        // headJoint.connectedAnchor = new Vector3(0, 0, 0);
         headJoint.axis = new Vector3(0, 0, 1); 
+        //headJoint.breakForce = MaterialManager.GetIntegrity(material);
     }
 
     public void InitBarTail(Point tailPoint) {
@@ -48,13 +48,16 @@ public class SolidBar : MonoBehaviour {
         tailJoint = gameObject.AddComponent<HingeJoint>();
         tailJoint.connectedBody = tail.GetComponent<Rigidbody>();
         tailJoint.anchor = new Vector3(0, 1, 0);
-        // tailJoint.autoConfigureConnectedAnchor = false;
-        // tailJoint.connectedAnchor = new Vector3(0, 0, 0);
         tailJoint.axis = new Vector3(0, 0, 1); 
+        //tailJoint.breakForce = MaterialManager.GetIntegrity(material);
     }
 
     public void SetMaterial(int m) {
         material = m;
+    }
+
+    public int GetMaterial() {
+        return material;
     }
 
     public void SetHead(Vector3 vector) {
@@ -85,4 +88,12 @@ public class SolidBar : MonoBehaviour {
     public float GetLength() {
         return (head.GetPosition() - tail.GetPosition()).magnitude;
     }
+
+    public float GetCurrentTension() {
+        return Math.Abs(headJoint.currentForce.x + tailJoint.currentForce.x);
+    }
+
+    // public void Update() {
+    //     Debug.Log(headJoint.currentForce);
+    // }
 }

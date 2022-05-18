@@ -7,7 +7,7 @@ public class Point : MonoBehaviour {
     private List<SolidBar> connectedBars = new List<SolidBar>(); 
     private Vector3 pointPosition;
     private bool isStationary = false;
-    private static int threshold = 5;
+    private static int threshold = 8;
 
     public void Start() {
         pointPosition = transform.position;
@@ -43,6 +43,11 @@ public class Point : MonoBehaviour {
 
     public void SetFixed() {
         isStationary = true;
+    }
+
+    public void InitRigidBody(PointReference p) {
+        Rigidbody pointRb = gameObject.GetComponent<Rigidbody>();
+        pointRb.isKinematic = p.IsFixed();
     }
         
     // public void Update() {

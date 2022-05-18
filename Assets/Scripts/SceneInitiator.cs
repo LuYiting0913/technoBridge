@@ -7,6 +7,7 @@ public class SceneInitiator : MonoBehaviour {
     public Point pointTemplate;
     public Transform pointParent;
     public Transform barParent;
+    private int roadWidth = 100;
 
     //private static List<SolidBar3D> bar = new List<SolidBar3D>();
 
@@ -14,65 +15,97 @@ public class SceneInitiator : MonoBehaviour {
     public static List<SolidBarReference> barToInit = new List<SolidBarReference>();
     private static float scaleFactor = 10f;
 
-    public void Awake() {
-    }
-
     public void Start() {
-        // temp stored all the points in a dictionary
+        // temp stored all the assets
         List<Point> allPoints = new List<Point>();
+        List<SolidBar> allBars = new List<SolidBar>();
         // render all points
         foreach (PointReference p in pointToInit) {
-            Vector3 pos = p.GetPosition();
-            Point scaledTemplate = pointTemplate;
-            scaledTemplate.transform.localScale = new Vector3(10, 10, 10);
+            for (int i = 0; i <= 1; i += 1) {
+                Vector3 pos = p.GetPosition();
+                pos.z += i * roadWidth;
+                Point scaledTemplate = pointTemplate;
+                scaledTemplate.transform.localScale = new Vector3(10, 10, 10);
+                Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.identity, pointParent);
+                
+                pointInstantiated.InitRigidBody(p);
+                pointInstantiated.UpdatePosition();
 
-            Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.identity, pointParent);
-            Rigidbody pointRb = pointInstantiated.GetComponent<Rigidbody>();
-            pointRb.isKinematic = p.IsFixed();
-            pointInstantiated.UpdatePosition();
-            allPoints.Add(pointInstantiated);
+                allPoints.Add(pointInstantiated);
+            }
         }    
+        //store in asset manager
+        AssetManager.Init(allPoints, new List<SolidBar>());
 
         foreach (SolidBarReference b in barToInit) {
-            Vector3 headPos = b.GetHead3D();
-            Vector3 tailPos = b.GetTail3D();
-            Vector2 dir = b.GetDirection();
-            Vector3 midPoint = (headPos + tailPos) / 2;
-            float angle = Vector2.SignedAngle(Vector2.up, dir);
-            
-            GameObject scaledTemplate = MaterialManager.GetTemplate3D(b.GetMaterial());
-            barTemplate = scaledTemplate;
-            scaledTemplate.transform.localScale = new Vector3(5, dir.magnitude / 2, 5);
+            Debug.Log(b.GetMaterial());
+            if (b.GetMaterial() != 0) {
+                // for non-pavement barsm init twice
+                for (int i = 0; i <= 1; i += 1) {
+                    Vector3 headPos = b.GetHead3D() + new Vector3(0, 0, i * roadWidth);
+                    Vector3 tailPos = b.GetTail3D() + new Vector3(0, 0, i * roadWidth);
+                    Vector2 dir = b.GetDirection();
+                    Vector3 midPoint = (headPos + tailPos) / 2;
+                    float angle = Vector2.SignedAngle(Vector2.up, dir);
+                    
+                    GameObject scaledTemplate = MaterialManager.GetTemplate3D(b.GetMaterial());
+                    scaledTemplate.transform.localScale = new Vector3(5, dir.magnitude / 2, 5);
 
-            SolidBar newBar = Instantiate(scaledTemplate, midPoint, 
-                                            Quaternion.Euler(new Vector3(0, 0, angle)), barParent).
-                                            GetComponent<SolidBar>();
+                    SolidBar newBar = Instantiate(scaledTemplate, midPoint, 
+                                                    Quaternion.Euler(new Vector3(0, 0, angle)), barParent).
+                                                    GetComponent<SolidBar>();
 
-            // find head and tail point, not very efficient
-            foreach (Point p in allPoints) {
-                if (p.Contain(headPos)) {
-                    newBar.InitBarHead(p);
+                    newBar.SetMaterial(b.GetMaterial());
+                    newBar.InitBarHead(AssetManager.GetPoint(headPos));
+                    newBar.InitBarTail(AssetManager.GetPoint(tailPos));
+
+                    allBars.Add(newBar);
                 }
-                if (p.Contain(tailPos)) {
-                    newBar.InitBarTail(p);
-                }
+            } else {
+                // for pavements
+                Vector3 headPos = b.GetHead3D();
+                Vector3 tailPos = b.GetTail3D();
+                Vector2 dir = b.GetDirection();
+                Vector3 midPoint = (headPos + tailPos) / 2 + new Vector3(0, 0, roadWidth / 2);
+                float angle = Vector2.SignedAngle(Vector2.up, dir);      
+                GameObject scaledTemplate = MaterialManager.GetTemplate3D(b.GetMaterial());
+                scaledTemplate.transform.localScale = new Vector3(5, dir.magnitude, roadWidth);
+
+                Pavement newPave = Instantiate(scaledTemplate, midPoint, 
+                                                Quaternion.Euler(new Vector3(0, 0, angle)), barParent).
+                                                GetComponent<Pavement>();
+
+                newPave.SetPosition(headPos, tailPos);
+                newPave.InitPavementHinge(allPoints, roadWidth);
             }
-            // newBar.SetAnchors();
         }
+        AssetManager.Init(allPoints, allBars);
     }
 
     // transfer all the data from 2d UI
     public static void InitScene(int level) {
         pointToInit = Levels.GetPointData(level);
         barToInit = Levels.GetBarData(level);
-        // foreach (Point p in pointToInit) {
-        //     p.transform.position.x /= scaleFactor;
-        //     p.transform.position.y /= scaleFactor;
-        // }
-        // foreach (SolidBar b in barToInit) {
-        //     b.SetHead(b.GetHead() / scaleFactor);
-        //     b.SetTail(b.GetTail() / scaleFactor);
-        // }
+    }
+
+    public void Update() {
+        List<SolidBar> bars = AssetManager.GetAllBars();
+        foreach (SolidBar b in bars) {
+            
+            if (b.GetCurrentTension() >= MaterialManager.GetIntegrity(b.GetMaterial())) {
+                Debug.Log("break");
+                Debug.Log(b.GetCurrentTension());
+                // GameObject temp = Resources.Load<GameObject>("Prefab/BrokenWoodBar");
+                // Instantiate(temp, b.transform.position, Quaternion.identity, barParent);
+                AssetManager.DeleteBar(b);
+                Destroy(b.gameObject);
+                
+            } 
+        }
+        
+        // GameObject temp = Resources.Load<GameObject>("Prefab/BrokenWoodBar");
+        // Instantiate(temp, new Vector3(0, 0, 0), Quaternion.identity, barParent);
+        // HingeJoint h = 
     }
 
 }
