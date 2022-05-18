@@ -93,7 +93,6 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
 
         beginPoint.AddConnectedBar(currentBar);
         endPoint.AddConnectedBar(currentBar);
-
         AssetManager.AddBar(currentBar);
         
         // commit changes to the central class
@@ -110,7 +109,7 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
             Destroy(beginPoint.gameObject);
             AssetManager.DeletePoint(beginPoint);
         }
-        if (endPoint.isSingle() && !beginPoint.IsFixed()) {
+        if (endPoint.isSingle() && !endPoint.IsFixed()) {
             Destroy(endPoint.gameObject);
             AssetManager.DeletePoint(endPoint);
         }
@@ -124,6 +123,11 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
     public void SetMaterialSteel() {
         currentMaterial = 2;
         barTemplate = MaterialManager.GetTemplate2D(2);
+    }
+
+    public void SetMaterialPavement() {
+        currentMaterial = 0;
+        barTemplate = MaterialManager.GetTemplate2D(0);
     }
 
     public void Update() {
