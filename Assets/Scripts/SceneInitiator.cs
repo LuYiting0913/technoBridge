@@ -49,7 +49,7 @@ public class SceneInitiator : MonoBehaviour {
                     float angle = Vector2.SignedAngle(Vector2.up, dir);
                     
                     GameObject scaledTemplate = MaterialManager.GetTemplate3D(b.GetMaterial());
-                    scaledTemplate.transform.localScale = new Vector3(5, dir.magnitude / 2, 5);
+                    scaledTemplate.transform.localScale = new Vector3(50, dir.magnitude / 2, 50);
 
                     SolidBar newBar = Instantiate(scaledTemplate, midPoint, 
                                                     Quaternion.Euler(new Vector3(0, 0, angle)), barParent).
