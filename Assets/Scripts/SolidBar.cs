@@ -6,8 +6,8 @@ using System;
 public class SolidBar : MonoBehaviour {
     private Vector3 headPosition;
     private Vector3 tailPosition;
-    private Point head;
-    private Point tail;
+    public Point head;
+    public Point tail;
     private HingeJoint headJoint;
     private HingeJoint tailJoint;
     public int material; 
@@ -57,6 +57,11 @@ public class SolidBar : MonoBehaviour {
         //tailJoint.breakForce = MaterialManager.GetIntegrity(material);
     }
 
+    public void UpdatePosition() {
+        headPosition = head.transform.position;
+        tailPosition = tail.transform.position;
+    }
+
     public void SetMaterial(int m) {
         material = m;
     }
@@ -64,7 +69,16 @@ public class SolidBar : MonoBehaviour {
     public int GetMaterial() {
         return material;
     }
+    
+    public void SetR(Point point1, Point point2) {
+        head = point1;
+        tail = point2;
+    }
 
+    public void SetTailR(Point point) {
+        tail = point;
+    }
+   // redundant...........
     public void SetHead(Vector3 vector) {
         headPosition = vector;
     }

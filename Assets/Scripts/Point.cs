@@ -29,6 +29,26 @@ public class Point : MonoBehaviour {
         return connectedBars.Count;
     }
 
+    public bool ExceedsMaxLength(Vector2 cursor) {
+        bool check = false;
+        Vector2 v;
+        foreach (SolidBar bar in connectedBars) {
+            if (Contain(bar.GetHead())) {
+                v = new Vector2(bar.GetTail().x, bar.GetTail().y);
+            } else {
+                v = new Vector2(bar.GetHead().x, bar.GetHead().y);
+            }
+            check = check || (v - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial());
+        }
+        return check;
+    }
+
+    public void UpdateConnectedBars() {
+        foreach (SolidBar bar in connectedBars) {
+            bar.UpdatePosition();
+        }
+    }
+
     public bool isSingle() {
         return ConnectedBarCount() == 0;
     }

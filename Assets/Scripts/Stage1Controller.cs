@@ -16,6 +16,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private List<Point> existingPoints = new List<Point>();
     private List<SolidBar> existingBars = new List<SolidBar>();
     private bool creatingBar = false;
+    private bool draggingPoint = false;
     private Camera myCam;
     // private Point currentPointDragging;
 
@@ -29,7 +30,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         // render all existing points
         foreach (PointReference p in pointData) {
-            Point point = Instantiate(pointTemplate, p.GetPosition(), Quaternion.identity, pointParent).GetComponent<Point>();
+            Vector3 position = p.GetPosition();
+            Point point = Instantiate(pointTemplate, position, Quaternion.identity, pointParent).GetComponent<Point>();
             if (p.IsFixed()) {
                 point.SetFixed();
             }
@@ -50,25 +52,28 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerDown(PointerEventData eventData) {
         Debug.Log("ptr down");
-        if (currentEditMode == 1) {
+        Vector3 dir = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        dir.z = 0;
+        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, 1));
+
+        if (currentEditMode == 1 && hit.collider != null) {
             // select mode
-            Vector3 dir = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            dir.z = 0;
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, 1));
-            Debug.Log(myCam.transform.position);
-            Debug.Log(dir);
-            if (hit.collider != null) {
-                Debug.Log(hit.transform.GetChild(0));
-                bool isActive = hit.transform.GetChild(0).gameObject.activeSelf;
-                hit.transform.GetChild(0).gameObject.SetActive(!isActive);
-                if (isActive) {
-                    // deselect
-                    SelectionController.RemoveFromSelection(hit.transform);
-                } else {
-                    SelectionController.AddToSelection(hit.transform);
-                }
+            bool isActive = hit.transform.GetChild(0).gameObject.activeSelf;
+            hit.transform.GetChild(0).gameObject.SetActive(!isActive);
+            if (isActive) {
+                // deselect
+                SelectionController.RemoveFromSelection(hit.transform);
+            } else {
+                SelectionController.AddToSelection(hit.transform);
             }
-        } else {
+        } else if (currentEditMode == 2 && hit.collider != null && hit.transform.GetComponent<Point>() != null) {
+            // drag mode
+            if (!hit.transform.GetComponent<Point>().IsFixed()) {
+                Debug.Log("start drag");
+                draggingPoint = true;
+                DragController.SelectPoint(hit.transform);
+            }     
+        } else if (currentEditMode == 0) {
             // add mode
             Debug.Log("start add");
             creatingBar = true;
@@ -82,9 +87,12 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             Debug.Log("pointer up");
             SolidBarInitiator.FinalizeBar(Camera.main.ScreenToWorldPoint(eventData.position));
             creatingBar = false;
+        } else if  (draggingPoint) {
+            Debug.Log("release point");
+            draggingPoint = false;
+            DragController.ReleasePoint();
         }
     }
-
 
     public void Update() {
         foreach (SolidBar bar in existingBars) {
@@ -99,6 +107,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             SolidBarInitiator.endPoint.transform.position = cutOffVector;
             SolidBarInitiator.currentBar.SetTail(cutOffVector);
             SolidBarInitiator.currentBar.RenderSolidBar();
+        } else if (draggingPoint) {
+            DragController.DragPointTo(cursor);
         }
 
     }
@@ -107,11 +117,19 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void SelectMode() {
         Debug.Log("select mode");
         currentEditMode = 1;
+        SelectionController.ClearAll();
     }
 
     public void AddMode() {
         Debug.Log("add mode");
         currentEditMode = 0;
+        SelectionController.ClearAll();
+    }
+
+    public void DragMode() {
+        Debug.Log("drag mode");
+        currentEditMode = 2;
+        SelectionController.ClearAll();
     }
 
     public void SetMaterialWood() {
