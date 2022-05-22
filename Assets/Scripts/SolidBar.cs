@@ -31,6 +31,11 @@ public class SolidBar : MonoBehaviour {
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         float length = dir.magnitude;
         // not ideal here, change later
+        //transform.localScale = new Vector2(length / 10, 5);
+        BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
+        Transform child = gameObject.transform.GetChild(0);
+        collider.size = new Vector2(length / 10, collider.size.y);
+        child.localScale = new Vector2(length / 10,child.localScale.y);
         barRenderer.size = new Vector2(length / 10, barRenderer.size.y);
     }
 

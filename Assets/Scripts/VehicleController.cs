@@ -7,7 +7,7 @@ public class VehicleController : MonoBehaviour {
     public WheelCollider rearLeft, rearRight;
     public Transform frontLeftWheel, frontRightWheel;
     public Transform rearLeftWheel, rearRightWheel;
-    public float motor = 1000;
+    public float motor = 300;
 
     private void Accelerate() {
         rearLeft.motorTorque = motor;

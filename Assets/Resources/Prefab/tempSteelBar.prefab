@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2078334300548897527}
   - component: {fileID: 4265838213730070077}
   - component: {fileID: 3300440640481252651}
+  - component: {fileID: 2913070884480834563}
   - component: {fileID: 6437599490095380524}
   m_Layer: 0
   m_Name: tempSteelBar
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2320393057843105768}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 1.1098181, y: 0.16589794, z: 0.2917942}
-  m_LocalScale: {x: 50, y: 73.47991, z: 50}
+  m_LocalScale: {x: 50, y: 100.51417, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -101,6 +102,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &2913070884480834563
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2320393057843105768}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.09256616, y: 1.6563747, z: 0.15025443}
+  m_Center: {x: 0.000000011175874, y: 0, z: 0.00000005215408}
 --- !u!114 &6437599490095380524
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2854041238490053471}
   - component: {fileID: 35853061865017237}
   - component: {fileID: -5010063952469795193}
+  - component: {fileID: -8229410153144045998}
   - component: {fileID: 2319451214737987528}
   m_Layer: 0
   m_Name: tempWoodbar
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1981474277034864192}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.63294816, y: -2.2559732e-17, z: 0.12556133}
-  m_LocalScale: {x: 50, y: 99.99999, z: 50}
+  m_LocalScale: {x: 50, y: 87.413345, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -101,6 +102,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &-8229410153144045998
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981474277034864192}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.17102855, y: 1.7515316, z: 0.112408645}
+  m_Center: {x: 0, y: 0, z: -0.0000000037252903}
 --- !u!114 &2319451214737987528
 MonoBehaviour:
   m_ObjectHideFlags: 0

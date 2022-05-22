@@ -89,19 +89,19 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     public void Update() {
-        List<SolidBar> bars = AssetManager.GetAllBars();
-        foreach (SolidBar b in bars) {
+        // List<SolidBar> bars = AssetManager.GetAllBars();
+        // foreach (SolidBar b in bars) {
             
-            if (b.GetCurrentTension() >= MaterialManager.GetIntegrity(b.GetMaterial())) {
-                Debug.Log("break");
-                Debug.Log(b.GetCurrentTension());
-                // GameObject temp = Resources.Load<GameObject>("Prefab/BrokenWoodBar");
-                // Instantiate(temp, b.transform.position, Quaternion.identity, barParent);
-                AssetManager.DeleteBar(b);
-                Destroy(b.gameObject);
+        //     if (b.GetCurrentTension() >= MaterialManager.GetIntegrity(b.GetMaterial())) {
+        //         Debug.Log("break");
+        //         Debug.Log(b.GetCurrentTension());
+        //         // GameObject temp = Resources.Load<GameObject>("Prefab/BrokenWoodBar");
+        //         // Instantiate(temp, b.transform.position, Quaternion.identity, barParent);
+        //         AssetManager.DeleteBar(b);
+        //         Destroy(b.gameObject);
                 
-            } 
-        }
+        //     } 
+        // }
         
         // GameObject temp = Resources.Load<GameObject>("Prefab/BrokenWoodBar");
         // Instantiate(temp, new Vector3(0, 0, 0), Quaternion.identity, barParent);

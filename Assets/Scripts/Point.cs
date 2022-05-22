@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Point : MonoBehaviour {
     //public bool isDragging = false;
-    private List<SolidBar> connectedBars = new List<SolidBar>(); 
+    public List<SolidBar> connectedBars = new List<SolidBar>(); 
     private Vector3 pointPosition;
     private bool isStationary = false;
     private static int threshold = 8;

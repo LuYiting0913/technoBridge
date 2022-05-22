@@ -3,65 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
-    private bool startedInit = false;
-    private SolidBar currentBar;
-    private Point beginPoint;
-    private Point endPoint;
-    private int currentMaterial = 1;
+public class SolidBarInitiator : MonoBehaviour {
+    private static bool startedInit = false;
+    public static SolidBar currentBar;
+    public static Point beginPoint;
+    public static Point endPoint;
+    private static int currentMaterial = 1;
+    // 0: add bar, 1: select bar
 
-    public int level;
-    public GameObject barTemplate;
-    public Transform barParent;
-    public GameObject pointTemplate;
-    public Transform pointParent;
+    // public int level;
+    private static GameObject barTemplate;
+    private static Transform barParent;
+    private static GameObject pointTemplate;
+    private static Transform pointParent;
+    // public LayerMask clickable;
 
-    public void Start() {
-        Level0.InitLevel();
-        List<PointReference> pointData = Levels.GetPointData(level);
-        List<SolidBarReference> barData = Levels.GetBarData(level);
-        List<Point> existingPoints = new List<Point>();
-        List<SolidBar> existingBars = new List<SolidBar>();
-        barTemplate = MaterialManager.GetTemplate2D(1);
-
-        // render all existing points
-        foreach (PointReference p in pointData) {
-            Point point = Instantiate(pointTemplate, p.GetPosition(), Quaternion.identity, pointParent).GetComponent<Point>();
-            if (p.IsFixed()) {
-                point.SetFixed();
-            }
-            existingPoints.Add(point);
-        }
-        // render all bars
-        foreach (SolidBarReference barReference in barData) {
-            //Instantiate
-            SolidBar bar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
-            bar.InitRenderer();
-            bar.SetHead(barReference.GetHead());
-            bar.SetTail(barReference.GetTail());
-            bar.RenderSolidBar();
-            existingBars.Add(bar);
-        }
-        AssetManager.Init(existingPoints, existingBars);
+    private static void ClearAll() {
+        currentBar = null;
+        beginPoint = null;
+        endPoint = null;
     }
 
-    public void OnPointerDown(PointerEventData eventData) {
-        if (!startedInit && eventData.button == PointerEventData.InputButton.Left) {
-            // the bar is not initialized
-            InitializeBar(Camera.main.ScreenToWorldPoint(eventData.position));
-        } else {
-            // the beginPoint is initialized
-            if (eventData.button == PointerEventData.InputButton.Left) {
-                FinalizeBar(Camera.main.ScreenToWorldPoint(eventData.position));
-                //FinalizeBar(endPoint.transform.position);
-            } else if (eventData.button == PointerEventData.InputButton.Right) {
-                DeleteBar();
-            }
-        }
-    }
+    public static void InitializeBar(Vector2 headPos, int material, Transform pParent, Transform bParent) {
+        ClearAll();
 
-    private void InitializeBar(Vector2 headPos) {
         startedInit = true;
+        currentMaterial = material;
+        barParent = bParent;
+        pointParent = pParent;
+        barTemplate = MaterialManager.GetTemplate2D(currentMaterial);
+        pointTemplate = Resources.Load<GameObject>("Prefab/Point");
+        Debug.Log("init");
         currentBar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
         Vector3 head = new Vector3(headPos.x, headPos.y, 0);
         
@@ -77,7 +49,7 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
         endPoint = Instantiate(pointTemplate, head, Quaternion.identity, pointParent).GetComponent<Point>();
     }
 
-    private void FinalizeBar(Vector2 tailPos) {
+    public static void FinalizeBar(Vector2 tailPos) {
         startedInit = false;
         Vector3 cutOffVector = currentBar.CutOff(new Vector3(tailPos.x, tailPos.y, 0));
 
@@ -96,9 +68,9 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
         AssetManager.AddBar(currentBar);
         
         // commit changes to the central class
-        Levels.UpdateLevelData(0, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
+        //Levels.UpdateLevelData(0, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
         // continue to the next bar
-        InitializeBar(endPoint.transform.position);
+        //InitializeBar(endPoint.transform.position);
     }
 
     private void DeleteBar() {
@@ -115,31 +87,4 @@ public class SolidBarInitiator : MonoBehaviour, IPointerDownHandler {
         }
     }
 
-    public void SetMaterialWood() {
-        currentMaterial = 1;
-        barTemplate = MaterialManager.GetTemplate2D(1);
-    }
-
-    public void SetMaterialSteel() {
-        currentMaterial = 2;
-        barTemplate = MaterialManager.GetTemplate2D(2);
-    }
-
-    public void SetMaterialPavement() {
-        currentMaterial = 0;
-        barTemplate = MaterialManager.GetTemplate2D(0);
-    }
-
-    public void Update() {
-        Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        if (startedInit && !Input.GetMouseButton(0)) {
-            // cut off the bar at a maximun length
-            Vector2 cutOffVector = currentBar.CutOff(cursor);
-
-            endPoint.transform.position = cutOffVector;
-            currentBar.SetTail(cutOffVector);
-            currentBar.RenderSolidBar();
-        } 
-    }
 }
