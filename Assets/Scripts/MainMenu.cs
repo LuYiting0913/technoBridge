@@ -28,6 +28,7 @@ public class MainMenu : MonoBehaviour {
 
     public void Go() {
         Debug.Log("Go");
+        Levels.UpdateLevelData(0, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
         SceneInitiator.InitScene(0);
         SceneManager.LoadScene(2);
     }
