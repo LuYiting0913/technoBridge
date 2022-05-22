@@ -65,6 +65,7 @@ public class SolidBarInitiator : MonoBehaviour {
 
         beginPoint.AddConnectedBar(currentBar);
         endPoint.AddConnectedBar(currentBar);
+        currentBar.SetR(beginPoint, endPoint);
         AssetManager.AddBar(currentBar);
         
         // commit changes to the central class

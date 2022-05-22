@@ -6,6 +6,11 @@ public class SelectionController : MonoBehaviour {
     private static List<SolidBar> selectedBars = new List<SolidBar>();
     private static List<Point> selectedPoints = new List<Point>();
 
+    public static void ClearAll() {
+        selectedBars = new List<SolidBar>();
+        selectedPoints = new List<Point>();
+    }
+
     public static void AddToSelection(Transform transform) {
         if (transform.GetComponent<SolidBar>() != null) {
             selectedBars.Add(transform.GetComponent<SolidBar>());
