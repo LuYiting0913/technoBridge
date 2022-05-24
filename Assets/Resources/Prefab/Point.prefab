@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4936375486936817360}
   - component: {fileID: 4905189865954812041}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5065093187124290829}
   - component: {fileID: 2447860450444501835}
   - component: {fileID: 1974585514375387010}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}

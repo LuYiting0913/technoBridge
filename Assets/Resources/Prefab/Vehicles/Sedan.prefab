@@ -217,7 +217,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4647977738446118731}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.26
+  m_Radius: 0.28
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -231,7 +231,7 @@ WheelCollider:
     m_ExtremumValue: 5
     m_AsymptoteSlip: 5
     m_AsymptoteValue: 2
-    m_Stiffness: 1
+    m_Stiffness: 0.4
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
@@ -399,7 +399,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4647977738746466609}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.26
+  m_Radius: 0.28
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -413,7 +413,7 @@ WheelCollider:
     m_ExtremumValue: 5
     m_AsymptoteSlip: 5
     m_AsymptoteValue: 2
-    m_Stiffness: 1
+    m_Stiffness: 0.4
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
@@ -612,7 +612,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4647977739681728399}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.26
+  m_Radius: 0.28
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -626,7 +626,7 @@ WheelCollider:
     m_ExtremumValue: 5
     m_AsymptoteSlip: 5
     m_AsymptoteValue: 2
-    m_Stiffness: 1
+    m_Stiffness: 0.4
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
@@ -794,7 +794,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4647977740231326378}
   m_Center: {x: 0, y: 0, z: 0}
-  m_Radius: 0.26
+  m_Radius: 0.28
   m_SuspensionSpring:
     spring: 35000
     damper: 4500
@@ -808,7 +808,7 @@ WheelCollider:
     m_ExtremumValue: 5
     m_AsymptoteSlip: 5
     m_AsymptoteValue: 2
-    m_Stiffness: 1
+    m_Stiffness: 0.4
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
@@ -829,7 +829,7 @@ GameObject:
   - component: {fileID: 6356771345415526829}
   - component: {fileID: 6356771345415526828}
   m_Layer: 0
-  m_Name: Sedan 1
+  m_Name: Sedan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -865,7 +865,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 72
+  m_Constraints: 104
   m_CollisionDetection: 0
 --- !u!65 &6356771345415526829
 BoxCollider:

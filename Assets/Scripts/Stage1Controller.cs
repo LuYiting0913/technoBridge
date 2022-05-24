@@ -102,7 +102,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         if (creatingBar) {
-            // cut off the bar at a maximun length
+            Debug.Log(SolidBarInitiator.currentBar);
             Vector2 cutOffVector = SolidBarInitiator.currentBar.CutOff(cursor);
             SolidBarInitiator.endPoint.transform.position = cutOffVector;
             SolidBarInitiator.currentBar.SetTail(cutOffVector);

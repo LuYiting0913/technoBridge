@@ -11,10 +11,10 @@ public class Pavement : MonoBehaviour {
     public void SetPosition(Vector3 head, Vector3 tail) {
         headPosition = head;
         tailPosition = tail;
-        anchors[0] = new Vector3(0, -0.5f, -0.5f);
-        anchors[1] = new Vector3(0, -0.5f, 0.5f);
-        anchors[2] = new Vector3(0, 0.5f, -0.5f);
-        anchors[3] = new Vector3(0, 0.5f, 0.5f);
+        anchors[0] = new Vector3(0, -0.5f, -0.15f);
+        anchors[1] = new Vector3(0, -0.5f, 0.15f);
+        anchors[2] = new Vector3(0, 0.5f, -0.15f);
+        anchors[3] = new Vector3(0, 0.5f, 0.15f);
     }
 
     public void InitPavementHinge(List<Point> allPoints, int roadWidth) {

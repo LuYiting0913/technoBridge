@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6373389516431737090}
   - component: {fileID: 8543916403379884370}
   - component: {fileID: -3887562963994492289}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SteelBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ BoxCollider2D:
     adaptiveTiling: 1
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.0479201, y: 1.28907}
+  m_Size: {x: 18.13, y: 1.85}
   m_EdgeRadius: 0
 --- !u!114 &-3887562963994492289
 MonoBehaviour:
@@ -160,7 +160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6537405645455833823}
   - component: {fileID: 6497212825243649158}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: OnSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
