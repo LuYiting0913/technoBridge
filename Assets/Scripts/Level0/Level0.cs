@@ -9,6 +9,7 @@ public class Level0 : MonoBehaviour {
     public static void InitLevel() {
         PointReference p1 = new PointReference();
         PointReference p2 = new PointReference();
+        List<Vehicle> vehicles = new List<Vehicle>();
 
         p1.SetFixed();
         p1.SetPosition(new Vector3(-300, -60, 0));
@@ -17,6 +18,10 @@ public class Level0 : MonoBehaviour {
         fixedPoints.Add(p1);
         fixedPoints.Add(p2);
         Levels.UpdateLevelData(0, fixedPoints, new List<SolidBarReference>());
+
+        vehicles.Add(Vehicle.Of(1, new Vector3(-350, -40, 90), new Vector3(350,0, 90)));
+        Levels.SetVehicleData(0, vehicles);
+        Debug.Log(vehicles[0]);
     }
 
 }

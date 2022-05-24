@@ -112,6 +112,17 @@ public class SolidBar : MonoBehaviour {
         return Math.Abs(headJoint.currentForce.x + tailJoint.currentForce.x);
     }
 
+    public float GetCurrentLoad() {
+        return GetCurrentTension() / 2000; // max load implement later
+    }
+
+    public Color GetLoadColor(Color currentColor) {
+        if (GetCurrentLoad() >= 0.3) {
+            return new Color(currentColor.r + GetCurrentLoad() * 5, currentColor.g, currentColor.b);
+        } 
+        return currentColor;
+    }
+
     // public void Update() {
     //     Debug.Log(headJoint.currentForce);
     // }
