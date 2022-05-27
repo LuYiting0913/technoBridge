@@ -6,8 +6,8 @@ using System;
 public class SolidBar : MonoBehaviour {
     private Vector3 headPosition;
     private Vector3 tailPosition;
-    public Point head;
-    public Point tail;
+    private Point head;
+    private Point tail;
     private HingeJoint headJoint;
     private HingeJoint tailJoint;
     public int material; 
@@ -56,6 +56,8 @@ public class SolidBar : MonoBehaviour {
         tailJoint.axis = new Vector3(0, 0, 1); 
         //tailJoint.breakForce = MaterialManager.GetIntegrity(material);
     }
+
+
 
     public void UpdatePosition() {
         headPosition = head.transform.position;
@@ -113,7 +115,7 @@ public class SolidBar : MonoBehaviour {
     }
 
     public float GetCurrentLoad() {
-        return GetCurrentTension() / 2000; // max load implement later
+        return GetCurrentTension() / 100; // max load implement later
     }
 
     public Color GetLoadColor(Color currentColor) {
