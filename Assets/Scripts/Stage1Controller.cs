@@ -22,12 +22,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void Start() {
         myCam = Camera.main;
+        // if (!Levels.IsInited(level)) 
         Level0.InitLevel();
         List<PointReference> pointData = Levels.GetPointData(level);
         List<SolidBarReference> barData = Levels.GetBarData(level);
         
-        barTemplate = MaterialManager.GetTemplate2D(1);
-
         // render all existing points
         foreach (PointReference p in pointData) {
             Vector3 position = p.GetPosition();
@@ -37,13 +36,16 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
             existingPoints.Add(point);
         }
+        AssetManager.Init(existingPoints, null);
         // render all bars
         foreach (SolidBarReference barReference in barData) {
             //Instantiate
+            barTemplate = MaterialManager.GetTemplate2D(barReference.GetMaterial());
             SolidBar bar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
             bar.InitRenderer();
-            bar.SetHead(barReference.GetHead());
-            bar.SetTail(barReference.GetTail());
+           
+            bar.SetR(AssetManager.GetPoint(barReference.GetHead3D()), AssetManager.GetPoint(barReference.GetTail3D()));
+            //bar.UpdatePosition();
             bar.RenderSolidBar();
             existingBars.Add(bar);
         }
@@ -105,7 +107,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             Debug.Log(SolidBarInitiator.currentBar);
             Vector2 cutOffVector = SolidBarInitiator.currentBar.CutOff(cursor);
             SolidBarInitiator.endPoint.transform.position = cutOffVector;
-            SolidBarInitiator.currentBar.SetTail(cutOffVector);
+            //SolidBarInitiator.currentBar.SetTail(cutOffVector);
             SolidBarInitiator.currentBar.RenderSolidBar();
         } else if (draggingPoint) {
             DragController.DragPointTo(cursor);

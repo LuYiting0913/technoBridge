@@ -4,13 +4,15 @@ using UnityEngine;
 using System;
 
 public class SolidBar : MonoBehaviour {
-    private Vector3 headPosition;
-    private Vector3 tailPosition;
-    private Point head;
-    private Point tail;
+    // private Vector3 head.GetPosition();
+    // private Vector3 tail.GetPosition();
+    public Point head;
+    public Point tail;
     private HingeJoint headJoint;
     private HingeJoint tailJoint;
+    private Color baseColor;
     public int material; 
+    public bool disabled = false;
 
     private SpriteRenderer barRenderer;
     // private float maxLength = 200f; 
@@ -24,9 +26,9 @@ public class SolidBar : MonoBehaviour {
 
     public void RenderSolidBar() {
         InitRenderer();
-        transform.position = (headPosition + tailPosition) / 2;
+        transform.position = (head.GetPosition() + tail.GetPosition()) / 2;
 
-        Vector3 dir = tailPosition - headPosition;
+        Vector3 dir = tail.GetPosition() - head.GetPosition();
         float angle = Vector2.SignedAngle(Vector2.right, new Vector3(dir.x, dir.y));
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
         float length = dir.magnitude;
@@ -39,8 +41,7 @@ public class SolidBar : MonoBehaviour {
         barRenderer.size = new Vector2(length / 10, barRenderer.size.y);
     }
 
-    public void InitBarHead(Point headPoint) {
-        head = headPoint;
+    public void InitBarHead() {
         headJoint = gameObject.AddComponent<HingeJoint>();
         headJoint.connectedBody = head.GetComponent<Rigidbody>();
         headJoint.anchor = new Vector3(0, -1, 0);
@@ -48,10 +49,10 @@ public class SolidBar : MonoBehaviour {
         //headJoint.breakForce = MaterialManager.GetIntegrity(material);
     }
 
-    public void InitBarTail(Point tailPoint) {
-        tail = tailPoint;
+    public void InitBarTail() {
         tailJoint = gameObject.AddComponent<HingeJoint>();
         tailJoint.connectedBody = tail.GetComponent<Rigidbody>();
+
         tailJoint.anchor = new Vector3(0, 1, 0);
         tailJoint.axis = new Vector3(0, 0, 1); 
         //tailJoint.breakForce = MaterialManager.GetIntegrity(material);
@@ -59,10 +60,10 @@ public class SolidBar : MonoBehaviour {
 
 
 
-    public void UpdatePosition() {
-        headPosition = head.transform.position;
-        tailPosition = tail.transform.position;
-    }
+    // public void UpdatePosition() {
+    //     head.GetPosition() = head.transform.position;
+    //     tail.GetPosition() = tail.transform.position;
+    // }
 
     public void SetMaterial(int m) {
         material = m;
@@ -75,35 +76,45 @@ public class SolidBar : MonoBehaviour {
     public void SetR(Point point1, Point point2) {
         head = point1;
         tail = point2;
+        // head.GetPosition() = head.transform.position;
+        // tail.GetPosition() = tail.transform.position;
+       
+    }
+
+    public void InitTemp(Point point1, Point point2) {
+        head = point1;
+        tail = point2;
+        if (head != null) InitBarHead();
+        if (tail != null) InitBarTail();
     }
 
     public void SetTailR(Point point) {
         tail = point;
     }
    // redundant...........
-    public void SetHead(Vector3 vector) {
-        headPosition = vector;
+    public void SetHead(Point point) {
+        head = point;
     }
 
-    public void SetTail(Vector3 vector) {
-        tailPosition = vector;
+    public void SetTail(Point point) {
+        tail = point;
     }
 
     public Vector3 GetHead() {
-        return headPosition;
+        return head.GetPosition();
     }  
 
     public Vector3 GetTail() {
-        return tailPosition;
+        return tail.GetPosition();
     }
 
     public Vector3 CutOff(Vector3 cursor) {
-        Vector3 offset = cursor - headPosition;
-        return headPosition + Vector3.ClampMagnitude(offset, MaterialManager.GetMaxLength(material)); 
+        Vector3 offset = cursor - head.GetPosition();
+        return head.GetPosition() + Vector3.ClampMagnitude(offset, MaterialManager.GetMaxLength(material)); 
     }
 
     public Vector2 GetDirection() {
-        return new Vector2(tailPosition.x - headPosition.x, tailPosition.y - headPosition.y);
+        return new Vector2(tail.GetPosition().x - head.GetPosition().x, tail.GetPosition().y - head.GetPosition().y);
     }
 
     public float GetLength() {
@@ -118,11 +129,24 @@ public class SolidBar : MonoBehaviour {
         return GetCurrentTension() / 100; // max load implement later
     }
 
-    public Color GetLoadColor(Color currentColor) {
+    public void SetBaseColor(Color color) {
+        baseColor = color;
+    }
+
+    public Color GetLoadColor() {
         if (GetCurrentLoad() >= 0.3) {
-            return new Color(currentColor.r + GetCurrentLoad() * 5, currentColor.g, currentColor.b);
+            return new Color(baseColor.r + GetCurrentLoad() * 5, baseColor.g, baseColor.b);
         } 
-        return currentColor;
+        return baseColor;
+    }
+
+    public void DisableBar() {
+        headJoint.connectedBody = null;
+        tailJoint.connectedBody = null;
+        this.GetComponent<BoxCollider>().enabled = false;
+        this.GetComponent<MeshRenderer>().enabled = false;
+        disabled = true;
+        Debug.Log("Disabled");
     }
 
     // public void Update() {
