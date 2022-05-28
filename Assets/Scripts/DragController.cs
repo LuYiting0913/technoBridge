@@ -20,7 +20,7 @@ public class DragController : MonoBehaviour {
         if (!point.ExceedsMaxLength(cursor)) {
             Debug.Log("dont exceed");
             point.transform.position = cursor;
-            point.UpdatePosition();
+            //point.UpdatePosition();
             point.UpdateConnectedBars();
         }
 

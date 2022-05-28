@@ -71,7 +71,7 @@ public class SceneInitiator : MonoBehaviour {
         Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.identity, pointParent);
         
         pointInstantiated.InitRigidBody(point);
-        pointInstantiated.UpdatePosition();
+        //pointInstantiated.UpdatePosition();
 
         allPoints.Add(pointInstantiated);
     }
@@ -90,8 +90,10 @@ public class SceneInitiator : MonoBehaviour {
                             Quaternion.Euler(new Vector3(0, 0, angle)), barParent).GetComponent<SolidBar>();
 
         newBar.SetMaterial(bar.GetMaterial());
-        newBar.InitBarHead(AssetManager.GetPoint(headPosition));
-        newBar.InitBarTail(AssetManager.GetPoint(tailPosition));
+        newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);
+        newBar.InitTemp(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
+        // newBar.InitBarHead(AssetManager.GetPoint(headPosition));
+        // newBar.InitBarTail(AssetManager.GetPoint(tailPosition));
     	allBars.Add(newBar);
     }
 
@@ -115,16 +117,20 @@ public class SceneInitiator : MonoBehaviour {
 
     public void Update() {
         foreach (SolidBar bar in allBars) {
-            Debug.Log(bar.GetCurrentLoad());
-            if (bar.GetCurrentLoad() >= 1) {
-                Debug.Log(bar.transform.GetChild(0).transform.position);
-                //bar.gameObject.SetActive(false);
-                bar.transform.GetChild(0).gameObject.SetActive(true);
-                bar.transform.GetChild(1).gameObject.SetActive(true);
-                // Destroy(bar.transform.gameObject);
+            if (!bar.disabled && bar.GetCurrentLoad() >= 1) {
+                Transform piece1 = bar.transform.GetChild(0);
+                Transform piece2 = bar.transform.GetChild(1);
+
+                piece1.gameObject.SetActive(true);
+                piece2.gameObject.SetActive(true);
+                piece1.SetParent(barParent, true);
+                piece2.SetParent(barParent, true);
+                piece1.GetComponent<SolidBar>().InitTemp(bar.head, null);
+                piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
+                bar.DisableBar();
             } 
             Color currentColor = bar.GetComponent<MeshRenderer>().material.color;
-            bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor(currentColor);
+            bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor();
 
         }
     }

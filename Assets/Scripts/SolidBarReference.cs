@@ -46,6 +46,10 @@ public class SolidBarReference {
         return new Vector2(tailPosition.x - headPosition.x, tailPosition.y - headPosition.y);
     }
 
+    public float GetLength() {
+        return (headPosition - tailPosition).magnitude;
+    }
+
     public int GetMaterial() {
         return material;
     }

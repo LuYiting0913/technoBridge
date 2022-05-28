@@ -38,15 +38,16 @@ public class SolidBarInitiator : MonoBehaviour {
         Vector3 head = new Vector3(headPos.x, headPos.y, 0);
         
         // check if beginPoint already exists
-        if (AssetManager.HasPoint(head)) {
-            beginPoint = AssetManager.GetPoint(head);
-            currentBar.SetHead(beginPoint.GetPosition());
+        if (AssetManager.HasPoint(headPos)) {
+            beginPoint = AssetManager.GetPoint(headPos);
+            currentBar.SetHead(beginPoint);
         } else {
             beginPoint = Instantiate(pointTemplate, head, Quaternion.identity, pointParent).GetComponent<Point>();
             AssetManager.AddPoint(beginPoint);
-            currentBar.SetHead(head);
+            currentBar.SetHead(beginPoint);
         }
-        endPoint = Instantiate(pointTemplate, head, Quaternion.identity, pointParent).GetComponent<Point>();
+        endPoint = Instantiate(pointTemplate, headPos, Quaternion.identity, pointParent).GetComponent<Point>();
+        currentBar.SetTail(endPoint);    
     }
 
     public static void FinalizeBar(Vector2 tailPos) {
@@ -59,7 +60,7 @@ public class SolidBarInitiator : MonoBehaviour {
             endPoint = AssetManager.GetPoint(cutOffVector);
         } else {
             endPoint.transform.position = cutOffVector; 
-            endPoint.UpdatePosition();
+            // endPoint.UpdatePosition();
             AssetManager.AddPoint(endPoint);
         }
 
