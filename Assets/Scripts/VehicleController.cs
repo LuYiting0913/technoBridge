@@ -19,7 +19,6 @@ public class VehicleController : MonoBehaviour {
     }
 
     private void Brake() {
-
         rearLeft.motorTorque = 1;
         rearRight.motorTorque = 1;
         frontLeft.motorTorque = 1;
@@ -56,7 +55,6 @@ public class VehicleController : MonoBehaviour {
             Accelerate();
             UpdateWheels();
         }
-
     }
 
     public void SetCheckpoint(Checkpoint p) {

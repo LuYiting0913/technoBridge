@@ -147,8 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db15c67a9e016b74894dc709a2dba72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: {fileID: 0}
-  tail: {fileID: 0}
   material: 1
 --- !u!1 &7275861284084798733
 GameObject:
@@ -176,7 +174,7 @@ Transform:
   m_GameObject: {fileID: 7275861284084798733}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.2}
-  m_LocalScale: {x: 1, y: 1.51, z: 1}
+  m_LocalScale: {x: 18.144, y: 2.9053342, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7946963757406815429}

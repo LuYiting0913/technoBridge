@@ -33,7 +33,7 @@ public class SolidBarInitiator : MonoBehaviour {
         pointParent = pParent;
         barTemplate = MaterialManager.GetTemplate2D(currentMaterial);
         pointTemplate = Resources.Load<GameObject>("Prefab/Point");
-        Debug.Log("init");
+
         currentBar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
         Vector3 head = new Vector3(headPos.x, headPos.y, 0);
         
@@ -67,11 +67,6 @@ public class SolidBarInitiator : MonoBehaviour {
         endPoint.AddConnectedBar(currentBar);
         currentBar.SetR(beginPoint, endPoint);
         AssetManager.AddBar(currentBar);
-        
-        // commit changes to the central class
-        //Levels.UpdateLevelData(0, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
-        // continue to the next bar
-        //InitializeBar(endPoint.transform.position);
     }
 
     private void DeleteBar() {
