@@ -361,7 +361,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 347, y: -183.00002}
+  m_AnchoredPosition: {x: 347, y: -183.00003}
   m_SizeDelta: {x: -712.3491, y: -412.0868}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &392275473
@@ -1791,7 +1791,7 @@ MonoBehaviour:
   barTemplate: {fileID: 5040789956064014270, guid: 7bd48faeeb03dbb4e821baeac12b227f,
     type: 3}
   barParent: {fileID: 871565038}
-  pointTemplate: {fileID: 7091627893104592440, guid: 4cced52d3fede664089bf536959b3873,
+  pointTemplate: {fileID: 6431229652509840814, guid: 648f609a68c9296459f3dfbb1845598b,
     type: 3}
   pointParent: {fileID: 1097081447}
   level: 0
