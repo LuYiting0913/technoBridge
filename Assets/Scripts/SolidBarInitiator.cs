@@ -15,8 +15,14 @@ public class SolidBarInitiator : MonoBehaviour {
     private static GameObject barTemplate;
     private static Transform barParent;
     private static GameObject pointTemplate;
+    private static GameObject fixedPointTemplate;
     private static Transform pointParent;
     // public LayerMask clickable;
+
+    public void Start() {
+        pointTemplate = PrefabManager.GetPoint2DTemplate();
+        fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();
+    }
 
     private static void ClearAll() {
         currentBar = null;
@@ -32,7 +38,7 @@ public class SolidBarInitiator : MonoBehaviour {
         barParent = bParent;
         pointParent = pParent;
         barTemplate = MaterialManager.GetTemplate2D(currentMaterial);
-        pointTemplate = Resources.Load<GameObject>("Prefab/Point");
+        // pointTemplate = Resources.Load<GameObject>("Prefab/Point");
 
         currentBar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
         Vector3 head = new Vector3(headPos.x, headPos.y, 0);
