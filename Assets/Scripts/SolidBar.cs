@@ -26,7 +26,7 @@ public class SolidBar : MonoBehaviour {
 
     public void RenderSolidBar() {
         InitRenderer();
-        transform.position = (head.GetPosition() + tail.GetPosition()) / 2;
+        transform.position = (head.GetPosition() + tail.GetPosition()) / 2 + new Vector3(0, 0, 5);
 
         Vector3 dir = tail.GetPosition() - head.GetPosition();
         float angle = Vector2.SignedAngle(Vector2.right, new Vector3(dir.x, dir.y));

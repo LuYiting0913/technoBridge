@@ -10,11 +10,6 @@ public class SceneInitiator : MonoBehaviour {
     public Transform vehicleParent;
     private int roadWidth = 100;
 
-    //private static List<SolidBar3D> bar = new List<SolidBar3D>();
-    // public static List<PointReference>  pointToInit = new List<PointReference>();
-    // public static List<SolidBarReference> barToInit = new List<SolidBarReference>();
-    // public static List<Vehicle> vehicleToInit = new List<Vehicle>();
-
     private static int currentLevel;
     private static List<Point> allPoints = new List<Point>();
     private static List<SolidBar> allBars = new List<SolidBar>();

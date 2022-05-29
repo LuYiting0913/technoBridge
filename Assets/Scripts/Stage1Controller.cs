@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     public GameObject barTemplate;
     public Transform barParent;
-    public GameObject pointTemplate;
+    private GameObject pointTemplate;
+    private GameObject fixedPointTemplate;
     public Transform pointParent;
     public int level = 0;
 
@@ -22,17 +23,21 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void Start() {
         myCam = Camera.main;
-        // if (!Levels.IsInited(level)) 
-        Level0.InitLevel();
+        if (!Levels.IsInited(level)) Level0.InitLevel();
+        pointTemplate = PrefabManager.GetPoint2DTemplate();
+        fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();    
         List<PointReference> pointData = Levels.GetPointData(level);
         List<SolidBarReference> barData = Levels.GetBarData(level);
         
         // render all existing points
         foreach (PointReference p in pointData) {
             Vector3 position = p.GetPosition();
-            Point point = Instantiate(pointTemplate, position, Quaternion.identity, pointParent).GetComponent<Point>();
+            Point point = null;
             if (p.IsFixed()) {
+                point = Instantiate(fixedPointTemplate, position, Quaternion.identity, pointParent).GetComponent<Point>();
                 point.SetFixed();
+            } else {
+                point = Instantiate(pointTemplate, position, Quaternion.identity, pointParent).GetComponent<Point>();
             }
             existingPoints.Add(point);
         }
@@ -104,7 +109,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         if (creatingBar) {
-            Debug.Log(SolidBarInitiator.currentBar);
+            //Debug.Log(SolidBarInitiator.currentBar);
             Vector2 cutOffVector = SolidBarInitiator.currentBar.CutOff(cursor);
             SolidBarInitiator.endPoint.transform.position = cutOffVector;
             //SolidBarInitiator.currentBar.SetTail(cutOffVector);
