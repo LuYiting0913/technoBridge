@@ -17,6 +17,11 @@ public class MainMenu : MonoBehaviour {
         SceneManager.LoadScene(0);
     }
 
+    public void SaveAndBackToMain() {
+        Levels.UpdateLevelData(0, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
+        SceneManager.LoadScene(0);
+    }
+
     public void LoadLevel0() {
         //List<Point>
         Debug.Log("level0");

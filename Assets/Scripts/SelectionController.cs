@@ -29,18 +29,31 @@ public class SelectionController : MonoBehaviour {
 
     public static void DeleteSelection() {
         foreach (SolidBar bar in selectedBars) {
-            if (bar != null) {
-                AssetManager.DeleteBar(bar);
-                Destroy(bar.gameObject);
-            }
+            DeleteBar(bar);
         }
 
         foreach (Point point in selectedPoints) {
-            if (point != null && !point.IsFixed()) {
-                AssetManager.DeletePoint(point);
-                Destroy(point.gameObject);
+            if (!point.IsFixed()) {
+                foreach (SolidBar bar in point.connectedBars) {
+                    DeleteBar(bar);
+                }
+                DeletePoint(point);
             }
         }        
+    }
+
+    private static void DeleteBar(SolidBar bar) {
+        if (bar != null) {
+            AssetManager.DeleteBar(bar);
+            Destroy(bar.gameObject);
+        }
+    }
+
+    private static void DeletePoint(Point point) {
+        if (point != null) {
+            AssetManager.DeletePoint(point);
+            Destroy(point.gameObject);
+        }
     }
 
 }

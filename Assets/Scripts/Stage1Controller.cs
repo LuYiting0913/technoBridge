@@ -52,10 +52,15 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             //Instantiate
             barTemplate = MaterialManager.GetTemplate2D(barReference.GetMaterial());
             SolidBar bar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
-            bar.InitRenderer();
+            // bar.InitRenderer();
+
+            Point head = AssetManager.GetPoint(barReference.GetHead3D());
+            Point tail = AssetManager.GetPoint(barReference.GetTail3D());
+            head.AddConnectedBar(bar);
+            tail.AddConnectedBar(bar);
            
-            bar.SetR(AssetManager.GetPoint(barReference.GetHead3D()), AssetManager.GetPoint(barReference.GetTail3D()));
-            //bar.UpdatePosition();
+            bar.SetR(head, tail);
+
             bar.RenderSolidBar();
             existingBars.Add(bar);
         }
@@ -67,9 +72,6 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerDown(PointerEventData eventData) {
         Debug.Log("ptr down");
-        // Vector3 dir = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // dir.z = 0;
-        // Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, 1));
 
         if (currentEditMode == 1 && hit.collider != null) {
@@ -112,6 +114,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     }
 
     public void Update() {
+        existingBars = AssetManager.GetAllBars();
+        existingPoints = AssetManager.GetAllPoints();
+        
         foreach (SolidBar bar in existingBars) {
             bar.RenderSolidBar();
         }
@@ -193,18 +198,6 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         gridParent.gameObject.SetActive(gridSnap);
     }
 
-    // private Vector3 SnapToGrid(Vector3 v) {
-    //     if (gridSnap) {
-    //         int x = v.x - ((int) v.x / gridInterval) * gridInterval;
-    //         int y = v.y - ((int) v.y / gridInterval) * gridInterval;
-    //         if (v.x - x > 0.5) x += gridInterval;
-    //         if (v.y - y > 0.5) y += gridInterval;
-    //         return new Vector3(x, y, v.z);
-    //     } else {
-    //         return v;
-    //     }
-    // }
-
     private Vector2 SnapToGrid(Vector2 v) {
         if (gridSnap) {
             int x = (int) Math.Round(v.x / gridInterval, 0) * gridInterval;
@@ -215,7 +208,4 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
-    // private void DestroyGrid() {
-
-    // }
 }

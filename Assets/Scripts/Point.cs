@@ -29,7 +29,7 @@ public class Point : MonoBehaviour {
         return connectedBars.Count;
     }
 
-    public bool ExceedsMaxLength(Vector2 cursor) {
+    private bool ExceedsMaxLength(Vector2 cursor) {
         bool check = false;
         Vector2 v;
         foreach (SolidBar bar in connectedBars) {
@@ -41,6 +41,13 @@ public class Point : MonoBehaviour {
             check = check || (v - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial());
         }
         return check;
+    }
+
+    public Vector2 GetReachablePosition(Vector2 origin, Vector2 cursor) {
+        if (ExceedsMaxLength(cursor)) {
+            return origin;
+        }
+        return cursor;
     }
 
     public void UpdateConnectedBars() {
