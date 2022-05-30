@@ -33,6 +33,10 @@ public class AssetManager : MonoBehaviour {
         return reference;
     }
 
+    public static void UpdatePoints(List<Point> points) {
+        allPoints = points;
+    }
+
     public static bool HasPoint(Vector3 v) {
         foreach (Point point in allPoints) {
             if ((point.GetPosition() - v).magnitude < offsetDistance) {
@@ -79,6 +83,16 @@ public class AssetManager : MonoBehaviour {
 
     public static void AddBar(SolidBar bar) {
         allBars.Add(bar);
+    }
+
+    public static bool HasBar(Point head, Point tail) {
+        foreach (SolidBar bar in allBars) {
+            if (head.Contain(bar.GetHead()) && tail.Contain(bar.GetTail()) ||
+                head.Contain(bar.GetTail()) && tail.Contain(bar.GetHead())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static List<SolidBar> GetAllBars() {
