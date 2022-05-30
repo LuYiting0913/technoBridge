@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class DragController : MonoBehaviour {
     private static Transform selectedPoint;
+    private static Vector2 initialPosition;
 
     public static void SelectPoint(Transform point) {
         selectedPoint = point;
+        initialPosition = point.transform.position;
         selectedPoint.GetChild(0).gameObject.SetActive(true);
     }
 
@@ -17,12 +19,7 @@ public class DragController : MonoBehaviour {
 
     public static void DragPointTo(Vector2 cursor) {
         Point point = selectedPoint.GetComponent<Point>();
-        if (!point.ExceedsMaxLength(cursor)) {
-            Debug.Log("dont exceed");
-            point.transform.position = cursor;
-            //point.UpdatePosition();
-            point.UpdateConnectedBars();
-        }
-
+        point.transform.position = point.GetReachablePosition(point.transform.position, cursor);
+        point.UpdateConnectedBars();
     }
 }
