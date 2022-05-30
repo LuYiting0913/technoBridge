@@ -57,6 +57,10 @@ public class Point : MonoBehaviour {
         return (GetPosition() - v).magnitude < threshold;
     }
 
+    public float DistanceTo(Point p) {
+        return (p.GetPosition() - GetPosition()).magnitude;
+    }
+
     public bool IsFixed() {
         return isStationary;
     }

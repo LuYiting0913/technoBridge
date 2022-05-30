@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     public GameObject barTemplate;
@@ -9,6 +10,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private GameObject pointTemplate;
     private GameObject fixedPointTemplate;
     public Transform pointParent;
+    public Transform gridParent;
     public int level = 0;
 
     private int currentEditMode = 0;
@@ -18,6 +20,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private List<SolidBar> existingBars = new List<SolidBar>();
     private bool creatingBar = false;
     private bool draggingPoint = false;
+    private bool autoComplete = false;
+    private bool gridSnap = false;
+    private int gridInterval = 30;
     private Camera myCam;
     // private Point currentPointDragging;
 
@@ -55,12 +60,16 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             existingBars.Add(bar);
         }
         AssetManager.Init(existingPoints, existingBars);
+
+        // Init grid lines
+        InstantiateGrid();
     }
 
     public void OnPointerDown(PointerEventData eventData) {
         Debug.Log("ptr down");
-        Vector3 dir = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        dir.z = 0;
+        // Vector3 dir = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // dir.z = 0;
+        // Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, 1));
 
         if (currentEditMode == 1 && hit.collider != null) {
@@ -84,15 +93,16 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             // add mode
             Debug.Log("start add");
             creatingBar = true;
-            SolidBarInitiator.InitializeBar(Camera.main.ScreenToWorldPoint(eventData.position), 
-                currentMaterial, pointParent, barParent);
+            Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
+            SolidBarInitiator.InitializeBar(position, currentMaterial, pointParent, barParent);
         }
     }
 
     public void OnPointerUp(PointerEventData eventData) {
         if (creatingBar) {
             Debug.Log("pointer up");
-            SolidBarInitiator.FinalizeBar(Camera.main.ScreenToWorldPoint(eventData.position));
+            Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
+            SolidBarInitiator.FinalizeBar(position, autoComplete);
             creatingBar = false;
         } else if  (draggingPoint) {
             Debug.Log("release point");
@@ -106,7 +116,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             bar.RenderSolidBar();
         }
 
-        Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 cursor = SnapToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
         if (creatingBar) {
             //Debug.Log(SolidBarInitiator.currentBar);
@@ -117,7 +127,6 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         } else if (draggingPoint) {
             DragController.DragPointTo(cursor);
         }
-
     }
 
     
@@ -150,4 +159,63 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void SetMaterialPavement() {
         currentMaterial = 0;
     }
+
+    public void ToggleAutoComplete() {
+        autoComplete = ! autoComplete;
+    }
+
+    public void ToggleGridSanp() {
+        gridSnap = ! gridSnap;
+        gridParent.gameObject.SetActive(gridSnap);
+    }
+
+    private void InstantiateGrid() {
+        int height = (int) GetComponentInParent<RectTransform>().rect.height;
+        int width = (int) GetComponentInParent<RectTransform>().rect.width;
+        GameObject horizontalGrid = PrefabManager.GetGridLine();
+        GameObject verticalGrid = PrefabManager.GetGridLine();
+        horizontalGrid.transform.localScale = new Vector3(width, 1, 1);
+
+        // horizontal grid
+        for (int i = (int) - height / 2 / gridInterval; i <= height / 2 / gridInterval; i++) {
+            Vector3 position = new Vector3(0, i * gridInterval, 100);
+            Instantiate(horizontalGrid, position, Quaternion.identity, gridParent);
+        }
+
+
+        //vertical grid
+        verticalGrid.transform.localScale = new Vector3(1, height, 1);
+        for (int i = (int) - width / 2 / gridInterval; i <= width / 2 / gridInterval; i++) {
+            Vector3 position = new Vector3(i * gridInterval, 0, 100);
+            Instantiate(verticalGrid, position, Quaternion.identity, gridParent);
+        }
+
+        gridParent.gameObject.SetActive(gridSnap);
+    }
+
+    // private Vector3 SnapToGrid(Vector3 v) {
+    //     if (gridSnap) {
+    //         int x = v.x - ((int) v.x / gridInterval) * gridInterval;
+    //         int y = v.y - ((int) v.y / gridInterval) * gridInterval;
+    //         if (v.x - x > 0.5) x += gridInterval;
+    //         if (v.y - y > 0.5) y += gridInterval;
+    //         return new Vector3(x, y, v.z);
+    //     } else {
+    //         return v;
+    //     }
+    // }
+
+    private Vector2 SnapToGrid(Vector2 v) {
+        if (gridSnap) {
+            int x = (int) Math.Round(v.x / gridInterval, 0) * gridInterval;
+            int y = (int) Math.Round(v.y / gridInterval, 0) * gridInterval;
+            return new Vector2(x, y);
+        } else {
+            return v;
+        }
+    }
+
+    // private void DestroyGrid() {
+
+    // }
 }

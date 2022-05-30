@@ -10,6 +10,7 @@ public class SolidBarInitiator : MonoBehaviour {
     public static Point endPoint;
     private static int currentMaterial = 1;
     // 0: add bar, 1: select bar
+    private static int threshold = 5;
 
     // public int level;
     private static GameObject barTemplate;
@@ -56,7 +57,7 @@ public class SolidBarInitiator : MonoBehaviour {
         currentBar.SetTail(endPoint);    
     }
 
-    public static void FinalizeBar(Vector2 tailPos) {
+    public static void FinalizeBar(Vector2 tailPos, bool autoComplete) {
         startedInit = false;
         Vector3 cutOffVector = currentBar.CutOff(new Vector3(tailPos.x, tailPos.y, 0));
 
@@ -69,11 +70,31 @@ public class SolidBarInitiator : MonoBehaviour {
             // endPoint.UpdatePosition();
             AssetManager.AddPoint(endPoint);
         }
+        
+        if (autoComplete) AutoCompleteBars();
 
         beginPoint.AddConnectedBar(currentBar);
         endPoint.AddConnectedBar(currentBar);
         currentBar.SetR(beginPoint, endPoint);
         AssetManager.AddBar(currentBar);
+    }
+
+    private static void AutoCompleteBars() {
+        List<Point> allPoints = AssetManager.GetAllPoints();
+        foreach (Point p in allPoints) {
+            if (p.DistanceTo(endPoint) <= MaterialManager.GetMaxLength(currentMaterial) &&
+                    !p.Contain(endPoint.GetPosition()) && !p.Contain(beginPoint.GetPosition()) &&
+                    !AssetManager.HasBar(endPoint, p)) {
+                // can connect to this point
+                SolidBar additionalBar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
+                additionalBar.SetHead(endPoint);
+                additionalBar.SetTail(p);
+                endPoint.AddConnectedBar(additionalBar);
+                p.AddConnectedBar(additionalBar);
+                AssetManager.AddBar(additionalBar);
+            }
+        }
+        AssetManager.UpdatePoints(allPoints);
     }
 
     private void DeleteBar() {
