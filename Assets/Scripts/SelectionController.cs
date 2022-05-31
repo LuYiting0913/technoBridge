@@ -5,10 +5,39 @@ using UnityEngine;
 public class SelectionController : MonoBehaviour { 
     private static List<SolidBar> selectedBars = new List<SolidBar>();
     private static List<Point> selectedPoints = new List<Point>();
+    private static Vector2 firstCorner;
+    private static Vector2 SecondCorner;
+    private static Transform SelectionBox;
+    //public static Transform barParent;
+
+    public void Start() {
+        firstCorner = Vector2.zero;
+        SecondCorner = Vector2.zero;
+        GameObject template = Resources.Load<GameObject>("Prefab/SelectionBox");
+        SelectionBox = Instantiate(template, firstCorner, Quaternion.identity).
+            GetComponent<Transform>();
+    }
 
     public static void ClearAll() {
         selectedBars = new List<SolidBar>();
         selectedPoints = new List<Point>();
+    }
+
+    public static void InitFirstCorner(Vector2 cursor) {
+        firstCorner = cursor;
+    }
+
+    public static void InitSecondCorner(Vector2 cursor) {
+        SecondCorner = cursor;
+    }
+
+    public static void RenderSelectionBox() {
+        SelectionBox.transform.position = (firstCorner + SecondCorner) / 2;
+        SelectionBox.transform.localScale = new Vector3(firstCorner.x - SecondCorner.x, firstCorner.y - SecondCorner.y, 0);
+    }
+
+    public static void FinalizeBoxSelection() {
+        SelectionBox.transform.localScale = new Vector3(0, 0, 1);
     }
 
     public static void AddToSelection(Transform transform) {
@@ -55,5 +84,7 @@ public class SelectionController : MonoBehaviour {
             Destroy(point.gameObject);
         }
     }
+
+
 
 }
