@@ -29,7 +29,7 @@ public class Point : MonoBehaviour {
         return connectedBars.Count;
     }
 
-    private bool ExceedsMaxLength(Vector2 cursor) {
+    public bool ExceedsMaxLength(Vector2 cursor) {
         bool check = false;
         Vector2 v;
         foreach (SolidBar bar in connectedBars) {

@@ -20,8 +20,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private List<SolidBar> existingBars = new List<SolidBar>();
     private bool creatingBar = false;
     private bool draggingPoint = false;
+    private bool draggingSelection = false;
     private bool autoComplete = false;
     private bool gridSnap = false;
+    private bool autoTriangulate = false;
     private int gridInterval = 30;
     private Camera myCam;
     // private Point currentPointDragging;
@@ -72,18 +74,27 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerDown(PointerEventData eventData) {
         Debug.Log("ptr down");
+        Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, 1));
 
-        if (currentEditMode == 1 && hit.collider != null) {
+        if (currentEditMode == 1) {
             // select mode
-            bool isActive = hit.transform.GetChild(0).gameObject.activeSelf;
-            hit.transform.GetChild(0).gameObject.SetActive(!isActive);
-            if (isActive) {
-                // deselect
-                SelectionController.RemoveFromSelection(hit.transform);
+            if (hit.collider != null) {
+                // individual select
+                bool isActive = hit.transform.GetChild(0).gameObject.activeSelf;
+                hit.transform.GetChild(0).gameObject.SetActive(!isActive);
+                if (isActive) {
+                    // deselect
+                    SelectionController.RemoveFromSelection(hit.transform);
+                } else {
+                    SelectionController.AddToSelection(hit.transform);
+                }
             } else {
-                SelectionController.AddToSelection(hit.transform);
+                // drag select
+                draggingSelection = true;
+                SelectionController.InitFirstCorner(cursor);
             }
+
         } else if (currentEditMode == 2 && hit.collider != null && hit.transform.GetComponent<Point>() != null) {
             // drag mode
             if (!hit.transform.GetComponent<Point>().IsFixed()) {
@@ -101,12 +112,16 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     }
 
     public void OnPointerUp(PointerEventData eventData) {
-        if (creatingBar) {
+        if (currentEditMode == 1 && draggingSelection) {
+            Debug.Log("Select inbox");
+            draggingSelection = false;
+            SelectionController.FinalizeBoxSelection();
+        } else if (creatingBar) {
             Debug.Log("pointer up");
             Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
-            SolidBarInitiator.FinalizeBar(position, autoComplete);
+            SolidBarInitiator.FinalizeBar(position, autoTriangulate);
             creatingBar = false;
-        } else if  (draggingPoint) {
+        } else if (draggingPoint) {
             Debug.Log("release point");
             draggingPoint = false;
             DragController.ReleasePoint();
@@ -123,12 +138,19 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         Vector2 cursor = SnapToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-        if (creatingBar) {
-            //Debug.Log(SolidBarInitiator.currentBar);
+        if (currentEditMode == 1 && draggingSelection) {
+            SelectionController.InitSecondCorner(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            SelectionController.RenderSelectionBox();
+        } else if (creatingBar) {
             Vector2 cutOffVector = SolidBarInitiator.currentBar.CutOff(cursor);
-            SolidBarInitiator.endPoint.transform.position = cutOffVector;
-            //SolidBarInitiator.currentBar.SetTail(cutOffVector);
-            SolidBarInitiator.currentBar.RenderSolidBar();
+            if (autoComplete && SolidBarInitiator.endPoint.ExceedsMaxLength(cursor)) {
+                SolidBarInitiator.FinalizeBar(cutOffVector, autoTriangulate);
+                SolidBarInitiator.InitializeBar(cutOffVector, currentMaterial, barParent, pointParent);
+            } else { 
+                SolidBarInitiator.endPoint.transform.position = cutOffVector;
+                SolidBarInitiator.currentBar.RenderSolidBar();
+            }
+
         } else if (draggingPoint) {
             DragController.DragPointTo(cursor);
         }
@@ -167,6 +189,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void ToggleAutoComplete() {
         autoComplete = ! autoComplete;
+    }
+
+    public void ToggleAutoTriangulate() {
+        autoTriangulate = ! autoTriangulate;
     }
 
     public void ToggleGridSanp() {

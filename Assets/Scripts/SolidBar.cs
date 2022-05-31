@@ -117,6 +117,10 @@ public class SolidBar : MonoBehaviour {
         return new Vector2(tail.GetPosition().x - head.GetPosition().x, tail.GetPosition().y - head.GetPosition().y);
     }
 
+    public float GetMaxLength() {
+        return MaterialManager.GetMaxLength(material);
+    }
+
     public float GetLength() {
         return (head.GetPosition() - tail.GetPosition()).magnitude;
     }

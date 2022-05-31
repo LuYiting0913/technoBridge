@@ -55,6 +55,8 @@ public class SolidBarInitiator : MonoBehaviour {
         }
         endPoint = Instantiate(pointTemplate, headPos, Quaternion.identity, pointParent).GetComponent<Point>();
         currentBar.SetTail(endPoint);    
+        beginPoint.AddConnectedBar(currentBar);
+        endPoint.AddConnectedBar(currentBar);
     }
 
     public static void FinalizeBar(Vector2 tailPos, bool autoComplete) {
@@ -71,15 +73,13 @@ public class SolidBarInitiator : MonoBehaviour {
             AssetManager.AddPoint(endPoint);
         }
         
-        if (autoComplete) AutoCompleteBars();
+        if (autoComplete) AutoTriangulate();
 
-        beginPoint.AddConnectedBar(currentBar);
-        endPoint.AddConnectedBar(currentBar);
         currentBar.SetR(beginPoint, endPoint);
         AssetManager.AddBar(currentBar);
     }
 
-    private static void AutoCompleteBars() {
+    private static void AutoTriangulate() {
         List<Point> allPoints = AssetManager.GetAllPoints();
         foreach (Point p in allPoints) {
             if (p.DistanceTo(endPoint) <= MaterialManager.GetMaxLength(currentMaterial) &&
@@ -110,5 +110,9 @@ public class SolidBarInitiator : MonoBehaviour {
             AssetManager.DeletePoint(endPoint);
         }
     }
+
+    // public static bool ExceedsMaxLength(Vector2 cursor) {
+    //     return (beginPoint.GetPosition() - cursor).magnitude > currentBar.GetMaxLength();
+    // }
 
 }
