@@ -80,17 +80,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (currentEditMode == 1) {
             // select mode
             if (hit.collider != null) {
-                // individual select
-                bool isActive = hit.transform.GetChild(0).gameObject.activeSelf;
-                hit.transform.GetChild(0).gameObject.SetActive(!isActive);
-                if (isActive) {
-                    // deselect
-                    SelectionController.RemoveFromSelection(hit.transform);
-                } else {
-                    SelectionController.AddToSelection(hit.transform);
-                }
+                SelectionController.ToggleIndividual(hit);
             } else {
-                // drag select
+                // box select
                 draggingSelection = true;
                 SelectionController.InitFirstCorner(cursor);
             }
@@ -98,13 +90,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         } else if (currentEditMode == 2 && hit.collider != null && hit.transform.GetComponent<Point>() != null) {
             // drag mode
             if (!hit.transform.GetComponent<Point>().IsFixed()) {
-                Debug.Log("start drag");
                 draggingPoint = true;
                 DragController.SelectPoint(hit.transform);
             }     
         } else if (currentEditMode == 0) {
             // add mode
-            Debug.Log("start add");
             creatingBar = true;
             Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
             SolidBarInitiator.InitializeBar(position, currentMaterial, pointParent, barParent);
@@ -113,16 +103,13 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerUp(PointerEventData eventData) {
         if (currentEditMode == 1 && draggingSelection) {
-            Debug.Log("Select inbox");
             draggingSelection = false;
             SelectionController.FinalizeBoxSelection();
         } else if (creatingBar) {
-            Debug.Log("pointer up");
             Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
             SolidBarInitiator.FinalizeBar(position, autoTriangulate);
             creatingBar = false;
         } else if (draggingPoint) {
-            Debug.Log("release point");
             draggingPoint = false;
             DragController.ReleasePoint();
         }
