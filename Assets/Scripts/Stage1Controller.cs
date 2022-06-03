@@ -14,7 +14,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public int level = 0;
 
     private int currentEditMode = 0;
-    // 0 add; 1 select
+    // 0 add; 1 select; 2 drag joint; 3: drag copied segment
     private int currentMaterial = 0;
     private List<Point> existingPoints = new List<Point>();
     private List<SolidBar> existingBars = new List<SolidBar>();
@@ -24,6 +24,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private bool autoComplete = false;
     private bool gridSnap = false;
     private bool autoTriangulate = false;
+    private bool draggingCopied = false;
+
+    private Vector3 originPosition;
+    private Vector2 startPosition; // for dragging copy
     private int gridInterval = 30;
     private Camera myCam;
     private int popUpSec = 1;
@@ -109,6 +113,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             creatingBar = true;
             Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
             SolidBarInitiator.InitializeBar(position, currentMaterial, pointParent, barParent);
+        } else if (currentEditMode == 3) {
+            startPosition = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
+            originPosition = GameObject.Find("CopiedParent").transform.position;
+            draggingCopied = true;
         }
     }
 
@@ -123,6 +131,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         } else if (draggingPoint) {
             draggingPoint = false;
             DragController.ReleasePoint();
+        } else if (currentEditMode == 3) {
+            draggingCopied = false;
         }
     }
 
@@ -148,9 +158,13 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 SolidBarInitiator.endPoint.transform.position = cutOffVector;
                 SolidBarInitiator.currentBar.RenderSolidBar();
             }
-
         } else if (draggingPoint) {
             DragController.DragPointTo(cursor);
+        } else if (currentEditMode == 3 && draggingCopied) {
+            Debug.Log("dragging copied");
+            Vector2 dir = cursor - startPosition;
+            Vector3 newPosition = originPosition + new Vector3(dir.x, dir.y, 0);
+            GameObject.Find("CopiedParent").transform.position = newPosition;
         }
     }
 
@@ -177,6 +191,13 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         TurnOffAll();
         drag.ToggleSprite();
         SelectionController.ClearAll();
+    }
+
+    public void DragCopiedMode() {
+        currentEditMode = 3;
+        popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
+        popupToolBar.transform.GetChild(1).gameObject.SetActive(true);
+        // TurnOffAll();
     }
 
     public void SetMaterialWood() {
@@ -228,6 +249,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void ClosePopupToolBar() {
         popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
         popupToolBar.transform.GetChild(1).gameObject.SetActive(false);
+        AddMode();
     }
 
     private void InstantiateGrid() {

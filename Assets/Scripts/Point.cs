@@ -75,6 +75,10 @@ public class Point : MonoBehaviour {
     public void SetFixed() {
         isStationary = true;
     }
+    
+    public void SetFree() {
+        isStationary = false;
+    }
 
     public void InitRigidBody(PointReference p) {
         Rigidbody pointRb = gameObject.GetComponent<Rigidbody>();
