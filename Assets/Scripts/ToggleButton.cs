@@ -17,6 +17,11 @@ public class ToggleButton : MonoBehaviour {
         }
     }
 
+    public void TurnOff() {
+        ToggleOff().SetActive(true);
+        ToggleOn().SetActive(false);
+    }
+
     private bool IsOn() {
         return transform.GetChild(0).gameObject.activeSelf;
     }
