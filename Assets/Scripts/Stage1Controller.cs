@@ -26,6 +26,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private bool autoTriangulate = false;
     private int gridInterval = 30;
     private Camera myCam;
+    private int popUpSec = 1;
     // private Point currentPointDragging;
 
     public void Start() {
@@ -176,15 +177,21 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void ToggleAutoComplete() {
         autoComplete = ! autoComplete;
+        ToggleButton button = GameObject.Find("AutoComplete").GetComponent<ToggleButton>();
+        button.ToggleSprite();
     }
 
     public void ToggleAutoTriangulate() {
         autoTriangulate = ! autoTriangulate;
+        ToggleButton button = GameObject.Find("AutoTriangulate").GetComponent<ToggleButton>();
+        button.ToggleSprite();
     }
 
-    public void ToggleGridSanp() {
+    public void ToggleGridSnap() {
         gridSnap = ! gridSnap;
         gridParent.gameObject.SetActive(gridSnap);
+        ToggleButton button = GameObject.Find("GridSnap").GetComponent<ToggleButton>();
+    	button.ToggleSprite();
     }
 
     private void InstantiateGrid() {
@@ -220,5 +227,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             return v;
         }
     }
+
+    // private IEnumerator ShowForAWhile(GameObject obj, int sec) {
+    //     obj.SetActive(true);
+    //     yield return new WaitForSeconds(sec);
+    //     obj.SetActive(false);
+    // }
 
 }
