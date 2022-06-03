@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3992087017337043417}
   m_Layer: 5
-  m_Name: PopUp_AutoTriangulateOn
+  m_Name: PopUp_On
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 5389265131542389132}
   - component: {fileID: 5389265131542389133}
   - component: {fileID: 5389265131542389235}
+  - component: {fileID: 4932667119220088549}
   m_Layer: 5
   m_Name: AutoTriangulate
   m_TagString: Untagged
@@ -332,6 +333,18 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 0
+--- !u!114 &4932667119220088549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5389265131542389128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3262be6de2639a49b66af221289c7e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5389265131791079986
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,7 +357,7 @@ GameObject:
   - component: {fileID: 5389265131791079990}
   - component: {fileID: 5389265131791079991}
   m_Layer: 5
-  m_Name: AutoTriangulateOn
+  m_Name: On
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -767,7 +780,7 @@ GameObject:
   - component: {fileID: 7672179659554980621}
   - component: {fileID: 7672179659554980620}
   m_Layer: 5
-  m_Name: AutoTriangulateOff
+  m_Name: Off
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -841,7 +854,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6748846618456838983}
   m_Layer: 5
-  m_Name: PopUp_AutoTriangulateOff
+  m_Name: PopUp_Off
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

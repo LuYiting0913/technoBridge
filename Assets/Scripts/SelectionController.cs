@@ -107,6 +107,10 @@ public class SelectionController : MonoBehaviour {
         }        
     }
 
+    public static bool SthSelected() {
+        return selectedBars.Count > 0 || selectedPoints.Count > 0;
+    }
+
     private static void DeleteBar(SolidBar bar) {
         if (bar != null) {
             AssetManager.DeleteBar(bar);

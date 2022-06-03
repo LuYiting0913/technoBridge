@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4847697601894679511}
   - component: {fileID: 4847697601894679504}
   m_Layer: 5
-  m_Name: AutoCompleteOn
+  m_Name: On
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 4847697601928773875}
   - component: {fileID: 4847697601928773884}
   m_Layer: 5
-  m_Name: AutoCompleteOff
+  m_Name: Off
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -421,7 +421,7 @@ PrefabInstance:
     - target: {fileID: 3356344958924366427, guid: 8ee63d66b9a776f428f52c8b3d5a49d4,
         type: 3}
       propertyPath: m_Name
-      value: PopUp_AutoCompleteOn
+      value: PopUp_On
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ee63d66b9a776f428f52c8b3d5a49d4, type: 3}
@@ -441,7 +441,7 @@ PrefabInstance:
     - target: {fileID: 4146157906649429236, guid: 181e01cbb6ca1a24f9839621a2121092,
         type: 3}
       propertyPath: m_Name
-      value: PopUp_AutoCompleteOff
+      value: PopUp_Off
       objectReference: {fileID: 0}
     - target: {fileID: 4842153098219621451, guid: 181e01cbb6ca1a24f9839621a2121092,
         type: 3}

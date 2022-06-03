@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 710535686223980949}
   - component: {fileID: 710535686223980950}
   m_Layer: 5
-  m_Name: GridSnapOn
+  m_Name: On
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -317,7 +317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 160574164903230506}
   m_Layer: 5
-  m_Name: PopUp_GridSnapOn
+  m_Name: PopUp_On
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -431,7 +431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5701142104865279064}
   m_Layer: 5
-  m_Name: PopUp_GridSnapOff
+  m_Name: PopUp_Off
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -740,7 +740,7 @@ GameObject:
   - component: {fileID: 8374101000906829119}
   - component: {fileID: 8374101000906829116}
   m_Layer: 5
-  m_Name: GridSnapOff
+  m_Name: Off
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

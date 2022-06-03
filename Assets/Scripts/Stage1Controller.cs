@@ -29,6 +29,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private int popUpSec = 1;
     // private Point currentPointDragging;
 
+    private ToggleButton select, drag, steel, wood, pavement;
+    private GameObject popupToolBar;
+
     public void Start() {
         myCam = Camera.main;
         if (!Levels.IsInited(level)) Level0.InitLevel();
@@ -36,6 +39,13 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();    
         List<PointReference> pointData = Levels.GetPointData(level);
         List<SolidBarReference> barData = Levels.GetBarData(level);
+
+        select = GameObject.Find("Select").GetComponent<ToggleButton>();
+        drag = GameObject.Find("Drag").GetComponent<ToggleButton>();
+        pavement = GameObject.Find("Pavement").GetComponent<ToggleButton>();
+        wood = GameObject.Find("Wood").GetComponent<ToggleButton>();
+        steel = GameObject.Find("Steel").GetComponent<ToggleButton>();
+        popupToolBar = GameObject.Find("PopupToolBar");
         
         // render all existing points
         foreach (PointReference p in pointData) {
@@ -148,31 +158,52 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void SelectMode() {
         Debug.Log("select mode");
         currentEditMode = 1;
+        TurnOffAll();
+        select.ToggleSprite();
+        popupToolBar.transform.GetChild(0).gameObject.SetActive(true);
         SelectionController.ClearAll();
     }
 
-    public void AddMode() {
+    private void AddMode() {
         Debug.Log("add mode");
         currentEditMode = 0;
+        TurnOffAll();
         SelectionController.ClearAll();
     }
 
     public void DragMode() {
         Debug.Log("drag mode");
         currentEditMode = 2;
+        TurnOffAll();
+        drag.ToggleSprite();
         SelectionController.ClearAll();
     }
 
     public void SetMaterialWood() {
+        AddMode();
         currentMaterial = 1;
+        wood.ToggleSprite();
     }
 
     public void SetMaterialSteel() {
+        AddMode();
         currentMaterial = 2;
+        steel.ToggleSprite();
     }
 
     public void SetMaterialPavement() {
+        AddMode();
         currentMaterial = 0;
+        pavement.ToggleSprite();
+    }
+
+    public void TurnOffAll() {
+        select.TurnOff();
+        drag.TurnOff();
+        steel.TurnOff();
+        wood.TurnOff();
+        pavement.TurnOff();
+        popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     public void ToggleAutoComplete() {
@@ -192,6 +223,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         gridParent.gameObject.SetActive(gridSnap);
         ToggleButton button = GameObject.Find("GridSnap").GetComponent<ToggleButton>();
     	button.ToggleSprite();
+    }
+
+    public void ClosePopupToolBar() {
+        popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
+        popupToolBar.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     private void InstantiateGrid() {
@@ -227,11 +263,5 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             return v;
         }
     }
-
-    // private IEnumerator ShowForAWhile(GameObject obj, int sec) {
-    //     obj.SetActive(true);
-    //     yield return new WaitForSeconds(sec);
-    //     obj.SetActive(false);
-    // }
 
 }
