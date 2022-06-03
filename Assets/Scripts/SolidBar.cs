@@ -76,9 +76,6 @@ public class SolidBar : MonoBehaviour {
     public void SetR(Point point1, Point point2) {
         head = point1;
         tail = point2;
-        // head.GetPosition() = head.transform.position;
-        // tail.GetPosition() = tail.transform.position;
-       
     }
 
     public void InitTemp(Point point1, Point point2) {
@@ -106,6 +103,10 @@ public class SolidBar : MonoBehaviour {
 
     public Vector3 GetTail() {
         return tail.GetPosition();
+    }
+
+    public Vector3 GetPosition() {
+        return (GetHead() + GetTail()) / 2;
     }
 
     public Vector3 CutOff(Vector3 cursor) {
