@@ -9,21 +9,35 @@ public class SelectionController : MonoBehaviour {
     private static Vector2 firstCorner;
     private static Vector2 SecondCorner;
     private static Transform SelectionBox;
+    private static Transform copiedParent;
+    private static GameObject dummyBar, dummyPoint;
+    private static List<Point> dummyPoints;
+    private static List<SolidBar> dummyBars;
+    // private static List<Point> pastedPoints;
+    // private static List<SolidBar> pastedBars;
     //public static Transform barParent;
 
     public void Start() {
         firstCorner = Vector2.zero;
         SecondCorner = Vector2.zero;
+        copiedParent = GameObject.Find("CopiedParent").transform; 
         GameObject template = Resources.Load<GameObject>("Prefab/SelectionBox");
         SelectionBox = Instantiate(template, firstCorner, Quaternion.identity).
             GetComponent<Transform>();
     }
 
     public static void ClearAll() {
+        // copiedParent = GameObject.Find("CopiedParent").transform; 
         foreach (SolidBar bar in selectedBars) if (bar != null) bar.transform.GetChild(0).gameObject.SetActive(false);
         foreach (Point point in selectedPoints) if (point != null) point.transform.GetChild(0).gameObject.SetActive(false);
         selectedBars = new List<SolidBar>();
         selectedPoints = new List<Point>();
+    }
+
+    public static void ClearAllDummy() {
+        foreach (Transform child in copiedParent) GameObject.Destroy(child.gameObject);
+        dummyBars = new List<SolidBar>();
+        dummyPoints = new List<Point>();
     }
 
     public static void InitFirstCorner(Vector2 cursor) {
@@ -125,6 +139,95 @@ public class SelectionController : MonoBehaviour {
         }
     }
 
+    public void CopySelected() {
+        dummyPoint = Resources.Load<GameObject>("Prefab/DummyPoint");
+        dummyBar = Resources.Load<GameObject>("Prefab/DummyBar");
+        dummyPoints = new List<Point>();
+        dummyBars = new List<SolidBar>();
+        Vector3 offset = new Vector3(0, 50, 0);
+        foreach (Point p in selectedPoints) {
+            Point newPoint = Instantiate(dummyPoint, p.GetPosition() + offset,
+                        Quaternion.identity, copiedParent).GetComponent<Point>();
+            // newPoint.SetFree();
+            dummyPoints.Add(newPoint);
+        } 
 
+        foreach (SolidBar b in selectedBars) {
+            SolidBar newBar = Instantiate(dummyBar, b.GetPosition() + offset,
+                        b.transform.rotation, copiedParent).GetComponent<SolidBar>();
+            Point newHead = Produce(b.head.GetPosition() + offset);
+            Point newTail = Produce(b.tail.GetPosition() + offset);
+            newBar.SetR(newHead, newTail);
+            newBar.transform.localScale = new Vector3(newBar.GetLength(), 5);
+            newBar.SetMaterial(b.GetMaterial());
+            dummyBars.Add(newBar);
+        } 
+        //ClearAll();
+    }
+
+    public void CutSelected() {
+        CopySelected();
+        foreach (SolidBar b in selectedBars) {
+            AssetManager.DeleteBar(b);
+            b.head.DeleteConnectedBar(b);
+            b.tail.DeleteConnectedBar(b);
+            GameObject.Destroy(b.gameObject);
+        }
+
+        foreach (Point p in AssetManager.GetAllPoints()) {
+            if (p.IsSingle()) {
+                AssetManager.DeletePoint(p);
+                GameObject.Destroy(p.gameObject);
+            }
+        }
+    }
+
+    public static void Paste() {
+        Transform barParent = GameObject.Find("BarParent").transform;
+        Transform pointParent = GameObject.Find("PointParent").transform;
+        GameObject pointTemplate = PrefabManager.GetPoint2DTemplate();
+        List<SolidBar> newBars = new List<SolidBar>();
+        List<Point> newPoints = new List<Point>();
+
+        foreach (Point p in dummyPoints) {
+            Point newPoint = Instantiate(pointTemplate, p.GetPosition(), Quaternion.identity, pointParent).
+                GetComponent<Point>();
+            newPoints.Add(newPoint);
+            AssetManager.AddPoint(newPoint);     
+        }
+
+        foreach (SolidBar bar in dummyBars) {
+            GameObject barTemplate = MaterialManager.GetTemplate2D(bar.GetMaterial());
+            SolidBar newBar = Instantiate(barTemplate, barParent).
+                GetComponent<SolidBar>();
+            // newBar.transform.localScale = new Vector2(bar.GetLength(), 10);
+            Point newHead = Search(newPoints, bar.GetHead());
+            Point newTail = Search(newPoints, bar.GetTail());
+            newBar.SetR(newHead, newTail);
+            newHead.AddConnectedBar(newBar);
+            newTail.AddConnectedBar(newBar);
+            newBar.SetMaterial(bar.GetMaterial());
+            newBar.RenderSolidBar();
+            AssetManager.AddBar(newBar);
+        }
+    }
+
+    private static Point Produce(Vector3 pos) {
+        foreach (Point p in dummyPoints) {
+            if (p.Contain(pos)) {
+                return p;
+            }
+        }
+        Point point = Instantiate(dummyPoint, pos, Quaternion.identity, copiedParent).GetComponent<Point>();
+        dummyPoints.Add(point);
+        return point;
+    }
+
+    private static Point Search(List<Point> points, Vector3 pos) {
+        foreach (Point p in points) {
+            if (p.Contain(pos)) return p;
+        }
+        return null;
+    }
 
 }
