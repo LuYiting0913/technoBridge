@@ -25,6 +25,10 @@ public class Point : MonoBehaviour {
         connectedBars.Add(bar);
     }
 
+    public void DeleteConnectedBar(SolidBar bar) {
+        connectedBars.Remove(bar);
+    }
+
     public int ConnectedBarCount() {
         return connectedBars.Count;
     }
@@ -56,7 +60,7 @@ public class Point : MonoBehaviour {
         }
     }
 
-    public bool isSingle() {
+    public bool IsSingle() {
         return ConnectedBarCount() == 0;
     }
 
@@ -75,7 +79,7 @@ public class Point : MonoBehaviour {
     public void SetFixed() {
         isStationary = true;
     }
-    
+
     public void SetFree() {
         isStationary = false;
     }
