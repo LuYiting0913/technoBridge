@@ -101,11 +101,11 @@ public class SolidBarInitiator : MonoBehaviour {
         startedInit = false;
         Destroy(currentBar.gameObject);
         //AssetManager.DeleteBar(currentBar);
-        if (beginPoint.isSingle() && !beginPoint.IsFixed()) {
+        if (beginPoint.IsSingle() && !beginPoint.IsFixed()) {
             Destroy(beginPoint.gameObject);
             AssetManager.DeletePoint(beginPoint);
         }
-        if (endPoint.isSingle() && !endPoint.IsFixed()) {
+        if (endPoint.IsSingle() && !endPoint.IsFixed()) {
             Destroy(endPoint.gameObject);
             AssetManager.DeletePoint(endPoint);
         }
