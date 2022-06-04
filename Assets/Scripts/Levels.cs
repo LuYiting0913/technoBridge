@@ -7,6 +7,7 @@ public class Levels {
     private static Dictionary<int, List<PointReference>> pointData = new Dictionary<int, List<PointReference>>();
     private static Dictionary<int, List<SolidBarReference>> barData = new Dictionary<int, List<SolidBarReference>>();
     private static Dictionary<int, List<Vehicle>> vehicleData = new Dictionary<int, List<Vehicle>>();
+    private static Dictionary<int, Vector3> backgroundPosition = new Dictionary<int, Vector3>();
     private static bool[] isInited = new bool[10];
     //private static Dictionary<int, List<Checkpoint>> checkpointData = new Dictionary<int, List<Checkpoint>>();
 
@@ -35,6 +36,14 @@ public class Levels {
 
     public static bool IsInited(int level) {
         return isInited[level];
+    }
+
+    public static void SetBackgroundPosition(int level, Vector3 v) {
+        backgroundPosition[level] = v;
+    }
+
+    public static Vector3 GetBackgroundPosition(int level) {
+        return backgroundPosition.ContainsKey(level) ? backgroundPosition[level] : new Vector3(0, 0, 105);
     }
 
 }

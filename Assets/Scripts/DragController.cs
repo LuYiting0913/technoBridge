@@ -17,9 +17,9 @@ public class DragController : MonoBehaviour {
         selectedPoint = null;
     }
 
-    public static void DragPointTo(Vector2 cursor) {
+    public static void DragPointTo(Vector2 cursor, float scale) {
         Point point = selectedPoint.GetComponent<Point>();
-        point.transform.position = point.GetReachablePosition(point.transform.position, cursor);
+        point.transform.position = point.GetReachablePosition(point.transform.position, cursor, scale);
         point.UpdateConnectedBars();
     }
 }

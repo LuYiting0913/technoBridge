@@ -65,7 +65,6 @@ public class SelectionController : MonoBehaviour {
             for (int j = lowerBound; j < upperBound; j += scanInterval) {
                 RaycastHit2D hit = Physics2D.Raycast(new Vector3(i, j, -10), new Vector3(0, 0, 1));
                 if (hit.collider != null) {
-                    Debug.Log(hit.transform);
                     bool isActive = hit.transform.GetChild(0).gameObject.activeSelf;
                     if (!isActive) {
                         SelectionController.AddToSelection(hit.transform);
@@ -207,9 +206,50 @@ public class SelectionController : MonoBehaviour {
             newHead.AddConnectedBar(newBar);
             newTail.AddConnectedBar(newBar);
             newBar.SetMaterial(bar.GetMaterial());
-            newBar.RenderSolidBar();
+            newBar.RenderSolidBar(1);
             AssetManager.AddBar(newBar);
         }
+    }
+
+    // snap upon release, instead of per frame, to reduce amount of calculation
+    public static void SnapToExistingPoint() {
+        foreach (Point p in dummyPoints) {
+            Vector3 pos = p.GetPosition();
+            if (AssetManager.HasSnap(pos)) {
+                Vector3 targetPos = AssetManager.GetSnap(pos).GetPosition();
+                Vector3 dir = targetPos - pos;
+                copiedParent.transform.position += dir;
+            }
+        }
+
+    }
+
+    public static void FlipHorizontally() {
+        float x = copiedParent.transform.position.y;
+        foreach (Point p in dummyPoints) {
+            Vector3 pos = p.transform.position;
+            p.transform.position = new Vector3(2 * x - pos.x, pos.y, pos.z);
+        } 
+
+        foreach (SolidBar b in dummyBars) {
+            Vector3 pos = b.transform.position;
+            b.transform.position = new Vector3(2 * x - pos.x, pos.y, pos.z);
+            b.transform.rotation = Quaternion.Euler(0, 0, - b.transform.eulerAngles.z);
+        } 
+    }
+
+    public static void FlipVertically() {
+        float y = copiedParent.transform.position.y;
+        foreach (Point p in dummyPoints) {
+            Vector3 pos = p.transform.position;
+            p.transform.position = new Vector3(pos.x, 2 * y - pos.y, pos.z);
+        } 
+
+        foreach (SolidBar b in dummyBars) {
+            Vector3 pos = b.transform.position;
+            b.transform.position = new Vector3(pos.x, 2 * y - pos.y, pos.z);
+            b.transform.rotation = Quaternion.Euler(0, 0, - b.transform.eulerAngles.z);
+        } 
     }
 
     private static Point Produce(Vector3 pos) {

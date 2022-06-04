@@ -24,7 +24,7 @@ public class SolidBar : MonoBehaviour {
         barRenderer.sprite = sp;
     }
 
-    public void RenderSolidBar() {
+    public void RenderSolidBar(float scale) {
         InitRenderer();
         transform.position = (head.GetPosition() + tail.GetPosition()) / 2 + new Vector3(0, 0, 5);
 
@@ -36,9 +36,9 @@ public class SolidBar : MonoBehaviour {
         //transform.localScale = new Vector2(length / 10, 5);
         BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
         Transform child = gameObject.transform.GetChild(0);
-        collider.size = new Vector2(length / 10, collider.size.y);
-        child.localScale = new Vector2(length / 10,child.localScale.y);
-        barRenderer.size = new Vector2(length / 10, barRenderer.size.y);
+        collider.size = new Vector2(length / 10 / scale, collider.size.y);
+        child.localScale = new Vector2(length / 10 / scale, child.localScale.y);
+        barRenderer.size = new Vector2(length / 10 / scale, barRenderer.size.y);
     }
 
     public void InitBarHead() {
@@ -109,9 +109,9 @@ public class SolidBar : MonoBehaviour {
         return (GetHead() + GetTail()) / 2;
     }
 
-    public Vector3 CutOff(Vector3 cursor) {
+    public Vector3 CutOff(Vector3 cursor, float scale) {
         Vector3 offset = cursor - head.GetPosition();
-        return head.GetPosition() + Vector3.ClampMagnitude(offset, MaterialManager.GetMaxLength(material)); 
+        return head.GetPosition() + Vector3.ClampMagnitude(offset, GetMaxLength() * scale); 
     }
 
     public Vector2 GetDirection() {
@@ -151,10 +151,6 @@ public class SolidBar : MonoBehaviour {
         this.GetComponent<BoxCollider>().enabled = false;
         this.GetComponent<MeshRenderer>().enabled = false;
         disabled = true;
-        Debug.Log("Disabled");
     }
 
-    // public void Update() {
-    //     Debug.Log(headJoint.currentForce);
-    // }
 }
