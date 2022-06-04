@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using System;
 
 public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
@@ -25,6 +26,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private bool gridSnap = false;
     private bool autoTriangulate = false;
     private bool draggingCopied = false;
+    private bool draggingBackground = false;
+    private Vector3 backgroundPosition;
+    public GameObject slider;
+    public float backgroundScale = 1f;
 
     private Vector3 originPosition;
     private Vector2 startPosition; // for dragging copy
@@ -35,9 +40,14 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private ToggleButton select, drag, steel, wood, pavement;
     private GameObject popupToolBar;
+    
+    //public Transform backgroundCanvas;
 
     public void Start() {
         myCam = Camera.main;
+        transform.position = Levels.GetBackgroundPosition(level);
+        UpdateBackgroundScale();
+        
         if (!Levels.IsInited(level)) Level0.InitLevel();
         pointTemplate = PrefabManager.GetPoint2DTemplate();
         fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();    
@@ -78,7 +88,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
            
             bar.SetR(head, tail);
 
-            bar.RenderSolidBar();
+            bar.RenderSolidBar(backgroundScale);
             existingBars.Add(bar);
         }
         AssetManager.Init(existingPoints, existingBars);
@@ -117,6 +127,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             startPosition = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
             originPosition = GameObject.Find("CopiedParent").transform.position;
             draggingCopied = true;
+        } else if (currentEditMode == 2 && hit.collider == null) {
+            //dragging background
+            draggingBackground = true;
+            startPosition = cursor;
+            backgroundPosition = gameObject.transform.position;
         }
     }
 
@@ -126,13 +141,17 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             SelectionController.FinalizeBoxSelection();
         } else if (creatingBar) {
             Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
-            SolidBarInitiator.FinalizeBar(position, autoTriangulate);
+            SolidBarInitiator.FinalizeBar(position, autoTriangulate, backgroundScale);
             creatingBar = false;
         } else if (draggingPoint) {
             draggingPoint = false;
             DragController.ReleasePoint();
         } else if (currentEditMode == 3) {
             draggingCopied = false;
+            SelectionController.SnapToExistingPoint();
+        } else if (draggingBackground) {
+            draggingBackground = false;
+            Levels.SetBackgroundPosition(level, transform.position);
         }
     }
 
@@ -141,7 +160,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         existingPoints = AssetManager.GetAllPoints();
         
         foreach (SolidBar bar in existingBars) {
-            bar.RenderSolidBar();
+            bar.RenderSolidBar(backgroundScale);
         }
 
         Vector2 cursor = SnapToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -150,21 +169,23 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             SelectionController.InitSecondCorner(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             SelectionController.RenderSelectionBox();
         } else if (creatingBar) {
-            Vector2 cutOffVector = SolidBarInitiator.currentBar.CutOff(cursor);
-            if (autoComplete && SolidBarInitiator.endPoint.ExceedsMaxLength(cursor)) {
-                SolidBarInitiator.FinalizeBar(cutOffVector, autoTriangulate);
+            Vector2 cutOffVector = SolidBarInitiator.currentBar.CutOff(cursor, backgroundScale);
+            if (autoComplete && SolidBarInitiator.endPoint.ExceedsMaxLength(cursor, backgroundScale)) {
+                SolidBarInitiator.FinalizeBar(cutOffVector, autoTriangulate, backgroundScale);
                 SolidBarInitiator.InitializeBar(cutOffVector, currentMaterial, barParent, pointParent);
             } else { 
                 SolidBarInitiator.endPoint.transform.position = cutOffVector;
-                SolidBarInitiator.currentBar.RenderSolidBar();
+                SolidBarInitiator.currentBar.RenderSolidBar(backgroundScale);
             }
         } else if (draggingPoint) {
-            DragController.DragPointTo(cursor);
+            DragController.DragPointTo(cursor, backgroundScale);
         } else if (currentEditMode == 3 && draggingCopied) {
-            Debug.Log("dragging copied");
             Vector2 dir = cursor - startPosition;
             Vector3 newPosition = originPosition + new Vector3(dir.x, dir.y, 0);
             GameObject.Find("CopiedParent").transform.position = newPosition;
+        } else if (draggingBackground) {
+            Vector2 dir = cursor - startPosition;
+            gameObject.transform.position = backgroundPosition + new Vector3(dir.x, dir.y, 0);
         }
     }
 
@@ -216,6 +237,12 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         AddMode();
         currentMaterial = 0;
         pavement.ToggleSprite();
+    }
+
+    public void UpdateBackgroundScale() {
+        backgroundScale = slider.GetComponent<Slider>().value;
+        transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
+        // transform.position /= backgroundScale;
     }
 
     public void TurnOffAll() {

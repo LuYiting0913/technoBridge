@@ -59,9 +59,9 @@ public class SolidBarInitiator : MonoBehaviour {
         endPoint.AddConnectedBar(currentBar);
     }
 
-    public static void FinalizeBar(Vector2 tailPos, bool autoComplete) {
+    public static void FinalizeBar(Vector2 tailPos, bool autoComplete, float scale) {
         startedInit = false;
-        Vector3 cutOffVector = currentBar.CutOff(new Vector3(tailPos.x, tailPos.y, 0));
+        Vector3 cutOffVector = currentBar.CutOff(new Vector3(tailPos.x, tailPos.y, 0), scale);
 
         // check if endPoint already exists
         if (AssetManager.HasPoint(cutOffVector)) {

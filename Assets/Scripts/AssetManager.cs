@@ -7,6 +7,7 @@ public class AssetManager : MonoBehaviour {
     private static List<Point> allPoints = new List<Point>();
     private static List<SolidBar> allBars = new List<SolidBar>();
     private static double offsetDistance = 15.0;
+    private static double snapDistance = 30.0;
 
     public static void Init(List<Point> points, List<SolidBar> bars) {
         allPoints.Clear();
@@ -49,6 +50,24 @@ public class AssetManager : MonoBehaviour {
     public static Point GetPoint(Vector3 v) {
         foreach (Point point in allPoints) {
             if ((point.GetPosition() - v).magnitude < offsetDistance) {
+                return point;
+            }
+        }
+        return null;
+    }
+
+    public static bool HasSnap(Vector3 v) {
+        foreach (Point point in allPoints) {
+            if ((point.GetPosition() - v).magnitude < snapDistance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Point GetSnap(Vector3 v) {
+        foreach (Point point in allPoints) {
+            if ((point.GetPosition() - v).magnitude < snapDistance) {
                 return point;
             }
         }

@@ -14,13 +14,15 @@ public class SceneInitiator : MonoBehaviour {
     private static List<Point> allPoints = new List<Point>();
     private static List<SolidBar> allBars = new List<SolidBar>();
     private static List<Vehicle> allVehicles = new List<Vehicle>();
+    private static Vector3 backgroundPosition;
     private static float scaleFactor = 10f;
 
     public void Start() {
         List<PointReference> pointToInit = Levels.GetPointData(currentLevel);
         List<SolidBarReference> barToInit = Levels.GetBarData(currentLevel);
         List<Vehicle> vehicleToInit = Levels.GetVehicleData(currentLevel);
-
+        Vector3 temp = Levels.GetBackgroundPosition(currentLevel);
+        backgroundPosition = new Vector3(temp.x, temp.y, 0);
         // render all points
         foreach (PointReference p in pointToInit) {
             for (int i = 0; i <= 1; i += 1) {
@@ -59,7 +61,7 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     private void InstantiatePoint(PointReference point, int i) {
-        Vector3 pos = point.GetPosition();
+        Vector3 pos = point.GetPosition() - backgroundPosition;
         pos.z += i * roadWidth;
         Point scaledTemplate = pointTemplate;
         scaledTemplate.transform.localScale = new Vector3(10, 10, 10);
@@ -72,8 +74,8 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     private void InstantiateBar(SolidBarReference bar, int i) {
-        Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
-        Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth);
+        Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth) - backgroundPosition;
+        Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth) - backgroundPosition;
         Vector2 dir = bar.GetDirection();
         Vector3 midPoint = (headPosition + tailPosition) / 2;
         float angle = Vector2.SignedAngle(Vector2.up, dir);
@@ -93,8 +95,8 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     private void InstantiatePavement(SolidBarReference bar) {
-        Vector3 headPosition = bar.GetHead3D();
-        Vector3 tailPosition = bar.GetTail3D();
+        Vector3 headPosition = bar.GetHead3D() - backgroundPosition;
+        Vector3 tailPosition = bar.GetTail3D() - backgroundPosition;
         Vector2 dir = bar.GetDirection();
         Vector3 midPoint = (headPosition + tailPosition) / 2 + new Vector3(0, 0, roadWidth / 2);
         float angle = Vector2.SignedAngle(Vector2.up, dir);      

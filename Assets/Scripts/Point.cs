@@ -9,14 +9,6 @@ public class Point : MonoBehaviour {
     private bool isStationary = false;
     private static int threshold = 8;
 
-    // public void Start() {
-    //     pointPosition = transform.position;
-    // }
-
-    // public void UpdatePosition() {
-    //     pointPosition = transform.position;
-    // }
-
     public Vector3 GetPosition() {
         return transform.position;
     }
@@ -33,7 +25,7 @@ public class Point : MonoBehaviour {
         return connectedBars.Count;
     }
 
-    public bool ExceedsMaxLength(Vector2 cursor) {
+    public bool ExceedsMaxLength(Vector2 cursor, float scale) {
         bool check = false;
         Vector2 v;
         foreach (SolidBar bar in connectedBars) {
@@ -42,13 +34,13 @@ public class Point : MonoBehaviour {
             } else {
                 v = new Vector2(bar.GetHead().x, bar.GetHead().y);
             }
-            check = check || (v - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial());
+            check = check || (v - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial()) * scale;
         }
         return check;
     }
 
-    public Vector2 GetReachablePosition(Vector2 origin, Vector2 cursor) {
-        if (ExceedsMaxLength(cursor)) {
+    public Vector2 GetReachablePosition(Vector2 origin, Vector2 cursor, float scale) {
+        if (ExceedsMaxLength(cursor, scale)) {
             return origin;
         }
         return cursor;
