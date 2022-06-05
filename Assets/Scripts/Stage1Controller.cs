@@ -33,7 +33,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private Vector3 originPosition;
     private Vector2 startPosition; // for dragging copy
-    private int gridInterval = 30;
+    private int gridInterval = 20;
     private Camera myCam;
     private int popUpSec = 1;
     // private Point currentPointDragging;
@@ -95,11 +95,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
         AssetManager.Init(existingPoints, existingBars);
         AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
-        transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
-        transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, transform.position.z);
-
         // Init grid lines
         InstantiateGrid();
+
+        transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
+        transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, transform.position.z);
     }
 
     public void OnPointerDown(PointerEventData eventData) {
@@ -169,14 +169,16 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             bar.RenderSolidBar(backgroundScale);
         }
 
-        Vector2 cursor = SnapToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 snapedCursor = SnapToGrid(cursor);
+    
 
         if (currentEditMode == 1 && draggingSelection) {
             SelectionController.InitSecondCorner(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             SelectionController.RenderSelectionBox();
         } else if (creatingBar) {
-            Vector2 cutOffVector = SolidBarInitiator.currentBar.CutOff(cursor, backgroundScale);
-            if (autoComplete && SolidBarInitiator.endPoint.ExceedsMaxLength(cursor, backgroundScale)) {
+            Vector2 cutOffVector = SolidBarInitiator.currentBar.CutOff(snapedCursor, backgroundScale);
+            if (autoComplete && SolidBarInitiator.endPoint.ExceedsMaxLength(snapedCursor, backgroundScale)) {
                 SolidBarInitiator.FinalizeBar(cutOffVector, autoTriangulate, backgroundScale);
                 SolidBarInitiator.InitializeBar(cutOffVector, currentMaterial, barParent, pointParent);
             } else { 
@@ -184,9 +186,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 SolidBarInitiator.currentBar.RenderSolidBar(backgroundScale);
             }
         } else if (draggingPoint) {
-            DragController.DragPointTo(cursor, backgroundScale);
+            DragController.DragPointTo(snapedCursor, backgroundScale);
         } else if (currentEditMode == 3 && draggingCopied) {
-            Vector2 dir = cursor - startPosition;
+            Vector2 dir = snapedCursor - startPosition;
             Vector3 newPosition = originPosition + new Vector3(dir.x, dir.y, 0);
             GameObject.Find("CopiedParent").transform.position = newPosition;
         } else if (draggingBackground) {
@@ -298,20 +300,32 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         int width = (int) GetComponentInParent<RectTransform>().rect.width;
         GameObject horizontalGrid = PrefabManager.GetGridLine();
         GameObject verticalGrid = PrefabManager.GetGridLine();
-        horizontalGrid.transform.localScale = new Vector3(width, 1, 1);
-
+        horizontalGrid.transform.localScale = new Vector3(width, 3, 3);
+        Color darkGrey = new Color(75 / 255.0f, 75 / 255.0f, 75 / 255.0f, 100 / 255.0f);
+        Color lightGrey = new Color(150 / 255.0f, 150 / 255.0f, 150 / 255.0f, 100 / 255.0f);
         // horizontal grid
         for (int i = (int) - height / 2 / gridInterval; i <= height / 2 / gridInterval; i++) {
             Vector3 position = new Vector3(0, i * gridInterval, 100);
-            Instantiate(horizontalGrid, position, Quaternion.identity, gridParent);
+            //Color c = horizontalGrid.GetComponent<SpriteRenderer>().color;
+            SpriteRenderer line = Instantiate(horizontalGrid, position, Quaternion.identity, gridParent).GetComponent<SpriteRenderer>();
+            if (i % 5 == 0) {
+                line.color = darkGrey;
+            } else {
+                line.color = lightGrey;
+            }
         }
 
 
         //vertical grid
-        verticalGrid.transform.localScale = new Vector3(1, height, 1);
+        verticalGrid.transform.localScale = new Vector3(3, height, 3);
         for (int i = (int) - width / 2 / gridInterval; i <= width / 2 / gridInterval; i++) {
             Vector3 position = new Vector3(i * gridInterval, 0, 100);
-            Instantiate(verticalGrid, position, Quaternion.identity, gridParent);
+            SpriteRenderer line = Instantiate(verticalGrid, position, Quaternion.identity, gridParent).GetComponent<SpriteRenderer>();
+            if (i % 5 == 0) {
+                line.color = darkGrey;
+            } else {
+                line.color = lightGrey;
+            }
         }
 
         gridParent.gameObject.SetActive(gridSnap);

@@ -64,7 +64,7 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     private void InstantiatePoint(PointReference point, int i) {
-        Vector3 pos = PositionToCanvas(point.GetPosition());
+        Vector3 pos = point.GetPosition();
         pos.z += i * roadWidth;
         Point scaledTemplate = pointTemplate;
         scaledTemplate.transform.localScale = new Vector3(10, 10, 10);
@@ -77,8 +77,8 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     private void InstantiateBar(SolidBarReference bar, int i) {
-        Vector3 headPosition = PositionToCanvas(bar.GetHead3D() + new Vector3(0, 0, i * roadWidth));
-        Vector3 tailPosition = PositionToCanvas(bar.GetTail3D() + new Vector3(0, 0, i * roadWidth));
+        Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
+        Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth);
         Vector2 dir = bar.GetDirection();
         Vector3 midPoint = (headPosition + tailPosition) / 2;
         float angle = Vector2.SignedAngle(Vector2.up, dir);
@@ -96,8 +96,8 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     private void InstantiatePavement(SolidBarReference bar) {
-        Vector3 headPosition = PositionToCanvas(bar.GetHead3D());
-        Vector3 tailPosition = PositionToCanvas(bar.GetTail3D());
+        Vector3 headPosition = bar.GetHead3D();
+        Vector3 tailPosition = bar.GetTail3D();
         Vector2 dir = bar.GetDirection();
         Vector3 midPoint = (headPosition + tailPosition) / 2 + new Vector3(0, 0, roadWidth / 2);
         float angle = Vector2.SignedAngle(Vector2.up, dir);      
@@ -133,8 +133,8 @@ public class SceneInitiator : MonoBehaviour {
         }
     }
 
-    private Vector3 PositionToCanvas(Vector3 pos) {
-        return (pos - backgroundPosition) / scale;
-    }
+    // private Vector3 PositionToCanvas(Vector3 pos) {
+    //     return (pos - backgroundPosition) / scale;
+    // }
 
 }
