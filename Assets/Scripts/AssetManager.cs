@@ -8,6 +8,8 @@ public class AssetManager : MonoBehaviour {
     private static List<SolidBar> allBars = new List<SolidBar>();
     private static double offsetDistance = 15.0;
     private static double snapDistance = 30.0;
+    private static float backgroundScale;
+    private static Vector3 backgroundPosition;
 
     public static void Init(List<Point> points, List<SolidBar> bars) {
         allPoints.Clear();
@@ -18,10 +20,26 @@ public class AssetManager : MonoBehaviour {
         allBars = bars;
     }
 
+    public static void UpdateBackground(Vector3 v, float f) {
+        backgroundPosition = v;
+        backgroundScale = f;
+    }
+
+    public static Vector3 GetBackgroundPosition() {
+        return backgroundPosition;
+    }
+
+    public static float GetBackgroundScale() {
+        return backgroundScale;
+    }
+
     public static List<SolidBarReference> GenerateBarReference() {
         List<SolidBarReference> reference = new List<SolidBarReference>();
         foreach (SolidBar bar in allBars) {
-            reference.Add(SolidBarReference.of(bar));
+            SolidBarReference r = SolidBarReference.of(bar);
+            r.SetHead(WorldToCnavas(r.GetHead()));
+            r.SetTail(WorldToCnavas(r.GetTail()));
+            reference.Add(r);
         }
         return reference;
     }
@@ -29,7 +47,9 @@ public class AssetManager : MonoBehaviour {
     public static List<PointReference> GeneratePointReference() {
         List<PointReference> reference = new List<PointReference>();
         foreach (Point point in allPoints) {
-            reference.Add(PointReference.of(point, point.IsFixed()));
+            PointReference r = PointReference.of(point, point.IsFixed());
+            r.SetPosition(WorldToCnavas(r.GetPosition()));
+            reference.Add(r);
         }
         return reference;
     }
@@ -120,5 +140,15 @@ public class AssetManager : MonoBehaviour {
 
     public static void DeleteBar(SolidBar bar) {
         allBars.Remove(bar);
+    }
+
+    private static Vector3 WorldToCnavas(Vector3 v) {
+        Vector3 temp = (v - backgroundPosition) /  backgroundScale;
+        return new Vector3(temp.x, temp.y, v.z);
+    }
+
+    private static Vector2 WorldToCnavas(Vector2 v) {
+        Vector3 temp = (v - new Vector2(backgroundPosition.x, backgroundPosition.y)) /  backgroundScale;
+        return new Vector2(temp.x, temp.y);
     }
 }

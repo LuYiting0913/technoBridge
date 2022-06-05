@@ -15,14 +15,17 @@ public class SceneInitiator : MonoBehaviour {
     private static List<SolidBar> allBars = new List<SolidBar>();
     private static List<Vehicle> allVehicles = new List<Vehicle>();
     private static Vector3 backgroundPosition;
-    private static float scaleFactor = 10f;
+    private static float scale;
 
     public void Start() {
         List<PointReference> pointToInit = Levels.GetPointData(currentLevel);
         List<SolidBarReference> barToInit = Levels.GetBarData(currentLevel);
         List<Vehicle> vehicleToInit = Levels.GetVehicleData(currentLevel);
         Vector3 temp = Levels.GetBackgroundPosition(currentLevel);
+        scale = Levels.GetBackgroundScale(currentLevel);
         backgroundPosition = new Vector3(temp.x, temp.y, 0);
+        Debug.Log(scale);
+        Debug.Log("bbbbbbbbbb");
         // render all points
         foreach (PointReference p in pointToInit) {
             for (int i = 0; i <= 1; i += 1) {
@@ -61,7 +64,7 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     private void InstantiatePoint(PointReference point, int i) {
-        Vector3 pos = point.GetPosition() - backgroundPosition;
+        Vector3 pos = PositionToCanvas(point.GetPosition());
         pos.z += i * roadWidth;
         Point scaledTemplate = pointTemplate;
         scaledTemplate.transform.localScale = new Vector3(10, 10, 10);
@@ -74,8 +77,8 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     private void InstantiateBar(SolidBarReference bar, int i) {
-        Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth) - backgroundPosition;
-        Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth) - backgroundPosition;
+        Vector3 headPosition = PositionToCanvas(bar.GetHead3D() + new Vector3(0, 0, i * roadWidth));
+        Vector3 tailPosition = PositionToCanvas(bar.GetTail3D() + new Vector3(0, 0, i * roadWidth));
         Vector2 dir = bar.GetDirection();
         Vector3 midPoint = (headPosition + tailPosition) / 2;
         float angle = Vector2.SignedAngle(Vector2.up, dir);
@@ -89,14 +92,12 @@ public class SceneInitiator : MonoBehaviour {
         newBar.SetMaterial(bar.GetMaterial());
         newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);
         newBar.InitTemp(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
-        // newBar.InitBarHead(AssetManager.GetPoint(headPosition));
-        // newBar.InitBarTail(AssetManager.GetPoint(tailPosition));
     	allBars.Add(newBar);
     }
 
     private void InstantiatePavement(SolidBarReference bar) {
-        Vector3 headPosition = bar.GetHead3D() - backgroundPosition;
-        Vector3 tailPosition = bar.GetTail3D() - backgroundPosition;
+        Vector3 headPosition = PositionToCanvas(bar.GetHead3D());
+        Vector3 tailPosition = PositionToCanvas(bar.GetTail3D());
         Vector2 dir = bar.GetDirection();
         Vector3 midPoint = (headPosition + tailPosition) / 2 + new Vector3(0, 0, roadWidth / 2);
         float angle = Vector2.SignedAngle(Vector2.up, dir);      
@@ -126,10 +127,14 @@ public class SceneInitiator : MonoBehaviour {
             //     piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
             //     bar.DisableBar();
             // } 
-            Color currentColor = bar.GetComponent<MeshRenderer>().material.color;
-            bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor();
+            // Color currentColor = bar.GetComponent<MeshRenderer>().material.color;
+            // bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor();
 
         }
+    }
+
+    private Vector3 PositionToCanvas(Vector3 pos) {
+        return (pos - backgroundPosition) / scale;
     }
 
 }
