@@ -8,6 +8,7 @@ public class Levels {
     private static Dictionary<int, List<SolidBarReference>> barData = new Dictionary<int, List<SolidBarReference>>();
     private static Dictionary<int, List<Vehicle>> vehicleData = new Dictionary<int, List<Vehicle>>();
     private static Dictionary<int, Vector3> backgroundPosition = new Dictionary<int, Vector3>();
+    private static Dictionary<int, float> backgroundScale = new Dictionary<int, float>();
     private static bool[] isInited = new bool[10];
     //private static Dictionary<int, List<Checkpoint>> checkpointData = new Dictionary<int, List<Checkpoint>>();
 
@@ -38,12 +39,17 @@ public class Levels {
         return isInited[level];
     }
 
-    public static void SetBackgroundPosition(int level, Vector3 v) {
+    public static void UpdateBackground(int level, Vector3 v, float f) {
         backgroundPosition[level] = v;
+        backgroundScale[level] = f;
     }
 
     public static Vector3 GetBackgroundPosition(int level) {
         return backgroundPosition.ContainsKey(level) ? backgroundPosition[level] : new Vector3(0, 0, 105);
+    }
+
+    public static float GetBackgroundScale(int level) {
+        return backgroundScale.ContainsKey(level) ? backgroundScale[level] : 1f;
     }
 
 }

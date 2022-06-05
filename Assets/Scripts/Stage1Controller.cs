@@ -45,12 +45,14 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void Start() {
         myCam = Camera.main;
-        transform.position = Levels.GetBackgroundPosition(level);
-        UpdateBackgroundScale();
+        backgroundScale = Levels.GetBackgroundScale(level);
+        backgroundPosition = Levels.GetBackgroundPosition(level);
         
         if (!Levels.IsInited(level)) Level0.InitLevel();
         pointTemplate = PrefabManager.GetPoint2DTemplate();
-        fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();    
+        fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();  
+        //pointTemplate.transform.localScale = ScaleVector(pointTemplate.transform.localScale);
+        //fixedPointTemplate.transform.localScale = ScaleVector(fixedPointTemplate.transform.localScale);
         List<PointReference> pointData = Levels.GetPointData(level);
         List<SolidBarReference> barData = Levels.GetBarData(level);
 
@@ -65,6 +67,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         foreach (PointReference p in pointData) {
             Vector3 position = p.GetPosition();
             Point point = null;
+
             if (p.IsFixed()) {
                 point = Instantiate(fixedPointTemplate, position, Quaternion.identity, pointParent).GetComponent<Point>();
                 point.SetFixed();
@@ -79,7 +82,6 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             //Instantiate
             barTemplate = MaterialManager.GetTemplate2D(barReference.GetMaterial());
             SolidBar bar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
-            // bar.InitRenderer();
 
             Point head = AssetManager.GetPoint(barReference.GetHead3D());
             Point tail = AssetManager.GetPoint(barReference.GetTail3D());
@@ -92,6 +94,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             existingBars.Add(bar);
         }
         AssetManager.Init(existingPoints, existingBars);
+        AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
+        transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
+        transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, transform.position.z);
 
         // Init grid lines
         InstantiateGrid();
@@ -151,7 +156,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             SelectionController.SnapToExistingPoint();
         } else if (draggingBackground) {
             draggingBackground = false;
-            Levels.SetBackgroundPosition(level, transform.position);
+            backgroundPosition = transform.position;
+            AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
         }
     }
 
@@ -189,6 +195,14 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
+    private Vector3 PositionToCanvas(Vector3 pos) {
+        Vector3 temp = (pos - backgroundPosition) / backgroundScale;
+        return new Vector3(temp.x, temp.y, pos.z);
+    }
+
+    private Vector3 ScaleVector(Vector3 v) {
+        return new Vector3(v.x * backgroundScale, v.y * backgroundScale, v.z);
+    }
     
     public void SelectMode() {
         Debug.Log("select mode");
@@ -242,7 +256,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void UpdateBackgroundScale() {
         backgroundScale = slider.GetComponent<Slider>().value;
         transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
-        // transform.position /= backgroundScale;
+        AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
     }
 
     public void TurnOffAll() {
