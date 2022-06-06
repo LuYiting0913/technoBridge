@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MaterialManager {
     private static Dictionary<int, int> materialLength = new Dictionary<int, int>() {
-        {0, 200}, // pavement
-        {1, 200}, // wood
-        {2, 300}  // steel
+        {0, 100}, // pavement
+        {1, 100}, // wood
+        {2, 170}  // steel
     };
 
     private static Dictionary<int, string> materialSprite = new Dictionary<int, string>() {

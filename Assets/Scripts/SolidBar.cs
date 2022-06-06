@@ -59,12 +59,6 @@ public class SolidBar : MonoBehaviour {
     }
 
 
-
-    // public void UpdatePosition() {
-    //     head.GetPosition() = head.transform.position;
-    //     tail.GetPosition() = tail.transform.position;
-    // }
-
     public void SetMaterial(int m) {
         material = m;
     }

@@ -13,23 +13,18 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public Transform pointParent;
     public Transform gridParent;
     public int level = 0;
+    public TraceController traceController;
 
     private int currentEditMode = 0;
-    // 0 add; 1 select; 2 drag joint; 3: drag copied segment
+    // 0 add; 1 select; 2 drag joint; 3: drag copied segment; 4: tracing
     private int currentMaterial = 0;
     private List<Point> existingPoints = new List<Point>();
     private List<SolidBar> existingBars = new List<SolidBar>();
-    private bool creatingBar = false;
-    private bool draggingPoint = false;
-    private bool draggingSelection = false;
-    private bool autoComplete = false;
-    private bool gridSnap = false;
-    private bool autoTriangulate = false;
-    private bool draggingCopied = false;
-    private bool draggingBackground = false;
+    private bool creatingBar, draggingPoint, draggingSelection, autoComplete, gridSnap, autoTriangulate;
+    private bool draggingCopied, draggingBackground, tracing;
     private Vector3 backgroundPosition;
     public GameObject slider;
-    public float backgroundScale = 1f;
+    public static float backgroundScale = 1f;
 
     private Vector3 originPosition;
     private Vector2 startPosition; // for dragging copy
@@ -38,7 +33,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private int popUpSec = 1;
     // private Point currentPointDragging;
 
-    private ToggleButton select, drag, steel, wood, pavement;
+    private ToggleButton select, drag, trace, steel, wood, pavement;
     private GameObject popupToolBar;
     
     //public Transform backgroundCanvas;
@@ -51,13 +46,12 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         if (!Levels.IsInited(level)) Level0.InitLevel();
         pointTemplate = PrefabManager.GetPoint2DTemplate();
         fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();  
-        //pointTemplate.transform.localScale = ScaleVector(pointTemplate.transform.localScale);
-        //fixedPointTemplate.transform.localScale = ScaleVector(fixedPointTemplate.transform.localScale);
         List<PointReference> pointData = Levels.GetPointData(level);
         List<SolidBarReference> barData = Levels.GetBarData(level);
 
         select = GameObject.Find("Select").GetComponent<ToggleButton>();
         drag = GameObject.Find("Drag").GetComponent<ToggleButton>();
+        trace = GameObject.Find("TraceTool").GetComponent<ToggleButton>();
         pavement = GameObject.Find("Pavement").GetComponent<ToggleButton>();
         wood = GameObject.Find("Wood").GetComponent<ToggleButton>();
         steel = GameObject.Find("Steel").GetComponent<ToggleButton>();
@@ -137,15 +131,19 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             draggingBackground = true;
             startPosition = cursor;
             backgroundPosition = gameObject.transform.position;
+        } else if (currentEditMode == 4 && !tracing) {
+            tracing = true;
+            traceController.StartTrace(SnapToGrid(cursor), currentMaterial, barParent, pointParent);
         }
     }
 
     public void OnPointerUp(PointerEventData eventData) {
+        Vector2 cursor = Camera.main.ScreenToWorldPoint(eventData.position);
         if (currentEditMode == 1 && draggingSelection) {
             draggingSelection = false;
             SelectionController.FinalizeBoxSelection();
         } else if (creatingBar) {
-            Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
+            Vector2 position = SnapToGrid(cursor);
             SolidBarInitiator.FinalizeBar(position, autoTriangulate, backgroundScale);
             creatingBar = false;
         } else if (draggingPoint) {
@@ -158,6 +156,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             draggingBackground = false;
             backgroundPosition = transform.position;
             AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
+        } else if (currentEditMode == 4 && tracing) {
+            tracing = false;
+            traceController.EndTrace();
         }
     }
 
@@ -166,7 +167,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         existingPoints = AssetManager.GetAllPoints();
         
         foreach (SolidBar bar in existingBars) {
-            bar.RenderSolidBar(backgroundScale);
+            if (bar != null) bar.RenderSolidBar(backgroundScale);
         }
 
         Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -194,6 +195,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         } else if (draggingBackground) {
             Vector2 dir = cursor - startPosition;
             gameObject.transform.position = backgroundPosition + new Vector3(dir.x, dir.y, 0);
+        } else if (currentEditMode == 4 && tracing) {
+            traceController.RenderDummy(cursor, backgroundScale);
         }
     }
 
@@ -228,6 +231,14 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         TurnOffAll();
         drag.ToggleSprite();
         SelectionController.ClearAll();
+    }
+
+    
+    public void TracingMode() {
+        currentEditMode = 4;
+        TurnOffAll();
+        tracing = false;
+        trace.ToggleSprite();
     }
 
     public void DragCopiedMode() {
@@ -268,6 +279,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         wood.TurnOff();
         pavement.TurnOff();
         popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
+
     }
 
     public void ToggleAutoComplete() {
@@ -289,9 +301,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     	button.ToggleSprite();
     }
 
-    public void ClosePopupToolBar() {
-        popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
-        popupToolBar.transform.GetChild(1).gameObject.SetActive(false);
+    public void ClosePopupToolBar(int i) {
+        popupToolBar.transform.GetChild(i).gameObject.SetActive(false);
+        //popupToolBar.transform.GetChild(1).gameObject.SetActive(false);
         AddMode();
     }
 
@@ -300,9 +312,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         int width = (int) GetComponentInParent<RectTransform>().rect.width;
         GameObject horizontalGrid = PrefabManager.GetGridLine();
         GameObject verticalGrid = PrefabManager.GetGridLine();
-        horizontalGrid.transform.localScale = new Vector3(width, 3, 3);
-        Color darkGrey = new Color(75 / 255.0f, 75 / 255.0f, 75 / 255.0f, 100 / 255.0f);
-        Color lightGrey = new Color(150 / 255.0f, 150 / 255.0f, 150 / 255.0f, 100 / 255.0f);
+        horizontalGrid.transform.localScale = new Vector3(width, 1, 1);
+        Color darkGrey = new Color(50 / 255.0f, 50 / 255.0f, 50 / 255.0f, 100 / 255.0f);
+        Color lightGrey = new Color(100 / 255.0f, 100 / 255.0f, 100 / 255.0f, 100 / 255.0f);
         // horizontal grid
         for (int i = (int) - height / 2 / gridInterval; i <= height / 2 / gridInterval; i++) {
             Vector3 position = new Vector3(0, i * gridInterval, 100);
@@ -317,7 +329,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
 
         //vertical grid
-        verticalGrid.transform.localScale = new Vector3(3, height, 3);
+        verticalGrid.transform.localScale = new Vector3(1, height, 1);
         for (int i = (int) - width / 2 / gridInterval; i <= width / 2 / gridInterval; i++) {
             Vector3 position = new Vector3(i * gridInterval, 0, 100);
             SpriteRenderer line = Instantiate(verticalGrid, position, Quaternion.identity, gridParent).GetComponent<SpriteRenderer>();
