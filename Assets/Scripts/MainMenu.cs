@@ -17,25 +17,25 @@ public class MainMenu : MonoBehaviour {
         SceneManager.LoadScene(0);
     }
 
-    public void SaveAndBackToMain() {
-        Levels.UpdateLevelData(0, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
+    public void SaveAndBackToMain(int level) {
+        Levels.UpdateLevelData(level, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
         SceneManager.LoadScene(0);
     }
 
-    public void LoadLevel0() {
+    public void LoadLevel(int level) {
         //List<Point>
-        Debug.Log("level0");
+        Debug.Log("level" + level);
         //Level0.LoadFixedPoints();
         //Debug.Log(Levels.GetPointData(0).Count);
         //Debug.Log(fixedPoints[0]);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2 * level + 1);
     }
 
-    public void Go() {
+    public void Go(int level) {
         Debug.Log("Go");
-        Levels.UpdateLevelData(0, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
-        Levels.UpdateBackground(0, AssetManager.GetBackgroundPosition(), AssetManager.GetBackgroundScale());
-        SceneInitiator.InitScene(0);
-        SceneManager.LoadScene(2);
+        Levels.UpdateLevelData(level, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
+        Levels.UpdateBackground(level, AssetManager.GetBackgroundPosition(), AssetManager.GetBackgroundScale());
+        SceneInitiator.InitScene(level);
+        SceneManager.LoadScene(2 * level + 2);
     }
 }   

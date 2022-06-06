@@ -24,8 +24,6 @@ public class SceneInitiator : MonoBehaviour {
         Vector3 temp = Levels.GetBackgroundPosition(currentLevel);
         scale = Levels.GetBackgroundScale(currentLevel);
         backgroundPosition = new Vector3(temp.x, temp.y, 0);
-        Debug.Log(scale);
-        Debug.Log("bbbbbbbbbb");
         // render all points
         foreach (PointReference p in pointToInit) {
             for (int i = 0; i <= 1; i += 1) {

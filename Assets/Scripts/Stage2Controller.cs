@@ -33,5 +33,12 @@ public class Stage2Controller : MonoBehaviour {
     public void UpdatePlaySpeed() {
         Slider s = playSpeedSlider.GetComponent<Slider>();
         playSpeed = s.value;
+        Debug.Log(s.value);
+        int percentage = (int) (playSpeed * 100);
+        s.transform.GetChild(3).GetComponent<TMPro.TextMeshProUGUI>().text = percentage + "%";
+    }
+
+    public void Update() {
+        if (!isPaused) Time.timeScale = playSpeed;
     }
 }
