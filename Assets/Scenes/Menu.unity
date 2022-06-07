@@ -295,8 +295,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -208, y: 443}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -71, y: 79}
+  m_SizeDelta: {x: 160, y: 56.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92843156
 MonoBehaviour:
@@ -3548,10 +3548,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button2
       objectReference: {fileID: 0}
+    - target: {fileID: -4366659997774951492, guid: 737c40f8d3a8cb44fbea55d28189a057,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -1306053630595845998, guid: 737c40f8d3a8cb44fbea55d28189a057,
         type: 3}
       propertyPath: m_Name
       value: Button1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1306053630595845998, guid: 737c40f8d3a8cb44fbea55d28189a057,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -304876638058187421, guid: 737c40f8d3a8cb44fbea55d28189a057,
         type: 3}
