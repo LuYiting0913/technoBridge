@@ -4,18 +4,28 @@ using UnityEngine;
 using System;
 
 public class SelectionController : MonoBehaviour { 
-    private static List<SolidBar> selectedBars = new List<SolidBar>();
-    private static List<Point> selectedPoints = new List<Point>();
-    private static Vector2 firstCorner;
-    private static Vector2 SecondCorner;
-    private static Transform SelectionBox;
-    private static Transform copiedParent;
-    private static GameObject dummyBar, dummyPoint;
-    private static List<Point> dummyPoints;
-    private static List<SolidBar> dummyBars;
-    // private static List<Point> pastedPoints;
-    // private static List<SolidBar> pastedBars;
-    //public static Transform barParent;
+    private static SelectionController m_Instance;
+
+    private bool isActive = false;
+    private bool boxSelection, draggingCopied= false;
+
+    private List<SolidBar> selectedBars = new List<SolidBar>();
+    private List<Point> selectedPoints = new List<Point>();
+    private Vector2 firstCorner, SecondCorner;
+    private Transform SelectionBox, copiedParent;
+    private GameObject dummyBar, dummyPoint;
+    private List<Point> dummyPoints;
+    private List<SolidBar> dummyBars;
+    private Vector3 originalPosition;
+
+    private void Awake() {
+        if (m_Instance == null) {
+            m_Instance = this;
+            DontDestroyOnLoad(m_Instance);
+        } else if (m_Instance != this) {
+            Destroy(m_Instance);
+        }
+    }
 
     public void Start() {
         firstCorner = Vector2.zero;
@@ -26,7 +36,54 @@ public class SelectionController : MonoBehaviour {
             GetComponent<Transform>();
     }
 
-    public static void ClearAll() {
+    public static SelectionController GetInstance() {
+        return m_Instance;
+    }
+     
+    public void OnModeChanged(object source, int i) {
+        isActive = i == 1;
+    }
+
+    public void OnPressed(object source, Stage1Controller e) {
+        if (isActive) {
+            RaycastHit2D hit = Physics2D.Raycast(e.startPoint, new Vector3(0, 0, 1));
+            if (draggingCopied) {
+                originalPosition = copiedParent.transform.position;
+            } else if (hit.collider != null) {
+                //individual select
+                ToggleIndividual(hit);
+            } else {
+                // box select
+                InitFirstCorner(e.startPoint);
+                boxSelection = true;
+            }
+        }
+    }
+
+    public void OnReleased(object source, Stage1Controller e) {
+        if (isActive) {
+            if (draggingCopied) {
+                SnapToExistingPoint();
+            } else if (boxSelection) {
+                boxSelection = false;
+                FinalizeBoxSelection();
+            }
+        }
+    }
+    
+    public void OnDragged(object source, Stage1Controller e) {
+        if (isActive) {
+            if (draggingCopied) {
+                Vector2 dir = e.curPoint - e.startPoint;
+                copiedParent.transform.position = originalPosition + new Vector3(dir.x, dir.y, 0);
+            } else if (boxSelection) {
+                InitSecondCorner(e.curPoint);
+                RenderSelectionBox();
+            }
+        }
+    }
+
+    public void ClearAll() {
         // copiedParent = GameObject.Find("CopiedParent").transform; 
         foreach (SolidBar bar in selectedBars) if (bar != null) bar.transform.GetChild(0).gameObject.SetActive(false);
         foreach (Point point in selectedPoints) if (point != null) point.transform.GetChild(0).gameObject.SetActive(false);
@@ -34,26 +91,26 @@ public class SelectionController : MonoBehaviour {
         selectedPoints = new List<Point>();
     }
 
-    public static void ClearAllDummy() {
+    private void ClearAllDummy() {
         foreach (Transform child in copiedParent) GameObject.Destroy(child.gameObject);
         dummyBars = new List<SolidBar>();
         dummyPoints = new List<Point>();
     }
 
-    public static void InitFirstCorner(Vector2 cursor) {
+    private void InitFirstCorner(Vector2 cursor) {
         firstCorner = cursor;
     }
 
-    public static void InitSecondCorner(Vector2 cursor) {
+    private void InitSecondCorner(Vector2 cursor) {
         SecondCorner = cursor;
     }
 
-    public static void RenderSelectionBox() {
+    private void RenderSelectionBox() {
         SelectionBox.transform.position = (firstCorner + SecondCorner) / 2;
         SelectionBox.transform.localScale = new Vector3(firstCorner.x - SecondCorner.x, firstCorner.y - SecondCorner.y, 0);
     }
 
-    public static void FinalizeBoxSelection() {
+    public void FinalizeBoxSelection() {
         SelectionBox.transform.localScale = new Vector3(0, 0, 1);
         int scanInterval = 5;
         int leftBound =  (int) Math.Round(Math.Min(firstCorner.x, SecondCorner.x));
@@ -67,7 +124,7 @@ public class SelectionController : MonoBehaviour {
                 if (hit.collider != null) {
                     bool isActive = hit.transform.GetChild(0).gameObject.activeSelf;
                     if (!isActive) {
-                        SelectionController.AddToSelection(hit.transform);
+                        AddToSelection(hit.transform);
                     }
                     hit.transform.GetChild(0).gameObject.SetActive(true);
                 }
@@ -78,18 +135,18 @@ public class SelectionController : MonoBehaviour {
         SecondCorner = Vector2.zero;        
     }
 
-    public static void ToggleIndividual(RaycastHit2D hit) {
+    private void ToggleIndividual(RaycastHit2D hit) {
         bool isActive = hit.transform.GetChild(0).gameObject.activeSelf;
         hit.transform.GetChild(0).gameObject.SetActive(!isActive);
         if (isActive) {
             // deselect
-            SelectionController.RemoveFromSelection(hit.transform);
+            RemoveFromSelection(hit.transform);
         } else {
-            SelectionController.AddToSelection(hit.transform);
+             AddToSelection(hit.transform);
         }
     }
 
-    private static void AddToSelection(Transform transform) {
+    private void AddToSelection(Transform transform) {
         if (transform.GetComponent<SolidBar>() != null) {
             selectedBars.Add(transform.GetComponent<SolidBar>());
         } else {
@@ -97,7 +154,7 @@ public class SelectionController : MonoBehaviour {
         }
     } 
 
-    private static void RemoveFromSelection(Transform transform) {
+    private void RemoveFromSelection(Transform transform) {
         if (transform.GetComponent<SolidBar>() != null) {
             selectedBars.Remove(transform.GetComponent<SolidBar>());
         } else {
@@ -105,7 +162,7 @@ public class SelectionController : MonoBehaviour {
         }
     }
 
-    public static void DeleteSelection() {
+    public void DeleteSelection() {
         foreach (SolidBar bar in selectedBars) {
             DeleteBar(bar);
         }
@@ -120,18 +177,18 @@ public class SelectionController : MonoBehaviour {
         }        
     }
 
-    public static bool SthSelected() {
+    public bool SthSelected() {
         return selectedBars.Count > 0 || selectedPoints.Count > 0;
     }
 
-    private static void DeleteBar(SolidBar bar) {
+    private void DeleteBar(SolidBar bar) {
         if (bar != null) {
             AssetManager.DeleteBar(bar);
             Destroy(bar.gameObject);
         }
     }
 
-    private static void DeletePoint(Point point) {
+    private void DeletePoint(Point point) {
         if (point != null) {
             AssetManager.DeletePoint(point);
             Destroy(point.gameObject);
@@ -161,7 +218,7 @@ public class SelectionController : MonoBehaviour {
             newBar.SetMaterial(b.GetMaterial());
             dummyBars.Add(newBar);
         } 
-        //ClearAll();
+        draggingCopied = true;
     }
 
     public void CutSelected() {
@@ -179,9 +236,10 @@ public class SelectionController : MonoBehaviour {
                 GameObject.Destroy(p.gameObject);
             }
         }
+        draggingCopied = true;
     }
 
-    public static void Paste() {
+    public void Paste() {
         Transform barParent = GameObject.Find("BarParent").transform;
         Transform pointParent = GameObject.Find("PointParent").transform;
         GameObject pointTemplate = PrefabManager.GetPoint2DTemplate();
@@ -209,10 +267,11 @@ public class SelectionController : MonoBehaviour {
             newBar.RenderSolidBar(1);
             AssetManager.AddBar(newBar);
         }
+        draggingCopied = false;
     }
 
     // snap upon release, instead of per frame, to reduce amount of calculation
-    public static void SnapToExistingPoint() {
+    public void SnapToExistingPoint() {
         foreach (Point p in dummyPoints) {
             Vector3 pos = p.GetPosition();
             if (AssetManager.HasSnap(pos)) {
@@ -224,7 +283,7 @@ public class SelectionController : MonoBehaviour {
 
     }
 
-    public static void FlipHorizontally() {
+    public void FlipHorizontally() {
         float x = copiedParent.transform.position.y;
         foreach (Point p in dummyPoints) {
             Vector3 pos = p.transform.position;
@@ -238,7 +297,7 @@ public class SelectionController : MonoBehaviour {
         } 
     }
 
-    public static void FlipVertically() {
+    public void FlipVertically() {
         float y = copiedParent.transform.position.y;
         foreach (Point p in dummyPoints) {
             Vector3 pos = p.transform.position;
@@ -252,7 +311,7 @@ public class SelectionController : MonoBehaviour {
         } 
     }
 
-    private static Point Produce(Vector3 pos) {
+    private Point Produce(Vector3 pos) {
         foreach (Point p in dummyPoints) {
             if (p.Contain(pos)) {
                 return p;
@@ -263,7 +322,7 @@ public class SelectionController : MonoBehaviour {
         return point;
     }
 
-    private static Point Search(List<Point> points, Vector3 pos) {
+    private Point Search(List<Point> points, Vector3 pos) {
         foreach (Point p in points) {
             if (p.Contain(pos)) return p;
         }

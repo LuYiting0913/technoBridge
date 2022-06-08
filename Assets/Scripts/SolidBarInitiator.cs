@@ -4,34 +4,83 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class SolidBarInitiator : MonoBehaviour {
-    private static bool startedInit = false;
-    public static SolidBar currentBar;
-    public static Point beginPoint;
-    public static Point endPoint;
-    private static int currentMaterial = 1;
+    private static SolidBarInitiator m_Instance;
+    private bool isActive;
+
+    private  bool startedInit = false;
+    public  SolidBar currentBar;
+    public  Point beginPoint;
+    public  Point endPoint;
+    private  int currentMaterial = 1;
     // 0: add bar, 1: select bar
-    private static int threshold = 5;
+    private  int threshold = 5;
 
     // public int level;
-    private static GameObject barTemplate;
-    private static Transform barParent;
-    private static GameObject pointTemplate;
-    private static GameObject fixedPointTemplate;
-    private static Transform pointParent;
+    private  GameObject barTemplate;
+    private  Transform barParent;
+    private  GameObject pointTemplate;
+    private  GameObject fixedPointTemplate;
+    private  Transform pointParent;
     // public LayerMask clickable;
+
+    private void Awake() {
+        if (m_Instance == null) {
+            m_Instance = this;
+            //DontDestroyOnLoad(m_Instance);
+        } else if (m_Instance != this) {
+            Destroy(m_Instance);
+        }
+    }
+
+    public static SolidBarInitiator GetInstance() {
+        return m_Instance;
+    }
 
     public void Start() {
         pointTemplate = PrefabManager.GetPoint2DTemplate();
         fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();
     }
 
-    private static void ClearAll() {
+    public void OnModeChanged(object source, int i) {
+        isActive = i == 0;
+    }
+
+    public void OnPressed(object source, Stage1Controller e) {
+        if (isActive) {
+            Debug.Log("add receieved press");
+            InitializeBar(e.startPoint, e.currentMaterial, e.barParent, e.pointParent);
+        }
+    }
+
+    public void OnReleased(object source, Stage1Controller e) {
+        if (isActive) {
+            Debug.Log("add receieved release");
+            FinalizeBar(e.endPoint, e.autoTriangulate, Stage1Controller.backgroundScale);
+        }
+    }
+
+    public void OnDragged(object source, Stage1Controller e) {
+        if (isActive) {
+            Debug.Log("add receieved drag");
+            float scale = Stage1Controller.backgroundScale;
+            Vector2 cutOffVector = currentBar.CutOff(e.curPoint, scale);
+            if (e.autoComplete && endPoint.ExceedsMaxLength(e.curPoint, scale)) {
+                FinalizeBar(cutOffVector, e.autoTriangulate, scale);
+                InitializeBar(cutOffVector, e.currentMaterial, e.barParent, e.pointParent);
+            } else { 
+                endPoint.transform.position = cutOffVector;
+                currentBar.RenderSolidBar(scale);
+            }
+        }
+    }
+
+    private  void ClearAll() {
         currentBar = null;
         beginPoint = null;
         endPoint = null;
     }
 
-    public static void InitializeBar(Vector2 headPos, int material, Transform pParent, Transform bParent) {
+    public void InitializeBar(Vector2 headPos, int material, Transform pParent, Transform bParent) {
         ClearAll();
 
         startedInit = true;
@@ -53,13 +102,13 @@ public class SolidBarInitiator : MonoBehaviour {
             AssetManager.AddPoint(beginPoint);
             currentBar.SetHead(beginPoint);
         }
-        endPoint = Instantiate(pointTemplate, headPos, Quaternion.identity, pointParent).GetComponent<Point>();
+        endPoint = Instantiate(pointTemplate, head, Quaternion.identity, pointParent).GetComponent<Point>();
         currentBar.SetTail(endPoint);    
         beginPoint.AddConnectedBar(currentBar);
         endPoint.AddConnectedBar(currentBar);
     }
 
-    public static void FinalizeBar(Vector2 tailPos, bool autoComplete, float scale) {
+    public void FinalizeBar(Vector2 tailPos, bool autoComplete, float scale) {
         startedInit = false;
         Vector3 cutOffVector = currentBar.CutOff(new Vector3(tailPos.x, tailPos.y, 0), scale);
 
@@ -79,7 +128,7 @@ public class SolidBarInitiator : MonoBehaviour {
         AssetManager.AddBar(currentBar);
     }
 
-    private static void AutoTriangulate() {
+    private  void AutoTriangulate() {
         List<Point> allPoints = AssetManager.GetAllPoints();
         foreach (Point p in allPoints) {
             if (p.DistanceTo(endPoint) <= MaterialManager.GetMaxLength(currentMaterial) &&
@@ -110,9 +159,5 @@ public class SolidBarInitiator : MonoBehaviour {
             AssetManager.DeletePoint(endPoint);
         }
     }
-
-    // public static bool ExceedsMaxLength(Vector2 cursor) {
-    //     return (beginPoint.GetPosition() - cursor).magnitude > currentBar.GetMaxLength();
-    // }
 
 }
