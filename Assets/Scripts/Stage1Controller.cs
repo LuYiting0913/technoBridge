@@ -6,28 +6,28 @@ using UnityEngine.UI;
 using System;
 
 public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
-    public GameObject barTemplate;
-    public Transform barParent;
-    private GameObject pointTemplate;
-    private GameObject fixedPointTemplate;
-    public Transform pointParent;
-    public Transform gridParent;
+    public Transform barParent, pointParent, gridParent;
+    private GameObject barTemplate, pointTemplate, fixedPointTemplate;
+
     public int level = 0;
-    public TraceController traceController;
+    private TraceController traceController;
+    private SelectionController selectionController;
+    private SolidBarInitiator solidbarInitiator;
+    private DragController dragController;
 
     private int currentEditMode = 0;
     // 0 add; 1 select; 2 drag joint; 3: drag copied segment; 4: tracing
-    private int currentMaterial = 0;
+    public int currentMaterial = 0;
     private List<Point> existingPoints = new List<Point>();
     private List<SolidBar> existingBars = new List<SolidBar>();
-    private bool creatingBar, draggingPoint, draggingSelection, autoComplete, gridSnap, autoTriangulate;
-    private bool draggingCopied, draggingBackground, tracing;
-    private Vector3 backgroundPosition;
+    public bool autoComplete, gridSnap, autoTriangulate;
+    // private bool draggingCopied, draggingBackground, tracing;
+    public Vector3 backgroundPosition;
     public GameObject slider;
     public static float backgroundScale = 1f;
 
-    private Vector3 originPosition;
-    private Vector2 startPosition; // for dragging copy
+    // private Vector3 originPosition;
+    // private Vector2 startPosition; // for dragging copy
     private int gridInterval = 20;
     private Camera myCam;
     private int popUpSec = 1;
@@ -35,11 +35,66 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private ToggleButton select, drag, trace, steel, wood, pavement;
     private GameObject popupToolBar;
-    
-    //public Transform backgroundCanvas;
+
+    public Vector2 startPoint, endPoint, curPoint;
+    public bool isPointerDown = false;
+
+    // delegates
+    public delegate void ModeChangeEventHandler(object source, int i);
+    public event ModeChangeEventHandler ModeChanged;
+
+    protected virtual void OnModeChanged() {
+        if (ModeChanged != null) ModeChanged(this, currentEditMode);
+    }
+
+    public delegate void ClickEventHandler(object source, Stage1Controller e);
+    public event ClickEventHandler Pressed;
+    public event ClickEventHandler Released;
+    public event ClickEventHandler Dragged;
+
+    protected virtual void OnPressed() {
+        if (Pressed != null) Pressed(this, this);
+    }
+
+    protected virtual void OnReleased() {
+        if (Released != null) Released(this, this);
+    }
+
+    protected virtual void OnDragged() {
+        if (Released != null) Dragged(this, this);
+    }
+
+    private void InitDelegates() {
+        ModeChanged += selectionController.OnModeChanged; 
+        Pressed += selectionController.OnPressed;
+        Released += selectionController.OnReleased;
+        Dragged += selectionController.OnDragged;
+
+        ModeChanged += traceController.OnModeChanged;
+        Pressed += traceController.OnPressed;
+        Released += traceController.OnReleased;
+        Dragged += traceController.OnDragged;
+
+        ModeChanged += solidbarInitiator.OnModeChanged;        
+        Pressed += solidbarInitiator.OnPressed;
+        Released += solidbarInitiator.OnReleased;
+        Dragged += solidbarInitiator.OnDragged;
+
+        ModeChanged += dragController.OnModeChanged;        
+        Pressed += dragController.OnPressed;
+        Released += dragController.OnReleased;
+        Dragged += dragController.OnDragged;
+    }
 
     public void Start() {
         myCam = Camera.main;
+        selectionController = SelectionController.GetInstance();
+        traceController = TraceController.GetInstance();
+        solidbarInitiator = SolidBarInitiator.GetInstance();
+        dragController = DragController.GetInstance();
+        
+        InitDelegates();
+
         backgroundScale = Levels.GetBackgroundScale(level);
         backgroundPosition = Levels.GetBackgroundPosition(level);
         
@@ -97,69 +152,15 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     }
 
     public void OnPointerDown(PointerEventData eventData) {
-        Debug.Log("ptr down");
-        Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), new Vector3(0, 0, 1));
-
-        if (currentEditMode == 1) {
-            // select mode
-            if (hit.collider != null) {
-                SelectionController.ToggleIndividual(hit);
-            } else {
-                // box select
-                draggingSelection = true;
-                SelectionController.InitFirstCorner(cursor);
-            }
-
-        } else if (currentEditMode == 2 && hit.collider != null && hit.transform.GetComponent<Point>() != null) {
-            // drag mode
-            if (!hit.transform.GetComponent<Point>().IsFixed()) {
-                draggingPoint = true;
-                DragController.SelectPoint(hit.transform);
-            }     
-        } else if (currentEditMode == 0) {
-            // add mode
-            creatingBar = true;
-            Vector2 position = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
-            SolidBarInitiator.InitializeBar(position, currentMaterial, pointParent, barParent);
-        } else if (currentEditMode == 3) {
-            startPosition = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
-            originPosition = GameObject.Find("CopiedParent").transform.position;
-            draggingCopied = true;
-        } else if (currentEditMode == 2 && hit.collider == null) {
-            //dragging background
-            draggingBackground = true;
-            startPosition = cursor;
-            backgroundPosition = gameObject.transform.position;
-        } else if (currentEditMode == 4 && !tracing) {
-            tracing = true;
-            traceController.StartTrace(SnapToGrid(cursor), currentMaterial, barParent, pointParent);
-        }
+        startPoint = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
+        isPointerDown = true;
+        OnPressed();
     }
 
     public void OnPointerUp(PointerEventData eventData) {
-        Vector2 cursor = Camera.main.ScreenToWorldPoint(eventData.position);
-        if (currentEditMode == 1 && draggingSelection) {
-            draggingSelection = false;
-            SelectionController.FinalizeBoxSelection();
-        } else if (creatingBar) {
-            Vector2 position = SnapToGrid(cursor);
-            SolidBarInitiator.FinalizeBar(position, autoTriangulate, backgroundScale);
-            creatingBar = false;
-        } else if (draggingPoint) {
-            draggingPoint = false;
-            DragController.ReleasePoint();
-        } else if (currentEditMode == 3) {
-            draggingCopied = false;
-            SelectionController.SnapToExistingPoint();
-        } else if (draggingBackground) {
-            draggingBackground = false;
-            backgroundPosition = transform.position;
-            AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
-        } else if (currentEditMode == 4 && tracing) {
-            tracing = false;
-            traceController.EndTrace();
-        }
+        endPoint = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
+        isPointerDown = false;
+        OnReleased();
     }
 
     public void Update() {
@@ -170,44 +171,21 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             if (bar != null) bar.RenderSolidBar(backgroundScale);
         }
 
-        Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 snapedCursor = SnapToGrid(cursor);
-    
-
-        if (currentEditMode == 1 && draggingSelection) {
-            SelectionController.InitSecondCorner(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            SelectionController.RenderSelectionBox();
-        } else if (creatingBar) {
-            Vector2 cutOffVector = SolidBarInitiator.currentBar.CutOff(snapedCursor, backgroundScale);
-            if (autoComplete && SolidBarInitiator.endPoint.ExceedsMaxLength(snapedCursor, backgroundScale)) {
-                SolidBarInitiator.FinalizeBar(cutOffVector, autoTriangulate, backgroundScale);
-                SolidBarInitiator.InitializeBar(cutOffVector, currentMaterial, barParent, pointParent);
-            } else { 
-                SolidBarInitiator.endPoint.transform.position = cutOffVector;
-                SolidBarInitiator.currentBar.RenderSolidBar(backgroundScale);
-            }
-        } else if (draggingPoint) {
-            DragController.DragPointTo(snapedCursor, backgroundScale);
-        } else if (currentEditMode == 3 && draggingCopied) {
-            Vector2 dir = snapedCursor - startPosition;
-            Vector3 newPosition = originPosition + new Vector3(dir.x, dir.y, 0);
-            GameObject.Find("CopiedParent").transform.position = newPosition;
-        } else if (draggingBackground) {
-            Vector2 dir = cursor - startPosition;
-            gameObject.transform.position = backgroundPosition + new Vector3(dir.x, dir.y, 0);
-        } else if (currentEditMode == 4 && tracing) {
-            traceController.RenderDummy(cursor, backgroundScale);
+        if (isPointerDown) {
+            Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            curPoint = SnapToGrid(cursor);
+            OnDragged();
         }
     }
 
-    private Vector3 PositionToCanvas(Vector3 pos) {
-        Vector3 temp = (pos - backgroundPosition) / backgroundScale;
-        return new Vector3(temp.x, temp.y, pos.z);
-    }
+    // private Vector3 PositionToCanvas(Vector3 pos) {
+    //     Vector3 temp = (pos - backgroundPosition) / backgroundScale;
+    //     return new Vector3(temp.x, temp.y, pos.z);
+    // }
 
-    private Vector3 ScaleVector(Vector3 v) {
-        return new Vector3(v.x * backgroundScale, v.y * backgroundScale, v.z);
-    }
+    // private Vector3 ScaleVector(Vector3 v) {
+    //     return new Vector3(v.x * backgroundScale, v.y * backgroundScale, v.z);
+    // }
     
     public void SelectMode() {
         Debug.Log("select mode");
@@ -215,14 +193,17 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         TurnOffAll();
         select.ToggleSprite();
         popupToolBar.transform.GetChild(0).gameObject.SetActive(true);
-        SelectionController.ClearAll();
+        selectionController.ClearAll();
+        OnModeChanged();
     }
 
     private void AddMode() {
         Debug.Log("add mode");
         currentEditMode = 0;
+        OnModeChanged();
         TurnOffAll();
-        SelectionController.ClearAll();
+        selectionController.ClearAll();
+        OnModeChanged();
     }
 
     public void DragMode() {
@@ -230,15 +211,16 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         currentEditMode = 2;
         TurnOffAll();
         drag.ToggleSprite();
-        SelectionController.ClearAll();
+        selectionController.ClearAll();
+        OnModeChanged();
     }
 
     
     public void TracingMode() {
         currentEditMode = 4;
         TurnOffAll();
-        tracing = false;
         trace.ToggleSprite();
+        OnModeChanged();
     }
 
     public void DragCopiedMode() {
@@ -326,8 +308,6 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 line.color = lightGrey;
             }
         }
-
-
         //vertical grid
         verticalGrid.transform.localScale = new Vector3(1, height, 1);
         for (int i = (int) - width / 2 / gridInterval; i <= width / 2 / gridInterval; i++) {
@@ -339,7 +319,6 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 line.color = lightGrey;
             }
         }
-
         gridParent.gameObject.SetActive(gridSnap);
     }
 

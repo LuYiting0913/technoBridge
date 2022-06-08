@@ -1,20 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
+// using UnityEngine.EventSystems;
 using UnityEngine;
 using System;
 
 public class TraceController : MonoBehaviour {
+    private static TraceController m_Instance; 
+    private bool isActive = false;
+    private float scale;
+
     private int material;
     private Point head, tail;
     private SolidBar dummyBar;
     private List<Point> guidePoints = new List<Point>();
 
-    //private bool traced;
-
     public Transform traceParent, barParent, pointParent;
     public GameObject dummyPointTemplate;
     public GameObject PointTemplate;
     public GameObject dummyBarTemplate;
+
+    private void Awake() {
+        if (m_Instance == null) {
+            m_Instance = this;
+            //DontDestroyOnLoad(m_Instance);
+        } else if (m_Instance != this) {
+            Destroy(m_Instance);
+        }
+    }
+
+    public static TraceController GetInstance() {
+        return m_Instance;
+    }
+
+    public void OnModeChanged(object source, int i) {
+        isActive = i == 4;
+    }
+
+    
+    public void OnPressed(object source, Stage1Controller e) {
+        if (isActive) {
+            Debug.Log("stracecontroller receieved press");
+            StartTrace(e.startPoint, e.currentMaterial, e.barParent, e.pointParent);
+            scale = Stage1Controller.backgroundScale;
+        }
+    }
+
+    public void OnReleased(object source, Stage1Controller e) {
+        if (isActive) {
+            Debug.Log("tracecontroller receieved release");
+            EndTrace();
+        }
+    }
+
+    public void OnDragged(object source, Stage1Controller e) {
+        if (isActive) {
+            Debug.Log("tracecontroller receieved drag");
+            RenderDummy(e.curPoint);
+        }
+    }
+
+    public void Update() {
+
+    }
 
     public void StartTrace(Vector2 headPosition, int m, Transform bParent, Transform pParent) {
         DestroyAllDummy();
@@ -83,7 +130,7 @@ public class TraceController : MonoBehaviour {
 
     }
 
-    public void RenderDummy(Vector2 cursor, float scale) {
+    public void RenderDummy(Vector2 cursor) {
         tail.transform.position = cursor;
         dummyBar.RenderSolidBar(scale);
     }
