@@ -13,6 +13,7 @@ public class SceneInitiator : MonoBehaviour {
     private static int currentLevel;
     private static List<Point> allPoints = new List<Point>();
     private static List<SolidBar> allBars = new List<SolidBar>();
+    private static List<Pavement> allPaves = new List<Pavement>();
     private static List<Vehicle> allVehicles = new List<Vehicle>();
     private static Vector3 backgroundPosition;
     private static float scale;
@@ -109,25 +110,40 @@ public class SceneInitiator : MonoBehaviour {
 
         newPave.SetPosition(headPosition, tailPosition);
         newPave.InitPavementHinge(allPoints, roadWidth);
+        allPaves.Add(newPave);
     }
 
     public void Update() {
         foreach (SolidBar bar in allBars) {
-            // if (!bar.disabled && bar.GetCurrentLoad() >= 1) {
-            //     Transform piece1 = bar.transform.GetChild(0);
-            //     Transform piece2 = bar.transform.GetChild(1);
+            if (!bar.disabled && bar.GetCurrentLoad() >= 1) {
+                // Transform piece1 = bar.transform.GetChild(0);
+                // Transform piece2 = bar.transform.GetChild(1);
 
-            //     piece1.gameObject.SetActive(true);
-            //     piece2.gameObject.SetActive(true);
-            //     piece1.SetParent(barParent, true);
-            //     piece2.SetParent(barParent, true);
-            //     piece1.GetComponent<SolidBar>().InitTemp(bar.head, null);
-            //     piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
-            //     bar.DisableBar();
-            // } 
-            // Color currentColor = bar.GetComponent<MeshRenderer>().material.color;
-            // bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor();
+                // piece1.gameObject.SetActive(true);
+                // piece2.gameObject.SetActive(true);
+                // piece1.SetParent(barParent, true);
+                // piece2.SetParent(barParent, true);
+                // piece1.GetComponent<SolidBar>().InitTemp(bar.head, null);
+                // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
+                bar.DisableBar();
+            } 
+            Color currentColor = bar.GetComponent<MeshRenderer>().material.color;
+            bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor();
+        }
 
+        foreach (Pavement pave in allPaves) {
+            if (!pave.disabled && pave.GetCurrentLoad() >= 1) {
+                // Transform piece1 = bar.transform.GetChild(0);
+                // Transform piece2 = bar.transform.GetChild(1);
+
+                // piece1.gameObject.SetActive(true);
+                // piece2.gameObject.SetActive(true);
+                // piece1.SetParent(barParent, true);
+                // piece2.SetParent(barParent, true);
+                // piece1.GetComponent<SolidBar>().InitTemp(bar.head, null);
+                // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
+                pave.DisablePave();
+            } 
         }
     }
 

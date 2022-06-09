@@ -98,7 +98,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         backgroundScale = Levels.GetBackgroundScale(level);
         backgroundPosition = Levels.GetBackgroundPosition(level);
         
-        if (!Levels.IsInited(level)) Level0.InitLevel();
+        Levels.InitLevel(level);
         pointTemplate = PrefabManager.GetPoint2DTemplate();
         fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();  
         List<PointReference> pointData = Levels.GetPointData(level);
@@ -177,15 +177,6 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             OnDragged();
         }
     }
-
-    // private Vector3 PositionToCanvas(Vector3 pos) {
-    //     Vector3 temp = (pos - backgroundPosition) / backgroundScale;
-    //     return new Vector3(temp.x, temp.y, pos.z);
-    // }
-
-    // private Vector3 ScaleVector(Vector3 v) {
-    //     return new Vector3(v.x * backgroundScale, v.y * backgroundScale, v.z);
-    // }
     
     public void SelectMode() {
         Debug.Log("select mode");
@@ -260,6 +251,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         steel.TurnOff();
         wood.TurnOff();
         pavement.TurnOff();
+        trace.TurnOff();
         popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
 
     }

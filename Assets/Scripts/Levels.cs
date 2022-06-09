@@ -12,6 +12,23 @@ public class Levels {
     private static bool[] isInited = new bool[10];
     //private static Dictionary<int, List<Checkpoint>> checkpointData = new Dictionary<int, List<Checkpoint>>();
 
+    public static void InitLevel(int level) {
+        if (!isInited[level]) {
+            switch (level)
+            {
+                case 0:
+                    Level0.InitLevel();
+                    break;
+                case 1:
+                    Level1.InitLevel();
+                    break;
+                default:
+                    break;
+            }
+            isInited[level] = true;
+        }
+    }
+    
     public static List<PointReference> GetPointData(int level) {
         return pointData[level];
     }

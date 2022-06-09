@@ -28,9 +28,9 @@ public class MaterialManager {
     };
 
     private static Dictionary<int, int> materialIntegrity = new Dictionary<int, int>() {
-        {0, 4000},
-        {1, 200},
-        {2, 600}
+        {0, 3000},
+        {1, 5000},
+        {2, 9000}
     };
 
     public static float GetMaxLength(int material) {

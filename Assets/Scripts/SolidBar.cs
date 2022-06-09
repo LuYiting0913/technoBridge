@@ -12,6 +12,7 @@ public class SolidBar : MonoBehaviour {
     private HingeJoint tailJoint;
     private Color baseColor;
     public int material; 
+    private float maxLoad;
     public bool disabled = false;
 
     private SpriteRenderer barRenderer;
@@ -61,6 +62,7 @@ public class SolidBar : MonoBehaviour {
 
     public void SetMaterial(int m) {
         material = m;
+        maxLoad = MaterialManager.GetIntegrity(m);
     }
 
     public int GetMaterial() {
@@ -121,22 +123,27 @@ public class SolidBar : MonoBehaviour {
     }
 
     public float GetCurrentTension() {
-        return Math.Abs(headJoint.currentForce.x + tailJoint.currentForce.x);
+        return Math.Max(headJoint.currentForce.x, tailJoint.currentForce.x);
     }
 
     public float GetCurrentLoad() {
-        return GetCurrentTension() / 100; // max load implement later
+        return GetCurrentTension() / maxLoad; // max load implement later
     }
 
     public void SetBaseColor(Color color) {
         baseColor = color;
     }
 
+    // amend later
     public Color GetLoadColor() {
-        if (GetCurrentLoad() >= 0.3) {
-            return new Color(baseColor.r + GetCurrentLoad() * 5, baseColor.g, baseColor.b);
-        } 
-        return baseColor;
+        float load = GetCurrentLoad();
+        if (load < 0.5) {
+            return new Color(baseColor.r, 1 - load, baseColor.b);
+        } else if (load < 1) {
+            return new Color(load, baseColor.g, baseColor.b);
+        } else {
+            return new Color(1, 0, 0);
+        }
     }
 
     public void DisableBar() {
