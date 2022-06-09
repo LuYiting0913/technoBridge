@@ -21,7 +21,7 @@ public class SelectionController : MonoBehaviour {
     private void Awake() {
         if (m_Instance == null) {
             m_Instance = this;
-            DontDestroyOnLoad(m_Instance);
+            //DontDestroyOnLoad(m_Instance);
         } else if (m_Instance != this) {
             Destroy(m_Instance);
         }
@@ -147,6 +147,7 @@ public class SelectionController : MonoBehaviour {
     }
 
     private void AddToSelection(Transform transform) {
+        //Debug.Log("selected");
         if (transform.GetComponent<SolidBar>() != null) {
             selectedBars.Add(transform.GetComponent<SolidBar>());
         } else {
@@ -163,7 +164,9 @@ public class SelectionController : MonoBehaviour {
     }
 
     public void DeleteSelection() {
+        //Debug.Log("deleted");
         foreach (SolidBar bar in selectedBars) {
+            //Debug.Log(bar);
             DeleteBar(bar);
         }
 
