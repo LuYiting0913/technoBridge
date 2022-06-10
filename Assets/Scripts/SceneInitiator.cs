@@ -9,6 +9,7 @@ public class SceneInitiator : MonoBehaviour {
     public Transform barParent;
     public Transform vehicleParent;
     private int roadWidth = 100;
+    private bool displayStress;
 
     private static int currentLevel;
     private static List<Point> allPoints = new List<Point>();
@@ -66,8 +67,8 @@ public class SceneInitiator : MonoBehaviour {
         Vector3 pos = point.GetPosition();
         pos.z += i * roadWidth;
         Point scaledTemplate = pointTemplate;
-        scaledTemplate.transform.localScale = new Vector3(10, 10, 10);
-        Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.identity, pointParent);
+        scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
+        Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), pointParent);
         
         pointInstantiated.InitRigidBody(point);
         //pointInstantiated.UpdatePosition();
@@ -113,6 +114,10 @@ public class SceneInitiator : MonoBehaviour {
         allPaves.Add(newPave);
     }
 
+    public void ToggleStressDisplay() {
+        displayStress = !displayStress;
+    }
+
     public void Update() {
         foreach (SolidBar bar in allBars) {
             if (!bar.disabled && bar.GetCurrentLoad() >= 1) {
@@ -127,8 +132,13 @@ public class SceneInitiator : MonoBehaviour {
                 // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
                 bar.DisableBar();
             } 
-            Color currentColor = bar.GetComponent<MeshRenderer>().material.color;
-            bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor();
+            if (displayStress) {
+                // Color currentColor = bar.GetComponent<MeshRenderer>().material.color;
+                bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor();
+            } else {
+                bar.GetComponent<MeshRenderer>().material.color = bar.GetBaseColor();
+            }
+
         }
 
         foreach (Pavement pave in allPaves) {
@@ -142,7 +152,7 @@ public class SceneInitiator : MonoBehaviour {
                 // piece2.SetParent(barParent, true);
                 // piece1.GetComponent<SolidBar>().InitTemp(bar.head, null);
                 // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
-                pave.DisablePave();
+                // pave.DisablePave();
             } 
         }
     }
