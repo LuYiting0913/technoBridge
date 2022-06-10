@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Stage2Controller : MonoBehaviour {
-    private bool isPaused;
+    private bool isPaused, displayStress;
     private float playSpeed;
     public GameObject playSpeedSlider;
     public GameObject canvas;
