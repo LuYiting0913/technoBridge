@@ -39,7 +39,8 @@ public class TraceController : MonoBehaviour {
     
     public void OnPressed(object source, Stage1Controller e) {
         if (isActive) {
-            Debug.Log("stracecontroller receieved press");
+            // Debug.Log("stracecontroller receieved press");
+            e.ActivateCursor();
             StartTrace(e.startPoint, e.currentMaterial, e.barParent, e.pointParent);
             scale = Stage1Controller.backgroundScale;
         }
@@ -47,14 +48,16 @@ public class TraceController : MonoBehaviour {
 
     public void OnReleased(object source, Stage1Controller e) {
         if (isActive) {
-            Debug.Log("tracecontroller receieved release");
+            // Debug.Log("tracecontroller receieved release");
+            e.DeactivateCursor();
             EndTrace();
         }
     }
 
     public void OnDragged(object source, Stage1Controller e) {
         if (isActive) {
-            Debug.Log("tracecontroller receieved drag");
+            // Debug.Log("tracecontroller receieved drag");
+            e.UpdateCursor(e.curPoint);
             RenderDummy(e.curPoint);
         }
     }

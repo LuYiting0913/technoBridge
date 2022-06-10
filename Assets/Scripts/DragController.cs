@@ -30,6 +30,7 @@ public class DragController : MonoBehaviour {
         if (isActive) {
             RaycastHit2D hit = Physics2D.Raycast(e.startPoint, new Vector3(0, 0, 1));
             if (hit.collider != null) {
+                e.ActivateCursor();
                 Point hittedPoint = hit.transform.GetComponent<Point>();
                 if (hittedPoint != null && !hittedPoint.IsFixed()) {
                     SelectPoint(hit.transform);
@@ -44,8 +45,12 @@ public class DragController : MonoBehaviour {
 
     public void OnReleased(object source, Stage1Controller e) {
         if (isActive) {
-            if (isDragging) ReleasePoint();
-            if (isDraggingBackground) e.backgroundPosition = e.gameObject.transform.position; 
+            if (isDragging) {
+                e.DeactivateCursor();
+                ReleasePoint();
+            } else if (isDraggingBackground) {
+                e.backgroundPosition = e.gameObject.transform.position; 
+            }
             isDragging = false;
             isDraggingBackground = false;
         }
@@ -54,7 +59,7 @@ public class DragController : MonoBehaviour {
     public void OnDragged(object source, Stage1Controller e) {
         if (isActive) {
             if (isDragging) {
-                DragPointTo(e.curPoint, Stage1Controller.backgroundScale);
+            e.UpdateCursor(DragPointTo(e.curPoint, Stage1Controller.backgroundScale));
             } else if (isDraggingBackground) {
                 Vector2 dir = e.curPoint - e.startPoint;
                 e.gameObject.transform.position = e.backgroundPosition + new Vector3(dir.x, dir.y, 0);
@@ -73,9 +78,10 @@ public class DragController : MonoBehaviour {
         selectedPoint = null;
     }
 
-    private void DragPointTo(Vector2 cursor, float scale) {
+    private Vector2 DragPointTo(Vector2 cursor, float scale) {
         Point point = selectedPoint.GetComponent<Point>();
         point.transform.position = point.GetReachablePosition(point.transform.position, cursor, scale);
         point.UpdateConnectedBars();
+        return new Vector2(point.transform.position.x, point.transform.position.y);
     }
 }

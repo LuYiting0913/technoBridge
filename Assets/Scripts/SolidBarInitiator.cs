@@ -2,25 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 public class SolidBarInitiator : MonoBehaviour {
     private static SolidBarInitiator m_Instance;
     private bool isActive;
 
-    private  bool startedInit = false;
-    public  SolidBar currentBar;
-    public  Point beginPoint;
-    public  Point endPoint;
-    private  int currentMaterial = 1;
+    private bool startedInit = false;
+    public SolidBar currentBar;
+    public Point beginPoint;
+    public Point endPoint;
+    public GameObject boundaryPoint;
+    private int currentMaterial = 1;
     // 0: add bar, 1: select bar
-    private  int threshold = 5;
+    private int threshold = 5;
 
     // public int level;
-    private  GameObject barTemplate;
-    private  Transform barParent;
-    private  GameObject pointTemplate;
-    private  GameObject fixedPointTemplate;
-    private  Transform pointParent;
+    private GameObject barTemplate;
+    private Transform barParent;
+    private GameObject pointTemplate;
+    private GameObject fixedPointTemplate;
+    private Transform pointParent;
+    private GameObject boundary;
     // public LayerMask clickable;
 
     private void Awake() {
@@ -39,6 +42,7 @@ public class SolidBarInitiator : MonoBehaviour {
     public void Start() {
         pointTemplate = PrefabManager.GetPoint2DTemplate();
         fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();
+        boundary = GameObject.Find("Boundary");
     }
 
     public void OnModeChanged(object source, int i) {
@@ -47,26 +51,33 @@ public class SolidBarInitiator : MonoBehaviour {
 
     public void OnPressed(object source, Stage1Controller e) {
         if (isActive) {
-            Debug.Log("add receieved press");
-            InitializeBar(e.startPoint, e.currentMaterial, e.barParent, e.pointParent);
+            // Debug.Log("add receieved press");
+            currentMaterial = e.currentMaterial;
+            e.ActivateCursor();
+            ActivateBoundary(e.startPoint);
+            InitializeBar(e.startPoint, e.currentMaterial, e.pointParent, e.barParent);
         }
     }
 
     public void OnReleased(object source, Stage1Controller e) {
         if (isActive) {
-            Debug.Log("add receieved release");
+            // Debug.Log("add receieved release");
+            e.DeactivateCursor();
+            DeactivateBoundary();
             FinalizeBar(e.endPoint, e.autoTriangulate, Stage1Controller.backgroundScale);
         }
     }
 
     public void OnDragged(object source, Stage1Controller e) {
         if (isActive) {
-            Debug.Log("add receieved drag");
+            // Debug.Log("add receieved drag");
             float scale = Stage1Controller.backgroundScale;
             Vector2 cutOffVector = currentBar.CutOff(e.curPoint, scale);
+            e.UpdateCursor(cutOffVector);
+
             if (e.autoComplete && endPoint.ExceedsMaxLength(e.curPoint, scale)) {
                 FinalizeBar(cutOffVector, e.autoTriangulate, scale);
-                InitializeBar(cutOffVector, e.currentMaterial, e.barParent, e.pointParent);
+                InitializeBar(cutOffVector, e.currentMaterial, e.pointParent, e.barParent);
             } else { 
                 endPoint.transform.position = cutOffVector;
                 currentBar.RenderSolidBar(scale);
@@ -158,6 +169,28 @@ public class SolidBarInitiator : MonoBehaviour {
             Destroy(endPoint.gameObject);
             AssetManager.DeletePoint(endPoint);
         }
+    }
+
+    private void ActivateBoundary(Vector2 center) {
+        for (int i = 0; i < boundary.transform.childCount; i++) boundary.transform.GetChild(i).gameObject.SetActive(true);
+        int numOfPoints = 50;
+        float radius = MaterialManager.GetMaxLength(currentMaterial);
+        Transform boundParent = boundary.transform.GetChild(0);
+        Vector3 newPos = new Vector3(center.x, center.y, 105);
+        boundParent.position = newPos;
+
+        for (int i = 0; i < numOfPoints; i++) {
+            float x = radius * Mathf.Sin((float) i / numOfPoints * 2 * Mathf.PI);
+            float y = radius * Mathf.Cos((float) i / numOfPoints * 2 * Mathf.PI);
+            Debug.Log(new Vector3(x, y, 0));
+            Instantiate(boundaryPoint, new Vector3(x, y, 0) + newPos,
+                        Quaternion.identity, boundParent);
+        } 
+    }
+
+    private void DeactivateBoundary() {
+        Transform boundParent = boundary.transform.GetChild(0);
+        for (int i = 0; i < boundParent.childCount; i++) GameObject.Destroy(boundParent.GetChild(i).gameObject);
     }
 
 }
