@@ -24,6 +24,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     // private bool draggingCopied, draggingBackground, tracing;
     public Vector3 backgroundPosition;
     public GameObject slider;
+    public GameObject cursor;
     public static float backgroundScale = 1f;
 
     // private Vector3 originPosition;
@@ -322,6 +323,19 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         } else {
             return v;
         }
+    }
+
+    public void UpdateCursor(Vector2 v) {
+        cursor.transform.GetChild(0).transform.position = new Vector3(v.x, 0, -1);
+        cursor.transform.GetChild(1).transform.position = new Vector3(0, v.y, -1);
+    }
+
+    public void ActivateCursor() {
+        for (int i = 0; i < cursor.transform.childCount; i++) cursor.transform.GetChild(i).gameObject.SetActive(true);
+    }
+
+    public void DeactivateCursor() {
+        for (int i = 0; i < cursor.transform.childCount; i++) cursor.transform.GetChild(i).gameObject.SetActive(false);
     }
 
 }
