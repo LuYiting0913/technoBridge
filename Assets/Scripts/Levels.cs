@@ -61,6 +61,10 @@ public class Levels {
         backgroundScale[level] = f;
     }
 
+    public static void SetBackgroundPostion(int level, Vector3 v) {
+        backgroundPosition[level] = v;
+    }
+
     public static Vector3 GetBackgroundPosition(int level) {
         return backgroundPosition.ContainsKey(level) ? backgroundPosition[level] : new Vector3(0, 0, 105);
     }

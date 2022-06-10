@@ -147,8 +147,8 @@ public class SceneInitiator : MonoBehaviour {
         }
     }
 
-    // private Vector3 PositionToCanvas(Vector3 pos) {
-    //     return (pos - backgroundPosition) / scale;
-    // }
+    private Vector3 WorldToCanvas(Vector3 pos) {
+        return (pos - backgroundPosition) / scale;
+    }
 
 }

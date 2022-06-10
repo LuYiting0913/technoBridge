@@ -29,12 +29,14 @@ public class Point : MonoBehaviour {
         bool check = false;
         Vector2 v;
         foreach (SolidBar bar in connectedBars) {
-            if (Contain(bar.GetHead())) {
-                v = new Vector2(bar.GetTail().x, bar.GetTail().y);
-            } else {
-                v = new Vector2(bar.GetHead().x, bar.GetHead().y);
+            if (bar != null) {
+                if (Contain(bar.GetHead())) {
+                    v = new Vector2(bar.GetTail().x, bar.GetTail().y);
+                } else {
+                    v = new Vector2(bar.GetHead().x, bar.GetHead().y);
+                }
+                check = check || (v - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial()) * scale;
             }
-            check = check || (v - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial()) * scale;
         }
         return check;
     }
@@ -81,8 +83,9 @@ public class Point : MonoBehaviour {
         pointRb.isKinematic = p.IsFixed();
     }
         
-    // public void Update() {
-    //     pointPosition = transform.position;
-    // }
-    
+    public void RemoveConnectedNull() {
+        List<SolidBar> temp = new List<SolidBar>();
+        foreach (SolidBar b in connectedBars) if (b != null) temp.Add(b);
+        connectedBars = temp;
+    }    
 }

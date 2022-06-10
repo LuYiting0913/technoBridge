@@ -50,6 +50,7 @@ public class DragController : MonoBehaviour {
                 ReleasePoint();
             } else if (isDraggingBackground) {
                 e.backgroundPosition = e.gameObject.transform.position; 
+                e.UpdateBackgroundInfo();
             }
             isDragging = false;
             isDraggingBackground = false;
@@ -59,7 +60,7 @@ public class DragController : MonoBehaviour {
     public void OnDragged(object source, Stage1Controller e) {
         if (isActive) {
             if (isDragging) {
-            e.UpdateCursor(DragPointTo(e.curPoint, Stage1Controller.backgroundScale));
+                e.UpdateCursor(DragPointTo(e.curPoint, Stage1Controller.backgroundScale));
             } else if (isDraggingBackground) {
                 Vector2 dir = e.curPoint - e.startPoint;
                 e.gameObject.transform.position = e.backgroundPosition + new Vector3(dir.x, dir.y, 0);

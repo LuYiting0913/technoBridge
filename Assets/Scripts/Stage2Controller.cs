@@ -7,6 +7,8 @@ public class Stage2Controller : MonoBehaviour {
     private bool isPaused;
     private float playSpeed;
     public GameObject playSpeedSlider;
+    public GameObject canvas;
+    public Transform vehicleParent;
 
     public void Start() {
         playSpeed = 1f;
@@ -38,7 +40,18 @@ public class Stage2Controller : MonoBehaviour {
         s.transform.GetChild(3).GetComponent<TMPro.TextMeshProUGUI>().text = percentage + "%";
     }
 
+    private bool AllVehicleArrived() {
+        for (int i = 0; i < vehicleParent.childCount; i++) {
+            if (!vehicleParent.GetChild(i).GetComponent<VehicleController>().arrived) return false; 
+        }
+        return true;
+    }
+
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
+        if (AllVehicleArrived()) {
+            Debug.Log("all arrived");
+            canvas.transform.GetChild(2).gameObject.SetActive(true);
+        }
     }
 }

@@ -178,7 +178,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             OnDragged();
         }
     }
-    
+
     public void SelectMode() {
         Debug.Log("select mode");
         currentEditMode = 1;
@@ -240,11 +240,15 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         pavement.ToggleSprite();
     }
 
-    public void UpdateBackgroundScale() {
+    public void UpdateBackgroundInfo() {
         backgroundScale = slider.GetComponent<Slider>().value;
         transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
         AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
     }
+
+    private Vector2 WorldToCanvas(Vector2 v) {
+        return v - new Vector2(backgroundPosition.x, backgroundPosition.y);
+    } 
 
     public void TurnOffAll() {
         select.TurnOff();
