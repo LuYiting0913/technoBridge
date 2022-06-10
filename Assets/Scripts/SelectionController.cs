@@ -177,16 +177,15 @@ public class SelectionController : MonoBehaviour {
                 }
                 DeletePoint(point);
             }
-        }        
+        }  
+        AssetManager.RemoveConnectedNull();      
     }
 
-    public bool SthSelected() {
-        return selectedBars.Count > 0 || selectedPoints.Count > 0;
-    }
 
     private void DeleteBar(SolidBar bar) {
         if (bar != null) {
             AssetManager.DeleteBar(bar);
+            
             Destroy(bar.gameObject);
         }
     }
@@ -194,6 +193,7 @@ public class SelectionController : MonoBehaviour {
     private void DeletePoint(Point point) {
         if (point != null) {
             AssetManager.DeletePoint(point);
+            // selectedPoints.Remove(point);
             Destroy(point.gameObject);
         }
     }
@@ -205,21 +205,25 @@ public class SelectionController : MonoBehaviour {
         dummyBars = new List<SolidBar>();
         Vector3 offset = new Vector3(0, 50, 0);
         foreach (Point p in selectedPoints) {
-            Point newPoint = Instantiate(dummyPoint, p.GetPosition() + offset,
-                        Quaternion.identity, copiedParent).GetComponent<Point>();
-            // newPoint.SetFree();
+            if (p != null) {
+                Point newPoint = Instantiate(dummyPoint, p.GetPosition() + offset,
+                                            Quaternion.identity, copiedParent).GetComponent<Point>();
             dummyPoints.Add(newPoint);
+            }
+
         } 
 
         foreach (SolidBar b in selectedBars) {
-            SolidBar newBar = Instantiate(dummyBar, b.GetPosition() + offset,
-                        b.transform.rotation, copiedParent).GetComponent<SolidBar>();
-            Point newHead = Produce(b.head.GetPosition() + offset);
-            Point newTail = Produce(b.tail.GetPosition() + offset);
-            newBar.SetR(newHead, newTail);
-            newBar.transform.localScale = new Vector3(newBar.GetLength(), 5);
-            newBar.SetMaterial(b.GetMaterial());
-            dummyBars.Add(newBar);
+            if (b != null) {
+                SolidBar newBar = Instantiate(dummyBar, b.GetPosition() + offset,
+                            b.transform.rotation, copiedParent).GetComponent<SolidBar>();
+                Point newHead = Produce(b.head.GetPosition() + offset);
+                Point newTail = Produce(b.tail.GetPosition() + offset);
+                newBar.SetR(newHead, newTail);
+                newBar.transform.localScale = new Vector3(newBar.GetLength(), 5);
+                newBar.SetMaterial(b.GetMaterial());
+                dummyBars.Add(newBar);
+            }
         } 
         draggingCopied = true;
     }

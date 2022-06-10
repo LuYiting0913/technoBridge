@@ -10,6 +10,7 @@ public class VehicleController : MonoBehaviour {
     public float motor = 300;
     public float brake = 10000;
     public Checkpoint checkpoint;
+    public bool arrived;
 
     private void Accelerate() {
         rearLeft.motorTorque = motor;
@@ -50,6 +51,7 @@ public class VehicleController : MonoBehaviour {
     public void FixedUpdate() {
         if (checkpoint.Arrived(transform.position)) {
             Debug.Log("arrived");
+            arrived = true;
             Brake();
         } else {
             Accelerate();
@@ -59,5 +61,9 @@ public class VehicleController : MonoBehaviour {
 
     public void SetCheckpoint(Checkpoint p) {
         checkpoint = p;
+    }
+
+    public bool ArrivedAtCheckpoint() {
+        return checkpoint.Arrived(transform.position);
     }
 }

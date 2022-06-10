@@ -40,4 +40,5 @@ public class Vehicle {
     public Checkpoint GetCheckpoint() {
         return checkpoint;
     }
+
 }

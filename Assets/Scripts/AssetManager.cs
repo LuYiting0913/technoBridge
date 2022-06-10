@@ -120,6 +120,10 @@ public class AssetManager : MonoBehaviour {
         allPoints.Remove(p);
     }
 
+    public static void RemoveConnectedNull() {
+        foreach (Point p in allPoints) p.RemoveConnectedNull();
+    }
+
     public static void AddBar(SolidBar bar) {
         allBars.Add(bar);
     }
