@@ -254,10 +254,15 @@ public class SelectionController : MonoBehaviour {
         List<Point> newPoints = new List<Point>();
 
         foreach (Point p in dummyPoints) {
-            Point newPoint = Instantiate(pointTemplate, p.GetPosition(), Quaternion.identity, pointParent).
-                GetComponent<Point>();
-            newPoints.Add(newPoint);
-            AssetManager.AddPoint(newPoint);     
+            if (!AssetManager.HasPoint(p.GetPosition())) {
+                Point newPoint = Instantiate(pointTemplate, p.GetPosition(), Quaternion.identity, pointParent).
+                    GetComponent<Point>();
+                newPoints.Add(newPoint);
+                AssetManager.AddPoint(newPoint);     
+            } else {
+                Point newPoint = AssetManager.GetPoint(p.GetPosition());
+                newPoints.Add(newPoint);
+            }
         }
 
         foreach (SolidBar bar in dummyBars) {

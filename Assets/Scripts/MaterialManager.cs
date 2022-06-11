@@ -6,31 +6,36 @@ public class MaterialManager {
     private static Dictionary<int, int> materialLength = new Dictionary<int, int>() {
         {0, 100}, // pavement
         {1, 100}, // wood
-        {2, 170}  // steel
+        {2, 170}, // steel
+        {3, 1000} // rope
     };
 
     private static Dictionary<int, string> materialSprite = new Dictionary<int, string>() {
         {0, "Sprite/PavementSprite"},
         {1, "Sprite/WoodSprite"},
-        {2, "Sprite/SteelSprite"}
+        {2, "Sprite/SteelSprite"},
+        {3, "Sprite/WoodSprite"}
     };
 
     private static Dictionary<int, string> materialTemplate3D = new Dictionary<int, string>() {
         {0, "Prefab/tempPavement"},
         {1, "Prefab/tempWoodBar"},
-        {2, "Prefab/tempSteelBar"}
+        {2, "Prefab/tempSteelBar"},
+        {3, "prefab/tempRope"}
     };
 
     private static Dictionary<int, string> materialTemplate2D = new Dictionary<int, string>() {
         {0, "Prefab/Pavement"},
         {1, "Prefab/WoodBar"},
-        {2, "Prefab/SteelBar"}
+        {2, "Prefab/SteelBar"},
+        {3, "Prefab/Rope"}
     };
 
     private static Dictionary<int, int> materialIntegrity = new Dictionary<int, int>() {
         {0, 3000},
         {1, 5000},
-        {2, 9000}
+        {2, 9000},
+        {3, 7000}
     };
 
     public static float GetMaxLength(int material) {

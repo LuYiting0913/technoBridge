@@ -37,9 +37,11 @@ public class SolidBar : MonoBehaviour {
         // not ideal here, change later
         //transform.localScale = new Vector2(length / 10, 5);
         BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
-        Transform child = gameObject.transform.GetChild(0);
+        Transform onSelect = gameObject.transform.GetChild(0);
+        Transform exceedLimit = gameObject.transform.GetChild(1);
         collider.size = new Vector2(length / 10 / scale, collider.size.y);
-        child.localScale = new Vector2(length / 10 / scale, child.localScale.y);
+        onSelect.localScale = new Vector2(length / 10 / scale, onSelect.localScale.y);
+        exceedLimit.localScale = new Vector2(length / 20 / scale, exceedLimit.localScale.y);
         barRenderer.size = new Vector2(length / 10 / scale, barRenderer.size.y);
     }
 
@@ -151,14 +153,20 @@ public class SolidBar : MonoBehaviour {
         }
     }
 
-
-
     public void DisableBar() {
         headJoint.connectedBody = null;
         tailJoint.connectedBody = null;
         this.GetComponent<BoxCollider>().enabled = false;
         this.GetComponent<MeshRenderer>().enabled = false;
         disabled = true;
+    }
+
+    public void ActivateLimit() {
+        transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    public void DeactivateLimit() {
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 
 }
