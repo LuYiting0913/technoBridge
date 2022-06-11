@@ -59,13 +59,17 @@ public class Pavement : MonoBehaviour {
         baseColor = color;
     }
 
+    public Color GetBaseColor() {
+        return baseColor;
+    }
+
     // amend later
     public Color GetLoadColor() {
         float load = GetCurrentLoad();
         if (load < 0.5) {
-            return new Color(baseColor.r, 1 - load, baseColor.b);
+            return new Color(load * 2, 1, 0);
         } else if (load < 1) {
-            return new Color(load, baseColor.g, baseColor.b);
+            return new Color(1, 2 - load * 2, 0);
         } else {
             return new Color(1, 0, 0);
         }

@@ -11,7 +11,7 @@ public class Stage2Controller : MonoBehaviour {
     public Transform vehicleParent;
 
     public void Start() {
-        playSpeed = 1f;
+        playSpeed = 2f;
     }
 
     public void TogglePause() {
@@ -34,9 +34,8 @@ public class Stage2Controller : MonoBehaviour {
 
     public void UpdatePlaySpeed() {
         Slider s = playSpeedSlider.GetComponent<Slider>();
-        playSpeed = s.value;
-        Debug.Log(s.value);
-        int percentage = (int) (playSpeed * 100);
+        playSpeed = s.value * 2;
+        int percentage = (int) (playSpeed * 50);
         s.transform.GetChild(3).GetComponent<TMPro.TextMeshProUGUI>().text = percentage + "%";
     }
 
