@@ -35,7 +35,9 @@ public class Point : MonoBehaviour {
                 } else {
                     v = new Vector2(bar.GetHead().x, bar.GetHead().y);
                 }
-                check = check || (v - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial()) * scale;
+                bool temp = (v - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial()) * scale;
+                if (temp) bar.ActivateLimit();
+                check = check || temp;
             }
         }
         return check;

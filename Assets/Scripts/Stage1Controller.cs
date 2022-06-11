@@ -34,7 +34,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private int popUpSec = 1;
     // private Point currentPointDragging;
 
-    private ToggleButton select, drag, trace, steel, wood, pavement;
+    private ToggleButton select, drag, trace, steel, wood, pavement, rope;
     private GameObject popupToolBar;
 
     public Vector2 startPoint, endPoint, curPoint;
@@ -111,6 +111,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         pavement = GameObject.Find("Pavement").GetComponent<ToggleButton>();
         wood = GameObject.Find("Wood").GetComponent<ToggleButton>();
         steel = GameObject.Find("Steel").GetComponent<ToggleButton>();
+        rope = GameObject.Find("Rope").GetComponent<ToggleButton>();
         popupToolBar = GameObject.Find("PopupToolBar");
         
         // render all existing points
@@ -240,6 +241,12 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         pavement.ToggleSprite();
     }
 
+    public void SetMaterialRope() {
+        AddMode();
+        currentMaterial = 3;
+        rope.ToggleSprite();
+    }
+
     public void UpdateBackgroundInfo() {
         backgroundScale = slider.GetComponent<Slider>().value;
         transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
@@ -255,7 +262,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         drag.TurnOff();
         steel.TurnOff();
         wood.TurnOff();
-        pavement.TurnOff();
+        // pavement.TurnOff();
         trace.TurnOff();
         popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
 

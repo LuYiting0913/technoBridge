@@ -76,6 +76,7 @@ public class DragController : MonoBehaviour {
 
     private void ReleasePoint() {
         selectedPoint.GetChild(0).gameObject.SetActive(false);
+        foreach (SolidBar b in selectedPoint.GetComponent<Point>().connectedBars) b.DeactivateLimit();
         selectedPoint = null;
     }
 

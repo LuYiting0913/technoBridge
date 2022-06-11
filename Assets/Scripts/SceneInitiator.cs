@@ -38,8 +38,15 @@ public class SceneInitiator : MonoBehaviour {
         foreach (SolidBarReference b in barToInit) {
             if (b.GetMaterial() != 0) {
                 // for non-pavement barsm init twice
-                for (int i = 0; i <= 1; i += 1) {
-                    InstantiateBar(b, i);
+                if (b.GetMaterial() < 3) {
+                    for (int i = 0; i <= 1; i += 1) {
+                        InstantiateBar(b, i);
+                    }
+                } else {
+                    // ropes
+                    for (int i = 0; i <= 1; i += 1) {
+                        InstantiateRope(b, i);
+                    }
                 }
             } else {
                 InstantiatePavement(b);
@@ -93,6 +100,50 @@ public class SceneInitiator : MonoBehaviour {
         newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);
         newBar.InitTemp(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
     	allBars.Add(newBar);
+    }
+
+    private void InstantiateRope(SolidBarReference bar, int i) {
+        int maxPerSegment = 20;
+        Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
+        Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth);
+        Vector3 dir = tailPosition - headPosition;
+        float l = dir.magnitude;
+        int numberOfSegments = (int) (l / maxPerSegment);
+
+        
+        GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
+        scaledTemplate.transform.localScale = new Vector3(10, l / numberOfSegments / 1.9f, 10);
+        Quaternion rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, bar.GetDirection()));
+        
+        GameObject previousSegment = AssetManager.GetPoint(headPosition).gameObject;
+        for (int j = 1; j <= numberOfSegments; j++) {
+            Vector3 tempHead = headPosition + ((float) (j - 1) / numberOfSegments) * dir; 
+            Vector3 tempTail = headPosition + ((float) j / numberOfSegments) * dir;
+            Vector3 tempPos = (tempHead + tempTail) / 2;
+            SolidBar b = Instantiate(scaledTemplate, tempPos, rotation, barParent).GetComponent<SolidBar>();
+            HingeJoint joint = b.gameObject.GetComponent<HingeJoint>();
+            joint.connectedBody = previousSegment.GetComponent<Rigidbody>();
+            joint.anchor = new Vector3(0, -0.9f, 0);
+            joint.axis = new Vector3(0, 0, 1); 
+            previousSegment = b.gameObject;        
+        }
+        HingeJoint jt = previousSegment.AddComponent<HingeJoint>();
+        jt.connectedBody = AssetManager.GetPoint(tailPosition).gameObject.GetComponent<Rigidbody>();
+        jt.anchor = new Vector3(0, 1, 0);
+        jt.axis = new Vector3(0, 0, 1); 
+        // Vector3 midPoint = (headPosition + tailPosition) / 2;
+        // float angle = Vector2.SignedAngle(Vector2.up, dir);
+        
+        // 
+        // scaledTemplate.transform.localScale = new Vector3(50, dir.magnitude / 2, 50);
+
+        // SolidBar newBar = Instantiate(scaledTemplate, midPoint, 
+        //                     Quaternion.Euler(new Vector3(0, 0, angle)), barParent).GetComponent<SolidBar>();
+
+        // newBar.SetMaterial(bar.GetMaterial());
+        // newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);
+        // newBar.InitTemp(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
+    	// allBars.Add(newBar);
     }
 
     private void InstantiatePavement(SolidBarReference bar) {
