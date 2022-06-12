@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+
 
 public class Stage2Controller : MonoBehaviour {
     private bool isPaused, displayStress;
@@ -50,7 +53,7 @@ public class Stage2Controller : MonoBehaviour {
         if (!isPaused) Time.timeScale = playSpeed;
         if (AllVehicleArrived()) {
             Debug.Log("all arrived");
-            canvas.transform.GetChild(2).gameObject.SetActive(true);
+            canvas.transform.GetChild(3).gameObject.SetActive(true);
         }
     }
 }
