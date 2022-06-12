@@ -39,8 +39,8 @@ public class MaterialManager {
         {0, 5000},
         {1, 5000},
         {2, 9000},
-        {3, 7000},
-        {4, 10000}
+        {3, 1000},
+        {4, 1500}
     };
 
     private static Dictionary<int, float> materialCostPerUnitLength = new Dictionary<int, float>() {
