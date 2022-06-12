@@ -76,9 +76,9 @@ public class Pavement : MonoBehaviour {
     }
 
     public void DisablePave() {
-        for (int i = 0; i < 4; i ++) hinges[i].connectedBody = null;
-        this.GetComponent<BoxCollider>().enabled = false;
-        this.GetComponent<MeshRenderer>().enabled = false;
+        for (int i = 0; i < 4; i ++) Destroy(hinges[i]);
+        //this.GetComponent<BoxCollider>().enabled = false;
+        //this.GetComponent<MeshRenderer>().enabled = false;
         disabled = true;
     }
 }

@@ -158,10 +158,10 @@ public class SolidBar : MonoBehaviour {
     }
 
     public void DisableBar() {
-        headJoint.connectedBody = null;
-        tailJoint.connectedBody = null;
-        this.GetComponent<BoxCollider>().enabled = false;
-        this.GetComponent<MeshRenderer>().enabled = false;
+        Destroy(headJoint);
+        Destroy(tailJoint);
+        // this.GetComponent<BoxCollider>().enabled = false;
+        //this.GetComponent<MeshRenderer>().enabled = false;
         disabled = true;
     }
 

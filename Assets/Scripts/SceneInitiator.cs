@@ -171,8 +171,8 @@ public class SceneInitiator : MonoBehaviour {
 
     public void Update() {
         foreach (SolidBar bar in allBars) {
-            if (bar != null) {
-                if (!bar.disabled && bar.GetCurrentLoad() >= 1) {
+            if (bar != null && !bar.disabled) {
+                if (bar.GetCurrentLoad() >= 1) {
                     // Transform piece1 = bar.transform.GetChild(0);
                     // Transform piece2 = bar.transform.GetChild(1);
 
@@ -183,9 +183,7 @@ public class SceneInitiator : MonoBehaviour {
                     // piece1.GetComponent<SolidBar>().InitTemp(bar.head, null);
                     // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
                     bar.DisableBar();
-                } 
-
-                if (displayStress) {
+                } else if (displayStress) {
                     bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor();
                 } else {
                     bar.GetComponent<MeshRenderer>().material.color = bar.GetBaseColor();
@@ -195,8 +193,8 @@ public class SceneInitiator : MonoBehaviour {
         }
 
         foreach (Pavement pave in allPaves) {
-            if (pave != null) {
-                if (!pave.disabled && pave.GetCurrentLoad() >= 1) {
+            if (pave != null && !pave.disabled) {
+                if (pave.GetCurrentLoad() >= 1) {
                     // Transform piece1 = bar.transform.GetChild(0);
                     // Transform piece2 = bar.transform.GetChild(1);
 
@@ -206,10 +204,8 @@ public class SceneInitiator : MonoBehaviour {
                     // piece2.SetParent(barParent, true);
                     // piece1.GetComponent<SolidBar>().InitTemp(bar.head, null);
                     // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
-                    // pave.DisablePave();
-                } 
-                            
-                if (displayStress) {
+                    pave.DisablePave();
+                } else if (displayStress) {
                     pave.transform.GetChild(1).GetComponent<MeshRenderer>().material.color = pave.GetLoadColor();
                 } else {
                     pave.transform.GetChild(1).GetComponent<MeshRenderer>().material.color = pave.GetBaseColor();
