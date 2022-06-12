@@ -5,6 +5,7 @@ using UnityEngine;
 // store all information abt this level
 public class Level0 : MonoBehaviour {
     private static List<PointReference> fixedPoints = new List<PointReference>();
+    private static int budget = 50000;
 
     public static void InitLevel() {
         PointReference p1 = new PointReference();
@@ -21,7 +22,9 @@ public class Level0 : MonoBehaviour {
 
         vehicles.Add(Vehicle.Of(1, new Vector3(-350, -40, 90), new Vector3(350,0, 90)));
         Levels.SetVehicleData(0, vehicles);
-        Debug.Log(vehicles[0]);
+
+        Levels.SetBudget(0, budget);
+
     }
 
 }

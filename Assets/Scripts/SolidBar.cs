@@ -125,6 +125,10 @@ public class SolidBar : MonoBehaviour {
         return (head.GetPosition() - tail.GetPosition()).magnitude;
     }
 
+    public int CalculateCost() {
+        return (int) (GetLength() * MaterialManager.GetMaterialCost(material));
+    }
+
     public float GetCurrentTension() {
         return Math.Max(headJoint.currentForce.x, tailJoint.currentForce.x);
     }

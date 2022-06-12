@@ -10,6 +10,7 @@ public class Levels {
     private static Dictionary<int, Vector3> backgroundPosition = new Dictionary<int, Vector3>();
     private static Dictionary<int, float> backgroundScale = new Dictionary<int, float>();
     private static bool[] isInited = new bool[10];
+    private static int[] budget = new int[10];
     //private static Dictionary<int, List<Checkpoint>> checkpointData = new Dictionary<int, List<Checkpoint>>();
 
     public static void InitLevel(int level) {
@@ -71,6 +72,14 @@ public class Levels {
 
     public static float GetBackgroundScale(int level) {
         return backgroundScale.ContainsKey(level) ? backgroundScale[level] : 1f;
+    }
+
+    public static void SetBudget(int level, int b) {
+        budget[level] = b;
+    }
+
+    public static int GetBudget(int level) {
+        return budget[level];
     }
 
 }
