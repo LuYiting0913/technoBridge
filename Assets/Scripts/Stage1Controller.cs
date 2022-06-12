@@ -295,7 +295,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         drag.TurnOff();
         steel.TurnOff();
         wood.TurnOff();
-        // pavement.TurnOff();
+        pavement.TurnOff();
         rope.TurnOff();
         cable.TurnOff();
         trace.TurnOff();
