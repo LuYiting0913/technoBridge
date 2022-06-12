@@ -52,7 +52,7 @@ public class Stage2Controller : MonoBehaviour {
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
         if (AllVehicleArrived()) {
-            Debug.Log("all arrived");
+            // Debug.Log("all arrived");
             canvas.transform.GetChild(3).gameObject.SetActive(true);
         }
     }

@@ -103,6 +103,10 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     private void InstantiateRope(SolidBarReference bar, int i) {
+        GameObject ropeParent = new GameObject("RopeParent");
+        ropeParent.transform.parent = barParent;
+        SolidBar newRope = ropeParent.AddComponent<SolidBar>();
+        
         int maxPerSegment = 20;
         Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
         Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth);
@@ -110,7 +114,6 @@ public class SceneInitiator : MonoBehaviour {
         float l = dir.magnitude;
         int numberOfSegments = (int) (l / maxPerSegment);
 
-        
         GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
         scaledTemplate.transform.localScale = new Vector3(10, l / numberOfSegments / 1.9f, 10);
         Quaternion rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, bar.GetDirection()));
@@ -120,30 +123,22 @@ public class SceneInitiator : MonoBehaviour {
             Vector3 tempHead = headPosition + ((float) (j - 1) / numberOfSegments) * dir; 
             Vector3 tempTail = headPosition + ((float) j / numberOfSegments) * dir;
             Vector3 tempPos = (tempHead + tempTail) / 2;
-            SolidBar b = Instantiate(scaledTemplate, tempPos, rotation, barParent).GetComponent<SolidBar>();
-            HingeJoint joint = b.gameObject.GetComponent<HingeJoint>();
+            SolidBar b = Instantiate(scaledTemplate, tempPos, rotation, ropeParent.transform).GetComponent<SolidBar>();
+            ConfigurableJoint joint = b.gameObject.GetComponent<ConfigurableJoint>();
             joint.connectedBody = previousSegment.GetComponent<Rigidbody>();
-            joint.anchor = new Vector3(0, -0.9f, 0);
-            joint.axis = new Vector3(0, 0, 1); 
+            joint.anchor = new Vector3(0, -1, 0);
+            InitRopeJoint(joint); 
             previousSegment = b.gameObject;        
         }
-        HingeJoint jt = previousSegment.AddComponent<HingeJoint>();
+        ConfigurableJoint jt = previousSegment.AddComponent<ConfigurableJoint>();
         jt.connectedBody = AssetManager.GetPoint(tailPosition).gameObject.GetComponent<Rigidbody>();
         jt.anchor = new Vector3(0, 1, 0);
-        jt.axis = new Vector3(0, 0, 1); 
-        // Vector3 midPoint = (headPosition + tailPosition) / 2;
-        // float angle = Vector2.SignedAngle(Vector2.up, dir);
-        
-        // 
-        // scaledTemplate.transform.localScale = new Vector3(50, dir.magnitude / 2, 50);
+        InitRopeJoint(jt); 
 
-        // SolidBar newBar = Instantiate(scaledTemplate, midPoint, 
-        //                     Quaternion.Euler(new Vector3(0, 0, angle)), barParent).GetComponent<SolidBar>();
-
-        // newBar.SetMaterial(bar.GetMaterial());
-        // newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);
-        // newBar.InitTemp(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
-    	// allBars.Add(newBar);
+        newRope.SetMaterial(bar.GetMaterial());
+        newRope.SetBaseColor(previousSegment.GetComponent<MeshRenderer>().material.color);
+        newRope.SetR(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
+    	allBars.Add(newRope);
     }
 
     private void InstantiatePavement(SolidBarReference bar) {
@@ -165,6 +160,15 @@ public class SceneInitiator : MonoBehaviour {
         allPaves.Add(newPave);
     }
 
+    private void InitRopeJoint(ConfigurableJoint joint) {
+        joint.xMotion = ConfigurableJointMotion.Locked;
+        joint.yMotion = ConfigurableJointMotion.Locked;
+        joint.zMotion = ConfigurableJointMotion.Locked;
+        joint.angularYMotion = ConfigurableJointMotion.Locked;
+        joint.angularZMotion = ConfigurableJointMotion.Locked;
+        joint.axis = new Vector3(0, 0, 1); 
+    }
+
     public void ToggleStressDisplay() {
         displayStress = !displayStress;
     }
@@ -184,9 +188,9 @@ public class SceneInitiator : MonoBehaviour {
                     // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
                     bar.DisableBar();
                 } else if (displayStress) {
-                    bar.GetComponent<MeshRenderer>().material.color = bar.GetLoadColor();
+                    bar.DisplayStress();
                 } else {
-                    bar.GetComponent<MeshRenderer>().material.color = bar.GetBaseColor();
+                    bar.DisplayNormal();
                 }
             }
 
@@ -206,9 +210,11 @@ public class SceneInitiator : MonoBehaviour {
                     // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
                     pave.DisablePave();
                 } else if (displayStress) {
-                    pave.transform.GetChild(1).GetComponent<MeshRenderer>().material.color = pave.GetLoadColor();
+                    // pave.transform.GetChild(1).GetComponent<MeshRenderer>().material.color = pave.GetLoadColor();
+                    pave.DisplayStress();
                 } else {
-                    pave.transform.GetChild(1).GetComponent<MeshRenderer>().material.color = pave.GetBaseColor();
+                    // pave.transform.GetChild(1).GetComponent<MeshRenderer>().material.color = pave.GetBaseColor();
+                    pave.DisplayNormal();
                 }
             }
         }

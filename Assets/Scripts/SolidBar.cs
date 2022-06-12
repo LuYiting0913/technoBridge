@@ -8,8 +8,8 @@ public class SolidBar : MonoBehaviour {
     // private Vector3 tail.GetPosition();
     public Point head;
     public Point tail;
-    private HingeJoint headJoint;
-    private HingeJoint tailJoint;
+    private ConfigurableJoint headJoint,tailJoint;
+
     private Color baseColor;
     public int material; 
     private float maxLoad;
@@ -18,6 +18,10 @@ public class SolidBar : MonoBehaviour {
 
     private SpriteRenderer barRenderer;
     // private float maxLength = 200f; 
+
+    private bool isRope() {
+        return material == 3 || material == 4;
+    }
 
     public void InitRenderer() {
         Sprite sp = MaterialManager.GetSprite(material);
@@ -46,22 +50,30 @@ public class SolidBar : MonoBehaviour {
     }
 
     public void InitBarHead() {
-        headJoint = gameObject.AddComponent<HingeJoint>();
+        headJoint = gameObject.AddComponent<ConfigurableJoint>();
         headJoint.connectedBody = head.GetComponent<Rigidbody>();
+        InitJointSetting(headJoint);
         headJoint.anchor = new Vector3(0, -1, 0);
-        headJoint.axis = new Vector3(0, 0, 1); 
         //headJoint.breakForce = MaterialManager.GetIntegrity(material);
     }
 
     public void InitBarTail() {
-        tailJoint = gameObject.AddComponent<HingeJoint>();
+        tailJoint = gameObject.AddComponent<ConfigurableJoint>();
         tailJoint.connectedBody = tail.GetComponent<Rigidbody>();
-
+        InitJointSetting(tailJoint);
         tailJoint.anchor = new Vector3(0, 1, 0);
-        tailJoint.axis = new Vector3(0, 0, 1); 
+
         //tailJoint.breakForce = MaterialManager.GetIntegrity(material);
     }
 
+    private void InitJointSetting(ConfigurableJoint joint) {
+        joint.xMotion = ConfigurableJointMotion.Locked;
+        joint.yMotion = ConfigurableJointMotion.Locked;
+        joint.zMotion = ConfigurableJointMotion.Locked;
+        joint.angularYMotion = ConfigurableJointMotion.Locked;
+        joint.angularZMotion = ConfigurableJointMotion.Locked;
+        joint.axis = new Vector3(0, 0, 1); 
+    }
 
     public void SetMaterial(int m) {
         material = m;
@@ -130,7 +142,12 @@ public class SolidBar : MonoBehaviour {
     }
 
     public float GetCurrentTension() {
-        return Math.Max(headJoint.currentForce.x, tailJoint.currentForce.x);
+        if (!isRope()) {
+            return Math.Max(headJoint.currentForce.x, tailJoint.currentForce.x);
+        } else {
+            return transform.GetChild(0).GetComponent<ConfigurableJoint>().currentForce.magnitude;
+        }
+        
     }
 
     public float GetCurrentLoad() {
@@ -157,11 +174,31 @@ public class SolidBar : MonoBehaviour {
         }
     }
 
+    public void DisplayStress() {
+        if (!isRope()) {
+            gameObject.GetComponent<MeshRenderer>().material.color = GetLoadColor();
+        } else {
+            Color stress = GetLoadColor();
+            for (int i = 0; i < transform.childCount; i++) {
+                transform.GetChild(i).GetComponent<MeshRenderer>().material.color = stress;
+            }
+        }
+    }
+
+    public void DisplayNormal() {
+        if (!isRope()) {
+            gameObject.GetComponent<MeshRenderer>().material.color = GetBaseColor();
+        } else {
+            Color normal = GetBaseColor();
+            for (int i = 0; i < transform.childCount; i++) {
+                transform.GetChild(i).GetComponent<MeshRenderer>().material.color = normal;
+            }
+        }
+    }
+
     public void DisableBar() {
         Destroy(headJoint);
         Destroy(tailJoint);
-        // this.GetComponent<BoxCollider>().enabled = false;
-        //this.GetComponent<MeshRenderer>().enabled = false;
         disabled = true;
     }
 

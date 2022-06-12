@@ -6,7 +6,7 @@ using System;
 public class Pavement : MonoBehaviour {
     private Vector3 headPosition;
     private Vector3 tailPosition;
-    private HingeJoint[] hinges = new HingeJoint[4];
+    private ConfigurableJoint[] hinges = new ConfigurableJoint[4];
     private Vector3[] anchors = new Vector3[4];
     private static float maxLoad = MaterialManager.GetIntegrity(0);
     public bool disabled = false;
@@ -38,12 +38,21 @@ public class Pavement : MonoBehaviour {
 
             if (index != -1) {
                 Debug.Log(index);
-                hinges[index] = gameObject.AddComponent<HingeJoint>();
+                hinges[index] = gameObject.AddComponent<ConfigurableJoint>();
                 hinges[index].connectedBody = p.GetComponent<Rigidbody>();
-                hinges[index].axis = new Vector3(0, 0, 1);
+                InitJointSetting(hinges[index]);
                 hinges[index].anchor = anchors[index];
             }
         }
+    }
+
+    private void InitJointSetting(ConfigurableJoint joint) {
+        joint.xMotion = ConfigurableJointMotion.Locked;
+        joint.yMotion = ConfigurableJointMotion.Locked;
+        joint.zMotion = ConfigurableJointMotion.Locked;
+        joint.angularYMotion = ConfigurableJointMotion.Locked;
+        joint.angularZMotion = ConfigurableJointMotion.Locked;
+        joint.axis = new Vector3(0, 0, 1); 
     }
 
     public float GetCurrentTension() {
@@ -75,6 +84,14 @@ public class Pavement : MonoBehaviour {
         }
     }
 
+    public void DisplayStress() {
+        transform.GetChild(1).GetComponent<MeshRenderer>().material.color = GetLoadColor();
+    }
+
+    public void DisplayNormal() {
+        transform.GetChild(1).GetComponent<MeshRenderer>().material.color = GetBaseColor();
+    }
+
     public void DisablePave() {
         for (int i = 0; i < 4; i ++) Destroy(hinges[i]);
         //this.GetComponent<BoxCollider>().enabled = false;
@@ -85,7 +102,7 @@ public class Pavement : MonoBehaviour {
 
 
 // head = headPoint;
-//         headJoint = gameObject.AddComponent<HingeJoint>();
+//         headJoint = gameObject.AddComponent<ConfigurableJoint>();
 //         headJoint.connectedBody = head.GetComponent<Rigidbody>();
 //         headJoint.anchor = new Vector3(0, -1, 0);
 //         headJoint.axis = new Vector3(0, 0, 1); 
