@@ -7,42 +7,48 @@ public class MaterialManager {
         {0, 100}, // pavement
         {1, 100}, // wood
         {2, 170}, // steel
-        {3, 1000} // rope
+        {3, 1000},// rope
+        {4, 1000} // cable
     };
 
     private static Dictionary<int, string> materialSprite = new Dictionary<int, string>() {
-        {0, "Sprite/PavementSprite"},
-        {1, "Sprite/WoodSprite"},
-        {2, "Sprite/SteelSprite"},
-        {3, "Sprite/WoodSprite"}
+        {0, "Sprite/Object2D/PavementSprite"},
+        {1, "Sprite/Object2D/WoodSprite"},
+        {2, "Sprite/Object2D/SteelSprite"},
+        {3, "Sprite/Object2D/RopeSprite"},
+        {4, "Sprite/Object2D/CableSprite"}
     };
 
     private static Dictionary<int, string> materialTemplate3D = new Dictionary<int, string>() {
-        {0, "Prefab/tempPavement"},
-        {1, "Prefab/tempWoodBar"},
-        {2, "Prefab/tempSteelBar"},
-        {3, "prefab/tempRope"}
+        {0, "Prefab/Object3D/tempPavement"},
+        {1, "Prefab/Object3D/tempWoodBar"},
+        {2, "Prefab/Object3D/tempSteelBar"},
+        {3, "prefab/Object3D/tempRope"},
+        {4, "prefab/Object3D/tempCable"}
     };
 
     private static Dictionary<int, string> materialTemplate2D = new Dictionary<int, string>() {
-        {0, "Prefab/Pavement"},
-        {1, "Prefab/WoodBar"},
-        {2, "Prefab/SteelBar"},
-        {3, "Prefab/Rope"}
+        {0, "Prefab/Object2D/Pavement"},
+        {1, "Prefab/Object2D/WoodBar"},
+        {2, "Prefab/Object2D/SteelBar"},
+        {3, "Prefab/Object2D/Rope"},
+        {4, "prefab/Object2D/Cable"}
     };
 
     private static Dictionary<int, int> materialIntegrity = new Dictionary<int, int>() {
         {0, 3000},
         {1, 5000},
         {2, 9000},
-        {3, 7000}
+        {3, 7000},
+        {4, 10000}
     };
 
     private static Dictionary<int, float> materialCostPerUnitLength = new Dictionary<int, float>() {
         {0, 1f},
         {1, 0.7f},
         {2, 2f},
-        {3, 0.5f}
+        {3, 0.5f},
+        {4, 1f}
     };
 
     public static float GetMaxLength(int material) {
