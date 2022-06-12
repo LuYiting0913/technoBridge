@@ -256,30 +256,6 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         
     }
 
-    // public void SetMaterialWood() {
-    //     AddMode();
-    //     currentMaterial = 1;
-    //     wood.ToggleSprite();
-    // }
-
-    // public void SetMaterialSteel() {
-    //     AddMode();
-    //     currentMaterial = 2;
-    //     steel.ToggleSprite();
-    // }
-
-    // public void SetMaterialPavement() {
-    //     AddMode();
-    //     currentMaterial = 0;
-    //     pavement.ToggleSprite();
-    // }
-
-    // public void SetMaterialRope() {
-    //     AddMode();
-    //     currentMaterial = 3;
-    //     rope.ToggleSprite();
-    // }
-
     public void UpdateBackgroundInfo() {
         backgroundScale = slider.GetComponent<Slider>().value;
         transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
