@@ -33,7 +33,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private int popUpSec = 1;
     // private Point currentPointDragging;
 
-    private ToggleButton select, drag, trace, steel, wood, pavement, rope;
+    private ToggleButton select, drag, trace, steel, wood, pavement, rope, cable;
     private GameObject popupToolBar;
 
     public Vector2 startPoint, endPoint, curPoint;
@@ -113,6 +113,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         wood = GameObject.Find("Wood").GetComponent<ToggleButton>();
         steel = GameObject.Find("Steel").GetComponent<ToggleButton>();
         rope = GameObject.Find("Rope").GetComponent<ToggleButton>();
+        cable = GameObject.Find("Cable").GetComponent<ToggleButton>();
         popupToolBar = GameObject.Find("PopupToolBar");
         
         // render all existing points
@@ -230,29 +231,54 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         // TurnOffAll();
     }
 
-    public void SetMaterialWood() {
+    public void SetMaterial(int material) {
         AddMode();
-        currentMaterial = 1;
-        wood.ToggleSprite();
+        currentMaterial = material;
+        switch (material) {
+            case 0:
+                pavement.ToggleSprite();
+                break;
+            case 1:
+                wood.ToggleSprite();
+                break;
+            case 2:
+                steel.ToggleSprite();
+                break;
+            case 3:
+                rope.ToggleSprite();
+                break;
+            case 4:
+                cable.ToggleSprite();
+                break;
+            default:
+                break;
+        }
+        
     }
 
-    public void SetMaterialSteel() {
-        AddMode();
-        currentMaterial = 2;
-        steel.ToggleSprite();
-    }
+    // public void SetMaterialWood() {
+    //     AddMode();
+    //     currentMaterial = 1;
+    //     wood.ToggleSprite();
+    // }
 
-    public void SetMaterialPavement() {
-        AddMode();
-        currentMaterial = 0;
-        pavement.ToggleSprite();
-    }
+    // public void SetMaterialSteel() {
+    //     AddMode();
+    //     currentMaterial = 2;
+    //     steel.ToggleSprite();
+    // }
 
-    public void SetMaterialRope() {
-        AddMode();
-        currentMaterial = 3;
-        rope.ToggleSprite();
-    }
+    // public void SetMaterialPavement() {
+    //     AddMode();
+    //     currentMaterial = 0;
+    //     pavement.ToggleSprite();
+    // }
+
+    // public void SetMaterialRope() {
+    //     AddMode();
+    //     currentMaterial = 3;
+    //     rope.ToggleSprite();
+    // }
 
     public void UpdateBackgroundInfo() {
         backgroundScale = slider.GetComponent<Slider>().value;
@@ -270,6 +296,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         steel.TurnOff();
         wood.TurnOff();
         // pavement.TurnOff();
+        rope.TurnOff();
+        cable.TurnOff();
         trace.TurnOff();
         popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
 

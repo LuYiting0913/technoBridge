@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PrefabManager {
-    private static string point2D = "Prefab/Point";
-    private static string fixedPoint2D = "Prefab/FixedPoint";
+    private static string point2D = "Prefab/Object2D/Point";
+    private static string fixedPoint2D = "Prefab/Object2D/FixedPoint";
     private static string gridLine = "Prefab/GridLine";
 
 
