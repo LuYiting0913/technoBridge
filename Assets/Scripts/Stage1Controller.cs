@@ -6,38 +6,37 @@ using UnityEngine.UI;
 using System;
 
 public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
+    public int level = 0;
+
+    public Vector2 startPoint, endPoint, curPoint;
+    public bool isPointerDown = false;
+    private int currentEditMode = 0;
+    // 0 add; 1 select; 2 drag joint; 3: drag copied segment; 4: tracing
+    public bool autoComplete, gridSnap, autoTriangulate;
+    public int currentMaterial = 0;
+
+    private ToggleButton select, drag, trace, steel, wood, pavement, rope, cable;
     public Transform barParent, pointParent, gridParent;
     private GameObject barTemplate, pointTemplate, fixedPointTemplate;
+    private GameObject popupToolBar;
 
-    public int level = 0;
     private TraceController traceController;
     private SelectionController selectionController;
     private SolidBarInitiator solidbarInitiator;
     private DragController dragController;
 
-    private int currentEditMode = 0;
-    // 0 add; 1 select; 2 drag joint; 3: drag copied segment; 4: tracing
-    public int currentMaterial = 0;
     private List<Point> existingPoints = new List<Point>();
     private List<SolidBar> existingBars = new List<SolidBar>();
-    public bool autoComplete, gridSnap, autoTriangulate;
-    // private bool draggingCopied, draggingBackground, tracing;
+    
+    // background management
     public Vector3 backgroundPosition;
     public GameObject slider, cursor, costDisplay;
     public static float backgroundScale = 1f;
 
-    // private Vector3 originPosition;
-    // private Vector2 startPosition; // for dragging copy
     private int gridInterval = 20;
     private Camera myCam;
     private int popUpSec = 1;
-    // private Point currentPointDragging;
-
-    private ToggleButton select, drag, trace, steel, wood, pavement, rope, cable;
-    private GameObject popupToolBar;
-
-    public Vector2 startPoint, endPoint, curPoint;
-    public bool isPointerDown = false;
+    private int budget;
 
     // delegates
     public delegate void ModeChangeEventHandler(object source, int i);
@@ -99,7 +98,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         backgroundPosition = Levels.GetBackgroundPosition(level);
         
         Levels.InitLevel(level);
-        costDisplay.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Budget: $" + Levels.GetBudget(level);
+        budget = Levels.GetBudget(level);
+        costDisplay.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Budget: " + MoneyToString(budget);
 
         pointTemplate = PrefabManager.GetPoint2DTemplate();
         fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();  
@@ -295,7 +295,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         drag.TurnOff();
         steel.TurnOff();
         wood.TurnOff();
-        // pavement.TurnOff();
+        pavement.TurnOff();
         rope.TurnOff();
         cable.TurnOff();
         trace.TurnOff();
@@ -329,7 +329,16 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     }
 
     private void UpdateCost(int c) {
-        Color color = new Color(1, 0, 0);
+        // Color color = new Color(1, 0, 0);
+        costDisplay.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = MoneyToString(c);
+        if (c > budget) {
+            costDisplay.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().color = new Color(1, 0, 0);
+        } else {
+            costDisplay.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().color = new Color(0, 1, 0);
+        }
+    }
+
+    private String MoneyToString(int c) {
         String s = "$";
         if (c < 1000) {
             s += c;
@@ -340,7 +349,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             if (r < 10) s += "0";
             s += r;
         }
-        costDisplay.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = s;
+        return s;
     }
 
     private void InstantiateGrid() {
