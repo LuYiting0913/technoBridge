@@ -23,8 +23,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public bool autoComplete, gridSnap, autoTriangulate;
     // private bool draggingCopied, draggingBackground, tracing;
     public Vector3 backgroundPosition;
-    public GameObject slider;
-    public GameObject cursor;
+    public GameObject slider, cursor, costDisplay;
     public static float backgroundScale = 1f;
 
     // private Vector3 originPosition;
@@ -100,6 +99,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         backgroundPosition = Levels.GetBackgroundPosition(level);
         
         Levels.InitLevel(level);
+        costDisplay.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Budget: $" + Levels.GetBudget(level);
+
         pointTemplate = PrefabManager.GetPoint2DTemplate();
         fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();  
         List<PointReference> pointData = Levels.GetPointData(level);
@@ -168,16 +169,22 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void Update() {
         existingBars = AssetManager.GetAllBars();
         existingPoints = AssetManager.GetAllPoints();
-        
+        int cost = 0; 
+
         foreach (SolidBar bar in existingBars) {
-            if (bar != null) bar.RenderSolidBar(backgroundScale);
+            if (bar != null) {
+                bar.RenderSolidBar(backgroundScale);
+                cost += bar.CalculateCost();    
+            }
         }
+        UpdateCost(cost);
 
         if (isPointerDown) {
             Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             curPoint = SnapToGrid(cursor);
             OnDragged();
         }
+
     }
 
     public void SelectMode() {
@@ -291,6 +298,21 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         popupToolBar.transform.GetChild(i).gameObject.SetActive(false);
         //popupToolBar.transform.GetChild(1).gameObject.SetActive(false);
         AddMode();
+    }
+
+    private void UpdateCost(int c) {
+        Color color = new Color(1, 0, 0);
+        String s = "$";
+        if (c < 1000) {
+            s += c;
+        } else {
+            s += c / 1000 + ",";
+            int r = c % 1000;
+            if (r < 100) s += "0";
+            if (r < 10) s += "0";
+            s += r;
+        }
+        costDisplay.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = s;
     }
 
     private void InstantiateGrid() {

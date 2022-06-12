@@ -38,6 +38,13 @@ public class MaterialManager {
         {3, 7000}
     };
 
+    private static Dictionary<int, float> materialCostPerUnitLength = new Dictionary<int, float>() {
+        {0, 1f},
+        {1, 0.7f},
+        {2, 2f},
+        {3, 0.5f}
+    };
+
     public static float GetMaxLength(int material) {
         return materialLength[material];
     }
@@ -56,5 +63,9 @@ public class MaterialManager {
 
     public static int GetIntegrity(int material) {
         return materialIntegrity[material];
+    }
+
+    public static float GetMaterialCost(int material) {
+        return materialCostPerUnitLength[material];
     }
 }
