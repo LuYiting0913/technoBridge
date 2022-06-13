@@ -10,8 +10,12 @@ public class Point : MonoBehaviour {
     private static int threshold = 8;
 
     public Vector3 GetPosition() {
-        return transform.position;
+        return transform.localPosition;
     }
+
+    // public Vector2 GetPosition() {
+    //     return new Vector2(transform.position.x, transform.position.y);
+    // }
 
     public void AddConnectedBar(SolidBar bar) {
         connectedBars.Add(bar);

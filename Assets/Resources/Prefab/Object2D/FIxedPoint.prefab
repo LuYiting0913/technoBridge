@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -2579617682378732371}
   - component: {fileID: -8614885985222791352}
   - component: {fileID: 8838747309722859569}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FIxedPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: bab1462d3aec2f947b1289777d7a3ab9,
     type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
@@ -159,7 +159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6416078737310969985}
   - component: {fileID: 7351736615782677012}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: OnSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
