@@ -177,15 +177,10 @@ public class SceneInitiator : MonoBehaviour {
         foreach (SolidBar bar in allBars) {
             if (bar != null && !bar.disabled) {
                 if (bar.GetCurrentLoad() >= 1) {
-                    // Transform piece1 = bar.transform.GetChild(0);
-                    // Transform piece2 = bar.transform.GetChild(1);
-
-                    // piece1.gameObject.SetActive(true);
-                    // piece2.gameObject.SetActive(true);
-                    // piece1.SetParent(barParent, true);
-                    // piece2.SetParent(barParent, true);
-                    // piece1.GetComponent<SolidBar>().InitTemp(bar.head, null);
-                    // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
+                    Transform piece1 = bar.transform.GetChild(0);
+                    Transform piece2 = bar.transform.GetChild(1);
+                    ActivateBrokenPiece(piece1);
+                    ActivateBrokenPiece(piece2);
                     bar.DisableBar();
                 } else if (displayStress) {
                     bar.DisplayStress();
@@ -199,29 +194,23 @@ public class SceneInitiator : MonoBehaviour {
         foreach (Pavement pave in allPaves) {
             if (pave != null && !pave.disabled) {
                 if (pave.GetCurrentLoad() >= 1) {
-                    // Transform piece1 = bar.transform.GetChild(0);
-                    // Transform piece2 = bar.transform.GetChild(1);
-
-                    // piece1.gameObject.SetActive(true);
-                    // piece2.gameObject.SetActive(true);
-                    // piece1.SetParent(barParent, true);
-                    // piece2.SetParent(barParent, true);
-                    // piece1.GetComponent<SolidBar>().InitTemp(bar.head, null);
-                    // piece2.GetComponent<SolidBar>().InitTemp(null, bar.tail);
+                    Transform piece1 = pave.transform.GetChild(2);
+                    Transform piece2 = pave.transform.GetChild(3);
+                    ActivateBrokenPiece(piece1);
+                    ActivateBrokenPiece(piece2);
                     pave.DisablePave();
                 } else if (displayStress) {
-                    // pave.transform.GetChild(1).GetComponent<MeshRenderer>().material.color = pave.GetLoadColor();
                     pave.DisplayStress();
                 } else {
-                    // pave.transform.GetChild(1).GetComponent<MeshRenderer>().material.color = pave.GetBaseColor();
                     pave.DisplayNormal();
                 }
             }
         }
     }
 
-    // private Vector3 WorldToCanvas(Vector3 pos) {
-    //     return (pos - backgroundPosition) / scale;
-    // }
+    private void ActivateBrokenPiece(Transform piece) {
+        piece.gameObject.SetActive(true);
+        piece.SetParent(barParent, true);
+    }
 
 }

@@ -24,6 +24,8 @@ public class Pavement : MonoBehaviour {
     public void InitPavementHinge(List<Point> allPoints, int roadWidth) {
         Vector3 headMirror = headPosition + new Vector3(0, 0, roadWidth);
         Vector3 tailMirror = tailPosition + new Vector3(0, 0, roadWidth);
+        GameObject brokenHead = transform.GetChild(2).gameObject;
+        GameObject brokenTail = transform.GetChild(3).gameObject;
     	foreach (Point p in allPoints) {
             int index = -1;
             if (p.Contain(headPosition)) {
@@ -37,11 +39,21 @@ public class Pavement : MonoBehaviour {
             }
 
             if (index != -1) {
-                Debug.Log(index);
                 hinges[index] = gameObject.AddComponent<ConfigurableJoint>();
                 hinges[index].connectedBody = p.GetComponent<Rigidbody>();
                 InitJointSetting(hinges[index]);
                 hinges[index].anchor = anchors[index];
+    	        
+                // broken child
+                ConfigurableJoint joint;
+                if  (index <= 1) {
+                    joint = brokenHead.AddComponent<ConfigurableJoint>();
+                } else {
+                    joint = brokenTail.AddComponent<ConfigurableJoint>();
+                }
+                joint.connectedBody = p.GetComponent<Rigidbody>();
+                InitJointSetting(joint);
+                joint.anchor = anchors[index];
             }
         }
     }
@@ -93,9 +105,8 @@ public class Pavement : MonoBehaviour {
     }
 
     public void DisablePave() {
-        for (int i = 0; i < 4; i ++) Destroy(hinges[i]);
-        //this.GetComponent<BoxCollider>().enabled = false;
-        //this.GetComponent<MeshRenderer>().enabled = false;
+        // for (int i = 0; i < 4; i ++) Destroy(hinges[i]);
+        gameObject.SetActive(false);
         disabled = true;
     }
 }
