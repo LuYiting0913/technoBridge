@@ -114,8 +114,9 @@ GameObject:
   - component: {fileID: -5010063952469795193}
   - component: {fileID: -8229410153144045998}
   - component: {fileID: 2319451214737987528}
+  - component: {fileID: 3030598772548340731}
   m_Layer: 0
-  m_Name: tempWoodbar
+  m_Name: tempHydraulic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,7 +131,7 @@ Transform:
   m_GameObject: {fileID: 1981474277034864192}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -104.183365, y: -33.65136, z: 0.12556133}
-  m_LocalScale: {x: 50, y: 47.758934, z: 50}
+  m_LocalScale: {x: 50, y: 70.71945, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6520959811438427968}
@@ -166,7 +167,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 24e34c0d3a1744248ab54a8d09977ab0, type: 2}
+  - {fileID: 2100000, guid: 3a7640b64461ece4cac2401797b9b1a1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -213,7 +214,7 @@ BoxCollider:
   m_GameObject: {fileID: 1981474277034864192}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.13, y: 1.39, z: 0.13}
   m_Center: {x: 0, y: 0, z: -0.0000000037252903}
@@ -231,8 +232,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   head: {fileID: 0}
   tail: {fileID: 0}
-  material: 1
+  material: 5
   disabled: 0
+--- !u!114 &3030598772548340731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981474277034864192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 080e03e9c19597c499bd44af278c2464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3868616733796652369
 GameObject:
   m_ObjectHideFlags: 0
