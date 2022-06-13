@@ -14,6 +14,7 @@ public class SceneInitiator : MonoBehaviour {
     private static int currentLevel;
     private static List<Point> allPoints = new List<Point>();
     private static List<SolidBar> allBars = new List<SolidBar>();
+    private static List<HydraulicController> allHydraulics = new List<HydraulicController>();
     private static List<Pavement> allPaves = new List<Pavement>();
     private static List<Vehicle> allVehicles = new List<Vehicle>();
     // private static Vector3 backgroundPosition;
@@ -35,21 +36,29 @@ public class SceneInitiator : MonoBehaviour {
         //store in asset manager
         AssetManager.Init(allPoints, new List<SolidBar>());
 
+// use oop here
         foreach (SolidBarReference b in barToInit) {
             if (b.GetMaterial() != 0) {
                 // for non-pavement barsm init twice
                 if (b.GetMaterial() < 3) {
                     for (int i = 0; i <= 1; i += 1) {
-                        InstantiateBar(b, i);
+                        allBars.Add(InstantiateBar(b, i));
                     }
-                } else {
+                } else if (b.GetMaterial() < 5) {
                     // ropes
                     for (int i = 0; i <= 1; i += 1) {
-                        InstantiateRope(b, i);
+                        allBars.Add(InstantiateRope(b, i));
+                    }
+                } else {
+                    for (int i = 0; i <= 1; i += 1) {
+                        SolidBar bar = InstantiateBar(b, i);
+                        bar.GetComponent<HydraulicController>().ConvertToHydraulic();
+                        allBars.Add(bar);
+                        allHydraulics.Add(bar.GetComponent<HydraulicController>());
                     }
                 }
             } else {
-                InstantiatePavement(b);
+                allPaves.Add(InstantiatePavement(b));
             }
         }
 
@@ -83,7 +92,7 @@ public class SceneInitiator : MonoBehaviour {
         allPoints.Add(pointInstantiated);
     }
 
-    private void InstantiateBar(SolidBarReference bar, int i) {
+    private SolidBar InstantiateBar(SolidBarReference bar, int i) {
         Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
         Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth);
         Vector2 dir = bar.GetDirection();
@@ -99,10 +108,12 @@ public class SceneInitiator : MonoBehaviour {
         newBar.SetMaterial(bar.GetMaterial());
         newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);
         newBar.InitTemp(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
-    	allBars.Add(newBar);
+    	// allBars.Add(newBar);
+        return newBar;
     }
 
-    private void InstantiateRope(SolidBarReference bar, int i) {
+
+    private SolidBar InstantiateRope(SolidBarReference bar, int i) {
         GameObject ropeParent = new GameObject("RopeParent");
         ropeParent.transform.parent = barParent;
         SolidBar newRope = ropeParent.AddComponent<SolidBar>();
@@ -138,10 +149,11 @@ public class SceneInitiator : MonoBehaviour {
         newRope.SetMaterial(bar.GetMaterial());
         newRope.SetBaseColor(previousSegment.GetComponent<MeshRenderer>().material.color);
         newRope.SetR(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
-    	allBars.Add(newRope);
+    	// allBars.Add(newRope);
+        return newRope;
     }
 
-    private void InstantiatePavement(SolidBarReference bar) {
+    private Pavement InstantiatePavement(SolidBarReference bar) {
         Vector3 headPosition = bar.GetHead3D();
         Vector3 tailPosition = bar.GetTail3D();
         Vector2 dir = bar.GetDirection();
@@ -157,7 +169,8 @@ public class SceneInitiator : MonoBehaviour {
 
         newPave.SetPosition(headPosition, tailPosition);
         newPave.InitPavementHinge(allPoints, roadWidth);
-        allPaves.Add(newPave);
+        // allPaves.Add(newPave);
+        return newPave;
     }
 
     private void InitRopeJoint(ConfigurableJoint joint) {
@@ -177,11 +190,11 @@ public class SceneInitiator : MonoBehaviour {
         foreach (SolidBar bar in allBars) {
             if (bar != null && !bar.disabled) {
                 if (bar.GetCurrentLoad() >= 1) {
-                    Transform piece1 = bar.transform.GetChild(0);
-                    Transform piece2 = bar.transform.GetChild(1);
-                    ActivateBrokenPiece(piece1);
-                    ActivateBrokenPiece(piece2);
-                    bar.DisableBar();
+                    // Transform piece1 = bar.transform.GetChild(0);
+                    // Transform piece2 = bar.transform.GetChild(1);
+                    // ActivateBrokenPiece(piece1);
+                    // ActivateBrokenPiece(piece2);
+                    // bar.DisableBar();
                 } else if (displayStress) {
                     bar.DisplayStress();
                 } else {
@@ -194,11 +207,11 @@ public class SceneInitiator : MonoBehaviour {
         foreach (Pavement pave in allPaves) {
             if (pave != null && !pave.disabled) {
                 if (pave.GetCurrentLoad() >= 1) {
-                    Transform piece1 = pave.transform.GetChild(2);
-                    Transform piece2 = pave.transform.GetChild(3);
-                    ActivateBrokenPiece(piece1);
-                    ActivateBrokenPiece(piece2);
-                    pave.DisablePave();
+                    // Transform piece1 = pave.transform.GetChild(2);
+                    // Transform piece2 = pave.transform.GetChild(3);
+                    // ActivateBrokenPiece(piece1);
+                    // ActivateBrokenPiece(piece2);
+                    // pave.DisablePave();
                 } else if (displayStress) {
                     pave.DisplayStress();
                 } else {
@@ -212,5 +225,7 @@ public class SceneInitiator : MonoBehaviour {
         piece.gameObject.SetActive(true);
         piece.SetParent(barParent, true);
     }
+
+    // private bool isHydraulic()
 
 }

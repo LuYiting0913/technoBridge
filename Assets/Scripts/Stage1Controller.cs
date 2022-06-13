@@ -15,7 +15,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public bool autoComplete, gridSnap, autoTriangulate;
     public int currentMaterial = 0;
 
-    private ToggleButton select, drag, trace, steel, wood, pavement, rope, cable;
+    private ToggleButton select, drag, trace, steel, wood, pavement, rope, cable, hydraulic;
     public Transform barParent, pointParent, gridParent;
     private GameObject barTemplate, pointTemplate, fixedPointTemplate;
     private GameObject popupToolBar;
@@ -114,6 +114,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         steel = GameObject.Find("Steel").GetComponent<ToggleButton>();
         rope = GameObject.Find("Rope").GetComponent<ToggleButton>();
         cable = GameObject.Find("Cable").GetComponent<ToggleButton>();
+        hydraulic = GameObject.Find("Hydraulic").GetComponent<ToggleButton>();
         popupToolBar = GameObject.Find("PopupToolBar");
         
         // render all existing points
@@ -252,6 +253,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 break;
             case 4:
                 cable.ToggleSprite();
+                break;
+            case 5: 
+                hydraulic.ToggleSprite();
                 break;
             default:
                 break;
