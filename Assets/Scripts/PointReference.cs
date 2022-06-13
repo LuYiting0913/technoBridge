@@ -20,6 +20,10 @@ public class PointReference {
     public Vector3 GetPosition() {
         return pointPosition;
     }
+    
+    // public Vector2 GetPosition2D() {
+    //     return new Vector2(pointPosition.x, ;
+    // }
 
     public bool IsFixed() {
         return isStationary;

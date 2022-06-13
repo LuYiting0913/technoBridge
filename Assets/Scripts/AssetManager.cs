@@ -37,8 +37,6 @@ public class AssetManager : MonoBehaviour {
         List<SolidBarReference> reference = new List<SolidBarReference>();
         foreach (SolidBar bar in allBars) {
             SolidBarReference r = SolidBarReference.of(bar);
-            r.SetHead(WorldToCnavas(r.GetHead()));
-            r.SetTail(WorldToCnavas(r.GetTail()));
             reference.Add(r);
         }
         return reference;
@@ -48,7 +46,6 @@ public class AssetManager : MonoBehaviour {
         List<PointReference> reference = new List<PointReference>();
         foreach (Point point in allPoints) {
             PointReference r = PointReference.of(point, point.IsFixed());
-            r.SetPosition(WorldToCnavas(r.GetPosition()));
             reference.Add(r);
         }
         return reference;
@@ -146,12 +143,12 @@ public class AssetManager : MonoBehaviour {
         allBars.Remove(bar);
     }
 
-    private static Vector3 WorldToCnavas(Vector3 v) {
+    private static Vector3 WorldToCanvas(Vector3 v) {
         Vector3 temp = (v - backgroundPosition) /  backgroundScale;
         return new Vector3(temp.x, temp.y, v.z);
     }
 
-    private static Vector2 WorldToCnavas(Vector2 v) {
+    private static Vector2 WorldToCanvas(Vector2 v) {
         Vector3 temp = (v - new Vector2(backgroundPosition.x, backgroundPosition.y)) /  backgroundScale;
         return new Vector2(temp.x, temp.y);
     }

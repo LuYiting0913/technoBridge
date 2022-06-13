@@ -32,7 +32,7 @@ public class SolidBar : MonoBehaviour {
 
     public void RenderSolidBar(float scale) {
         InitRenderer();
-        transform.position = (head.GetPosition() + tail.GetPosition()) / 2 + new Vector3(0, 0, 5);
+        transform.localPosition = (head.GetPosition() + tail.GetPosition()) / 2;// + new Vector3(0, 0, 5);
 
         Vector3 dir = tail.GetPosition() - head.GetPosition();
         float angle = Vector2.SignedAngle(Vector2.right, new Vector3(dir.x, dir.y));
@@ -43,10 +43,10 @@ public class SolidBar : MonoBehaviour {
         BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
         Transform onSelect = gameObject.transform.GetChild(0);
         Transform exceedLimit = gameObject.transform.GetChild(1);
-        collider.size = new Vector2(length / 10 / scale, collider.size.y);
-        onSelect.localScale = new Vector2(length / 10 / scale, onSelect.localScale.y);
-        exceedLimit.localScale = new Vector2(length / 20 / scale, exceedLimit.localScale.y);
-        barRenderer.size = new Vector2(length / 10 / scale, barRenderer.size.y);
+        collider.size = new Vector2(length / 10, collider.size.y);
+        onSelect.localScale = new Vector2(length / 10, onSelect.localScale.y);
+        exceedLimit.localScale = new Vector2(length / 20, exceedLimit.localScale.y);
+        barRenderer.size = new Vector2(length / 10, barRenderer.size.y);
     }
 
     public void InitBarHead() {

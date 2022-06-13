@@ -94,8 +94,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         
         InitDelegates();
 
-        backgroundScale = Levels.GetBackgroundScale(level);
-        backgroundPosition = Levels.GetBackgroundPosition(level);
+        backgroundScale = 1f;//Levels.GetBackgroundScale(level);
+        backgroundPosition = new Vector3(0,0,0);//Levels.GetBackgroundPosition(level);
         
         Levels.InitLevel(level);
         budget = Levels.GetBudget(level);
@@ -119,13 +119,16 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         // render all existing points
         foreach (PointReference p in pointData) {
             Vector3 position = p.GetPosition();
+            // Vector3 position = new Vector3(temp.x, temp.y, 0);
             Point point = null;
 
             if (p.IsFixed()) {
-                point = Instantiate(fixedPointTemplate, position, Quaternion.identity, pointParent).GetComponent<Point>();
+                point = Instantiate(fixedPointTemplate, pointParent).GetComponent<Point>();
+                point.transform.localPosition = position;
                 point.SetFixed();
             } else {
-                point = Instantiate(pointTemplate, position, Quaternion.identity, pointParent).GetComponent<Point>();
+                point = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
+                point.transform.localPosition = position;
             }
             existingPoints.Add(point);
         }
@@ -152,7 +155,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         InstantiateGrid();
 
         transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
-        transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, transform.position.z);
+        transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, 0);
     }
 
     public void OnPointerDown(PointerEventData eventData) {

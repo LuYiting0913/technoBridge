@@ -16,16 +16,16 @@ public class SceneInitiator : MonoBehaviour {
     private static List<SolidBar> allBars = new List<SolidBar>();
     private static List<Pavement> allPaves = new List<Pavement>();
     private static List<Vehicle> allVehicles = new List<Vehicle>();
-    private static Vector3 backgroundPosition;
+    // private static Vector3 backgroundPosition;
     private static float scale;
 
     public void Start() {
         List<PointReference> pointToInit = Levels.GetPointData(currentLevel);
         List<SolidBarReference> barToInit = Levels.GetBarData(currentLevel);
         List<Vehicle> vehicleToInit = Levels.GetVehicleData(currentLevel);
-        Vector3 temp = Levels.GetBackgroundPosition(currentLevel);
-        scale = Levels.GetBackgroundScale(currentLevel);
-        backgroundPosition = new Vector3(temp.x, temp.y, 0);
+        // Vector3 temp = Levels.GetBackgroundPosition(currentLevel);
+        // scale = Levels.GetBackgroundScale(currentLevel);
+        // backgroundPosition = new Vector3(temp.x, temp.y, 0);
         // render all points
         foreach (PointReference p in pointToInit) {
             for (int i = 0; i <= 1; i += 1) {
@@ -220,8 +220,8 @@ public class SceneInitiator : MonoBehaviour {
         }
     }
 
-    private Vector3 WorldToCanvas(Vector3 pos) {
-        return (pos - backgroundPosition) / scale;
-    }
+    // private Vector3 WorldToCanvas(Vector3 pos) {
+    //     return (pos - backgroundPosition) / scale;
+    // }
 
 }
