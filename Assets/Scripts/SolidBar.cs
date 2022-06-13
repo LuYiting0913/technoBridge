@@ -54,7 +54,12 @@ public class SolidBar : MonoBehaviour {
         headJoint.connectedBody = head.GetComponent<Rigidbody>();
         InitJointSetting(headJoint);
         headJoint.anchor = new Vector3(0, -1, 0);
-        //headJoint.breakForce = MaterialManager.GetIntegrity(material);
+        
+        // breakable child
+        ConfigurableJoint joint = transform.GetChild(0).gameObject.AddComponent<ConfigurableJoint>();
+        joint.connectedBody = head.GetComponent<Rigidbody>();
+        InitJointSetting(joint);
+        joint.anchor = new Vector3(0, -1, 0);
     }
 
     public void InitBarTail() {
@@ -63,7 +68,10 @@ public class SolidBar : MonoBehaviour {
         InitJointSetting(tailJoint);
         tailJoint.anchor = new Vector3(0, 1, 0);
 
-        //tailJoint.breakForce = MaterialManager.GetIntegrity(material);
+        ConfigurableJoint joint = transform.GetChild(1).gameObject.AddComponent<ConfigurableJoint>();
+        joint.connectedBody = tail.GetComponent<Rigidbody>();
+        InitJointSetting(joint);
+        joint.anchor = new Vector3(0, 1, 0);
     }
 
     private void InitJointSetting(ConfigurableJoint joint) {
@@ -199,6 +207,7 @@ public class SolidBar : MonoBehaviour {
     public void DisableBar() {
         Destroy(headJoint);
         Destroy(tailJoint);
+        gameObject.SetActive(false);
         disabled = true;
     }
 

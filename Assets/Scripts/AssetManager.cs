@@ -143,13 +143,13 @@ public class AssetManager : MonoBehaviour {
         allBars.Remove(bar);
     }
 
-    private static Vector3 WorldToCanvas(Vector3 v) {
-        Vector3 temp = (v - backgroundPosition) /  backgroundScale;
-        return new Vector3(temp.x, temp.y, v.z);
-    }
+    // private static Vector3 WorldToCanvas(Vector3 v) {
+    //     Vector3 temp = (v - backgroundPosition) /  backgroundScale;
+    //     return new Vector3(temp.x, temp.y, v.z);
+    // }
 
-    private static Vector2 WorldToCanvas(Vector2 v) {
-        Vector3 temp = (v - new Vector2(backgroundPosition.x, backgroundPosition.y)) /  backgroundScale;
-        return new Vector2(temp.x, temp.y);
-    }
+    // private static Vector2 WorldToCanvas(Vector2 v) {
+    //     Vector3 temp = (v - new Vector2(backgroundPosition.x, backgroundPosition.y)) /  backgroundScale;
+    //     return new Vector2(temp.x, temp.y);
+    // }
 }
