@@ -16,6 +16,8 @@ public class SolidBar : MonoBehaviour {
     private Color originColor;
     public bool disabled = false;
 
+    private float hydraulicFactor = 0.5f;
+
     private SpriteRenderer barRenderer;
     // private float maxLength = 200f; 
 
@@ -217,6 +219,14 @@ public class SolidBar : MonoBehaviour {
 
     public void DeactivateLimit() {
         transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    public void SetHydraulicFactor(float f) {
+        hydraulicFactor = f;
+    }
+
+    public float GetHydraulicFactor() {
+        return hydraulicFactor;
     }
 
 }
