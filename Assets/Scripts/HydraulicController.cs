@@ -4,15 +4,16 @@ using UnityEngine;
 using System;
 
 public class HydraulicController : MonoBehaviour {
-    private static float extendLimit = -1.5f;
-    private static float contractLimit = 0.5f;
+    // private static float extendLimit = -1.5f;
+    // private static float contractLimit = 0.5f;
     private float speed = 0.002f;
     private float target;
-    private bool active;
+    public bool active;
 
     private ConfigurableJoint controllJoint;
 
-    public void ConvertToHydraulic() {
+    public void ConvertToHydraulic(float f) {
+        SetAction(f);
         ConfigurableJoint joint = GetComponent<ConfigurableJoint>();
         Rigidbody pivot = joint.connectedBody;
         Point point = pivot.GetComponent<Point>();
@@ -38,14 +39,23 @@ public class HydraulicController : MonoBehaviour {
         controllJoint = newJoint;
     }
 
-    public void SetContract(float t) {
-        speed = Math.Abs(speed);
-        target = t;
+    private void SetAction(float factor) {
+        Debug.Log(factor);
+        if (factor >= 1) {
+            SetExtend(factor);
+        } else {
+            SetContract(factor);
+        }
     }
 
-    public void SetExtend(float t) {
+    private void SetContract(float t) {
+        speed = Math.Abs(speed);
+        target = 1 - 2 * t;
+    }
+
+    private void SetExtend(float t) {
         speed = - Math.Abs(speed);
-        target = t;
+        target = 1 - 2 * t;
     }
 
     public void Activate() {

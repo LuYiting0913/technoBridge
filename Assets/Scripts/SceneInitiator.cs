@@ -5,9 +5,8 @@ using UnityEngine;
 public class SceneInitiator : MonoBehaviour {
     public GameObject barTemplate;
     public Point pointTemplate;
-    public Transform pointParent;
-    public Transform barParent;
-    public Transform vehicleParent;
+    public Transform pointParent, barParent, vehicleParent;// hydraulicParent;
+
     private int roadWidth = 100;
     private bool displayStress;
 
@@ -52,14 +51,14 @@ public class SceneInitiator : MonoBehaviour {
                 } else {
                     for (int i = 0; i <= 1; i += 1) {
                         SolidBar bar = InstantiateBar(b, i);
-                        bar.GetComponent<HydraulicController>().ConvertToHydraulic();
+                        bar.GetComponent<HydraulicController>().ConvertToHydraulic(b.GetHydraulicFactor());
                         allBars.Add(bar);
                         allHydraulics.Add(bar.GetComponent<HydraulicController>());
                     }
                 }
             } else {
                 allPaves.Add(InstantiatePavement(b));
-            }
+            }           
         }
 
         AssetManager.Init(allPoints, allBars);
@@ -190,11 +189,11 @@ public class SceneInitiator : MonoBehaviour {
         foreach (SolidBar bar in allBars) {
             if (bar != null && !bar.disabled) {
                 if (bar.GetCurrentLoad() >= 1) {
-                    // Transform piece1 = bar.transform.GetChild(0);
-                    // Transform piece2 = bar.transform.GetChild(1);
-                    // ActivateBrokenPiece(piece1);
-                    // ActivateBrokenPiece(piece2);
-                    // bar.DisableBar();
+                    Transform piece1 = bar.transform.GetChild(0);
+                    Transform piece2 = bar.transform.GetChild(1);
+                    ActivateBrokenPiece(piece1);
+                    ActivateBrokenPiece(piece2);
+                    bar.DisableBar();
                 } else if (displayStress) {
                     bar.DisplayStress();
                 } else {
@@ -207,11 +206,11 @@ public class SceneInitiator : MonoBehaviour {
         foreach (Pavement pave in allPaves) {
             if (pave != null && !pave.disabled) {
                 if (pave.GetCurrentLoad() >= 1) {
-                    // Transform piece1 = pave.transform.GetChild(2);
-                    // Transform piece2 = pave.transform.GetChild(3);
-                    // ActivateBrokenPiece(piece1);
-                    // ActivateBrokenPiece(piece2);
-                    // pave.DisablePave();
+                    Transform piece1 = pave.transform.GetChild(2);
+                    Transform piece2 = pave.transform.GetChild(3);
+                    ActivateBrokenPiece(piece1);
+                    ActivateBrokenPiece(piece2);
+                    pave.DisablePave();
                 } else if (displayStress) {
                     pave.DisplayStress();
                 } else {
