@@ -20,10 +20,10 @@ public class Level0 : MonoBehaviour {
         p3.SetFixed();
         p4.SetFixed();
         p5.SetFixed();
-        p1.SetPosition(new Vector3(-300, -60, 0));
+        p1.SetPosition(new Vector3(-300, -85, 0));
         p2.SetPosition(new Vector3(300, -10, 0));
         p3.SetPosition(new Vector3(0, 200, 0));
-        p4.SetPosition(new Vector3(-300, 40, 0));
+        p4.SetPosition(new Vector3(-300, 15, 0));
         p5.SetPosition(new Vector3(300, 90, 0));
     
         fixedPoints.Add(p1);
@@ -33,7 +33,7 @@ public class Level0 : MonoBehaviour {
         fixedPoints.Add(p5);
         Levels.UpdateLevelData(0, fixedPoints, new List<SolidBarReference>());
 
-        vehicles.Add(Vehicle.Of(1, new Vector3(-350, -40, 90), new Vector3(350,0, 90)));
+        vehicles.Add(Vehicle.Of(1, new Vector3(-350, -80, 90), new Vector3(350,0, 90)));
         Levels.SetVehicleData(0, vehicles);
 
         Levels.SetBudget(0, budget);
