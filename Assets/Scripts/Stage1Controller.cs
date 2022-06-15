@@ -24,6 +24,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private SelectionController selectionController;
     private SolidBarInitiator solidbarInitiator;
     private DragController dragController;
+    private HydraulicInitiator hydraulicInitiator;
 
     private List<Point> existingPoints = new List<Point>();
     private List<SolidBar> existingBars = new List<SolidBar>();
@@ -79,6 +80,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         Released += solidbarInitiator.OnReleased;
         Dragged += solidbarInitiator.OnDragged;
 
+        ModeChanged += hydraulicInitiator.OnModeChanged;        
+        Pressed += hydraulicInitiator.OnPressed;
+        Released += hydraulicInitiator.OnReleased;
+        Dragged += hydraulicInitiator.OnDragged;
+
         ModeChanged += dragController.OnModeChanged;        
         Pressed += dragController.OnPressed;
         Released += dragController.OnReleased;
@@ -91,6 +97,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         traceController = TraceController.GetInstance();
         solidbarInitiator = SolidBarInitiator.GetInstance();
         dragController = DragController.GetInstance();
+        hydraulicInitiator = HydraulicInitiator.GetInstance();
         
         InitDelegates();
 
