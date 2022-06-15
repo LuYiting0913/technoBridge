@@ -230,6 +230,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stone
       objectReference: {fileID: 0}
+    - target: {fileID: 3462105672921339832, guid: 0de7386f29cd578439e0df61f662c74d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 29.2
+      objectReference: {fileID: 0}
     - target: {fileID: 8198423828554859068, guid: 0de7386f29cd578439e0df61f662c74d,
         type: 3}
       propertyPath: m_Name

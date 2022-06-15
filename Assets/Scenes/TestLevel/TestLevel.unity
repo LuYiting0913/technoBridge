@@ -5404,7 +5404,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 68c55b31fef0c8a4e8c250ee6af85948,
+  m_Sprite: {fileID: 7482667652216324306, guid: bab1462d3aec2f947b1289777d7a3ab9,
     type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -5413,7 +5413,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 1
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1071158352
@@ -9555,7 +9555,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 68c55b31fef0c8a4e8c250ee6af85948,
+  m_Sprite: {fileID: 7482667652216324306, guid: bab1462d3aec2f947b1289777d7a3ab9,
     type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -9564,7 +9564,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 1
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2117068683
@@ -9664,80 +9664,6 @@ MonoBehaviour:
     type: 3}
   dummyBarTemplate: {fileID: 2623621743740210181, guid: 9e209761fafc6da4bab691211e9755d8,
     type: 3}
---- !u!1001 &12483584430700628
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5040789956064014270, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_Name
-      value: Hydraulic
-      objectReference: {fileID: 0}
-    - target: {fileID: 5040789956064014270, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -176.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 17.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -84.766815
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7946963757406815429, guid: c72b4ec195f3fb349a7413d3f8174215,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c72b4ec195f3fb349a7413d3f8174215, type: 3}
 --- !u!224 &589511391430181863
 RectTransform:
   m_ObjectHideFlags: 0

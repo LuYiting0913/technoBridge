@@ -180,7 +180,7 @@ public class SolidBarInitiator : MonoBehaviour {
         int numOfPoints = 50;
         float radius = MaterialManager.GetMaxLength(currentMaterial) * backgroundScale;
         Transform boundParent = boundary.transform.GetChild(0);
-        Vector3 newPos = new Vector3(center.x, center.y, 100);
+        Vector3 newPos = new Vector3(center.x, center.y, 0);
         boundParent.position = newPos;
 
         for (int i = 0; i < numOfPoints; i++) {
