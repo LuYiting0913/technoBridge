@@ -52,10 +52,9 @@ public class SolidBarInitiator : MonoBehaviour {
     }
 
     public void OnPressed(object source, Stage1Controller e) {
-        Debug.Log("add receieved press");
         Vector3 temp = new Vector3(e.startPoint.x, e.startPoint.y, 0);
         if (isActive && AssetManager.HasPoint(temp)) {
-            Debug.Log("add pressed");
+            // Debug.Log("add pressed");
             creating = true;
             currentMaterial = e.currentMaterial;
             backgroundPosition = e.backgroundPosition;
@@ -72,8 +71,20 @@ public class SolidBarInitiator : MonoBehaviour {
             creating = false;
             e.DeactivateCursor();
             DeactivateBoundary();
-            FinalizeBar(e.endPoint, e.autoTriangulate, Stage1Controller.backgroundScale);
+            if (!e.isTutorial) {
+                FinalizeBar(e.endPoint, e.autoTriangulate, Stage1Controller.backgroundScale);
+            } else {
+                TutorialController tutorial = GameObject.Find("TutorialController").GetComponent<TutorialController>();
+                Point guidePoint = tutorial.FindGuidePoint(e.endPoint);
+                if (guidePoint != null || AssetManager.HasPoint(e.endPoint)) {
+                    FinalizeBar(e.endPoint, e.autoTriangulate, Stage1Controller.backgroundScale);
+                } else {
+                    Destroy(endPoint.gameObject);
+                    Destroy(currentBar.gameObject);
+                }
+            }
         }
+
     }
 
     public void OnDragged(object source, Stage1Controller e) {

@@ -7,6 +7,7 @@ using System;
 
 public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     public int level = 0;
+    public bool isTutorial;
 
     public Vector2 startPoint, endPoint, curPoint;
     public bool isPointerDown = false;
