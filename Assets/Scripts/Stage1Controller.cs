@@ -386,8 +386,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     }
 
     public void UpdateCursor(Vector2 v) {
-        cursor.transform.GetChild(0).transform.position = new Vector3(v.x, 0, -1);
-        cursor.transform.GetChild(1).transform.position = new Vector3(0, v.y, -1);
+        cursor.transform.GetChild(0).transform.position = new Vector3(v.x, 0, 0);
+        cursor.transform.GetChild(1).transform.position = new Vector3(0, v.y, 0);
     }
 
     public void ActivateCursor() {
