@@ -6,7 +6,7 @@ using System;
 
 public class SolidBarInitiator : MonoBehaviour {
     private static SolidBarInitiator m_Instance;
-    private bool isActive;
+    private bool isActive, creating;
 
     private bool startedInit = false;
     public SolidBar currentBar;
@@ -52,8 +52,9 @@ public class SolidBarInitiator : MonoBehaviour {
     }
 
     public void OnPressed(object source, Stage1Controller e) {
-        if (isActive) {
+        if (isActive && AssetManager.HasPoint(e.startPoint)) {
             // Debug.Log("add receieved press");
+            creating = true;
             currentMaterial = e.currentMaterial;
             backgroundPosition = e.backgroundPosition;
             backgroundScale = Stage1Controller.backgroundScale;
@@ -64,8 +65,9 @@ public class SolidBarInitiator : MonoBehaviour {
     }
 
     public void OnReleased(object source, Stage1Controller e) {
-        if (isActive) {
+        if (isActive && creating) {
             // Debug.Log("add receieved release");
+            creating = false;
             e.DeactivateCursor();
             DeactivateBoundary();
             FinalizeBar(e.endPoint, e.autoTriangulate, Stage1Controller.backgroundScale);
@@ -73,7 +75,7 @@ public class SolidBarInitiator : MonoBehaviour {
     }
 
     public void OnDragged(object source, Stage1Controller e) {
-        if (isActive) {
+        if (isActive && creating) {
             // Debug.Log("add receieved drag");
             float scale = Stage1Controller.backgroundScale;
             Vector2 cutOffVector = currentBar.CutOff(e.curPoint, scale);
@@ -112,15 +114,15 @@ public class SolidBarInitiator : MonoBehaviour {
         Vector3 head = new Vector3(headPos.x, headPos.y, 0);
         
         // check if beginPoint already exists
-        if (AssetManager.HasPoint(headPos)) {
+        // if (AssetManager.HasPoint(headPos)) {
             beginPoint = AssetManager.GetPoint(headPos);
             currentBar.SetHead(beginPoint);
-        } else {
-            beginPoint = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
-            beginPoint.transform.position = head;
-            AssetManager.AddPoint(beginPoint);
-            currentBar.SetHead(beginPoint);
-        }
+        // } else {
+        //     beginPoint = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
+        //     beginPoint.transform.position = head;
+        //     AssetManager.AddPoint(beginPoint);
+        //     currentBar.SetHead(beginPoint);
+        // }
         endPoint = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
         endPoint.transform.position = head;
         currentBar.SetTail(endPoint);    
@@ -146,6 +148,7 @@ public class SolidBarInitiator : MonoBehaviour {
 
         currentBar.SetR(beginPoint, endPoint);
         AssetManager.AddBar(currentBar);
+        ClearAll();
     }
 
     private  void AutoTriangulate() {

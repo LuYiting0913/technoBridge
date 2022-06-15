@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class HydraulicController : MonoBehaviour {
     private static float extendLimit = -1.5f;
     private static float contractLimit = 0.5f;
+    private float speed = 0.002f;
+    private float target;
+    private bool active;
 
     private ConfigurableJoint controllJoint;
 
@@ -32,6 +36,37 @@ public class HydraulicController : MonoBehaviour {
         newJoint.autoConfigureConnectedAnchor = false;
         newJoint.connectedAnchor = new Vector3(0, -1, 0);
         controllJoint = newJoint;
+    }
+
+    public void SetContract(float t) {
+        speed = Math.Abs(speed);
+        target = t;
+    }
+
+    public void SetExtend(float t) {
+        speed = - Math.Abs(speed);
+        target = t;
+    }
+
+    public void Activate() {
+        active = true;
+    }
+
+    public void Deactivate() {
+        active = false;
+    }
+
+    private void FixedUpdate() {
+        if (active) {
+            Vector3 v = controllJoint.connectedAnchor;
+            if (speed > 0) {
+                // contract
+                if (v.y < target) controllJoint.connectedAnchor = new Vector3(v.x, v.y + speed, v.z);
+            } else {
+                // extend
+                if (v.y > target) controllJoint.connectedAnchor = new Vector3(v.x, v.y + speed, v.z);
+            }
+        }
     }
 
 
