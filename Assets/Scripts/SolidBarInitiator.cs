@@ -52,8 +52,10 @@ public class SolidBarInitiator : MonoBehaviour {
     }
 
     public void OnPressed(object source, Stage1Controller e) {
-        if (isActive && AssetManager.HasPoint(e.startPoint)) {
-            // Debug.Log("add receieved press");
+        Debug.Log("add receieved press");
+        Vector3 temp = new Vector3(e.startPoint.x, e.startPoint.y, 0);
+        if (isActive && AssetManager.HasPoint(temp)) {
+            Debug.Log("add pressed");
             creating = true;
             currentMaterial = e.currentMaterial;
             backgroundPosition = e.backgroundPosition;
