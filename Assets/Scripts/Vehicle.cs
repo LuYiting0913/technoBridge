@@ -11,12 +11,21 @@ public class Vehicle {
 
     public int vehicleType = 1;
     private Vector3 position;
-    private Checkpoint checkpoint;
+    public Checkpoint checkpoint;
+
+    // public delegate void ActivateHydraulicEventHandler(object source, int i);
+    // public event ActivateHydraulicEventHandler HydraulicActivated;
+
+    // protected virtual void OnHydraulicActivated() {
+    //     if (HydraulicActivated != null) HydraulicActivated(this, 0);
+    // }
+
+    // public void Start
 
     private Vehicle(int type, Vector3 pos, Vector3 checkpointPos) {
         vehicleType = type;
         position = pos;
-        checkpoint = Checkpoint.Of(checkpointPos);
+        // checkpoint = Checkpoint.Of(checkpointPos);
     }
 
     public static Vehicle Of(int type, Vector3 pos, Vector3 checkpointPos) {
@@ -31,11 +40,11 @@ public class Vehicle {
         return position;
     }
 
-    public GameObject GetVehicle() {
-        GameObject vehicle = Resources.Load<GameObject>(vehicleTypes[vehicleType]);
-        vehicle.GetComponent<VehicleController>().SetCheckpoint(checkpoint);
-        return vehicle;
-    }
+    // public GameObject GetVehicle() {
+    //     // GameObject vehicle = Resources.Load<GameObject>(vehicleTypes[vehicleType]);
+    //     // vehicle.GetComponent<VehicleController>().SetCheckpoint(checkpoint);
+    //     // return vehicle;
+    // }
 
     public Checkpoint GetCheckpoint() {
         return checkpoint;
