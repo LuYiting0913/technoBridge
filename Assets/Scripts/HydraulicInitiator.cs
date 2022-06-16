@@ -5,7 +5,7 @@ using System;
 
 public class HydraulicInitiator : MonoBehaviour {
     private static HydraulicInitiator m_Instance;
-    private bool isActive;
+    private bool isActive = true;
 
     private Vector2 start, end;
     private SolidBar hydraulic;
