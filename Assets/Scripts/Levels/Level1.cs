@@ -37,8 +37,8 @@ public class Level1 : MonoBehaviour {
         fixedPoints.Add(p2);
         Levels.UpdateLevelData(1, fixedPoints, new List<SolidBarReference>());
 
-        vehicles.Add(Vehicle.Of(1, new Vector3(-150, 0, 90), new Vector3(150,0, 90)));
-        Levels.SetVehicleData(1, vehicles);
+        // vehicles.Add(Vehicle.Of(1, new Vector3(-150, 0, 90), new Vector3(150,0, 90)));
+        // Levels.SetVehicleData(1, vehicles);
         //Debug.Log(vehicles[0]);
     }
 }

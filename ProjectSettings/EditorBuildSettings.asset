@@ -18,11 +18,11 @@ EditorBuildSettings:
     path: Assets/Scenes/TestLevel/TestLevel3D.unity
     guid: 8ab68dc08e4b1dc45a703a95d4419e3d
   - enabled: 1
-    path: Assets/Scenes/TutorialLevel/TutorialLevel.unity
-    guid: efbe4eef3101348419f5adb0f626f92f
+    path: Assets/Scenes/Tutorial/Tutorial1.unity
+    guid: e5976fa82de347549a2d8175a43228c6
   - enabled: 1
-    path: Assets/Scenes/TutorialLevel/TutorialLevel3D.unity
-    guid: 1faa60a3ecd17c44aa00f41e9135b062
+    path: Assets/Scenes/Tutorial/Tutorial1_3D.unity
+    guid: 9c20390ed198fe942afb920e1c93526d
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 765780b12ffac6a47a3e5fc53c0947d7,
       type: 2}
