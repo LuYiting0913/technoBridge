@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Checkpoint {
     private static int threshold = 20;
+    
     public Vector3 position;
 
     private Checkpoint(Vector3 pos) {
