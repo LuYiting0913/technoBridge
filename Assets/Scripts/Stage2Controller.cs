@@ -11,7 +11,8 @@ public class Stage2Controller : MonoBehaviour {
     private float playSpeed;
     public GameObject playSpeedSlider;
     public GameObject canvas;
-    public Transform vehicleParent;
+    public Transform vehicleParent;//, hydraulicParent;
+    // public List<VehicleController> allVehicles = new List<VehicleController>();
 
     public void Start() {
         playSpeed = 2f;
@@ -44,14 +45,29 @@ public class Stage2Controller : MonoBehaviour {
 
     private bool AllVehicleArrived() {
         for (int i = 0; i < vehicleParent.childCount; i++) {
-            if (!vehicleParent.GetChild(i).GetComponent<VehicleController>().arrived) return false; 
+            if (!vehicleParent.GetChild(i).GetComponent<VehicleController>().Arrived()) return false; 
         }
         return true;
     }
 
+    private bool AllVehicleWaiting() {
+        for (int i = 0; i < vehicleParent.childCount; i++) {
+            if (!vehicleParent.GetChild(i).GetComponent<VehicleController>().IsWaiting()) return false; 
+        }
+        return true;
+    }
+
+    // private void ActivateHydraulics() {
+    //     for (int i = 0; i < hydraulicParent.childCount; i++) {
+    //         hydraulicParent.GetChild(i).GetComponent<HydraulicController>().Activate();
+    //     }
+    // }
+
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
-        if (AllVehicleArrived()) {
+        if (AllVehicleWaiting()) {
+            SceneInitiator.ActivateAllHydraulics();
+        } else if (AllVehicleArrived()) {
             // Debug.Log("all arrived");
             canvas.transform.GetChild(3).gameObject.SetActive(true);
         }

@@ -22,7 +22,7 @@ public class SceneInitiator : MonoBehaviour {
     public void Start() {
         List<PointReference> pointToInit = Levels.GetPointData(currentLevel);
         List<SolidBarReference> barToInit = Levels.GetBarData(currentLevel);
-        List<Vehicle> vehicleToInit = Levels.GetVehicleData(currentLevel);
+        // List<Vehicle> vehicleToInit = Levels.GetVehicleData(currentLevel);
         // Vector3 temp = Levels.GetBackgroundPosition(currentLevel);
         // scale = Levels.GetBackgroundScale(currentLevel);
         // backgroundPosition = new Vector3(temp.x, temp.y, 0);
@@ -63,12 +63,12 @@ public class SceneInitiator : MonoBehaviour {
 
         AssetManager.Init(allPoints, allBars);
 
-        foreach (Vehicle vehicle in vehicleToInit) {
-            GameObject vehicleObject = vehicle.GetVehicle();
-            VehicleController controller = Instantiate(vehicleObject, vehicle.GetPosition(), 
-                                            Quaternion.Euler(new Vector3(0, 90, 0)), vehicleParent).GetComponent<VehicleController>();
-            controller.SetCheckpoint(vehicle.GetCheckpoint());                                
-        }
+        // foreach (Vehicle vehicle in vehicleToInit) {
+        //     GameObject vehicleObject = vehicle.GetVehicle();
+        //     VehicleController controller = Instantiate(vehicleObject, vehicle.GetPosition(), 
+        //                                     Quaternion.Euler(new Vector3(0, 90, 0)), vehicleParent).GetComponent<VehicleController>();
+        //     controller.SetCheckpoint(vehicle.GetCheckpoint());                                
+        // }
     }
 
     // transfer all the data from 2d UI
@@ -206,11 +206,11 @@ public class SceneInitiator : MonoBehaviour {
         foreach (Pavement pave in allPaves) {
             if (pave != null && !pave.disabled) {
                 if (pave.GetCurrentLoad() >= 1) {
-                    Transform piece1 = pave.transform.GetChild(2);
-                    Transform piece2 = pave.transform.GetChild(3);
-                    ActivateBrokenPiece(piece1);
-                    ActivateBrokenPiece(piece2);
-                    pave.DisablePave();
+                    // Transform piece1 = pave.transform.GetChild(2);
+                    // Transform piece2 = pave.transform.GetChild(3);
+                    // ActivateBrokenPiece(piece1);
+                    // ActivateBrokenPiece(piece2);
+                    // pave.DisablePave();
                 } else if (displayStress) {
                     pave.DisplayStress();
                 } else {
@@ -225,6 +225,8 @@ public class SceneInitiator : MonoBehaviour {
         piece.SetParent(barParent, true);
     }
 
-    // private bool isHydraulic()
+    public static void ActivateAllHydraulics() {
+        foreach (HydraulicController hydraulic in allHydraulics) hydraulic.Activate();
+    }
 
 }

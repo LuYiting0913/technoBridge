@@ -9,8 +9,17 @@ public class VehicleController : MonoBehaviour {
     public Transform rearLeftWheel, rearRightWheel;
     public float motor = 300;
     public float brake = 10000;
-    public Checkpoint checkpoint;
-    public bool arrived;
+    public List<Checkpoint> checkpoints;
+    private int checkpointCount, nextCheckpoint;
+    private bool arrived, waitingForHydraulic;
+    private int duration = 15;
+
+    public void Start() {
+        checkpointCount = checkpoints.Count;
+        Debug.Log(checkpointCount);
+        nextCheckpoint = 0;
+        waitingForHydraulic = false;
+    }
 
     private void Accelerate() {
         rearLeft.motorTorque = motor;
@@ -49,21 +58,39 @@ public class VehicleController : MonoBehaviour {
     }
 
     public void FixedUpdate() {
-        if (checkpoint.Arrived(transform.position)) {
-            Debug.Log("arrived");
+        if (nextCheckpoint >= checkpointCount) {
             arrived = true;
-            Brake();
-        } else {
-            Accelerate();
-            UpdateWheels();
+        } else if (!waitingForHydraulic) {
+            // Debug.Log("moving");
+            if (ArrivedAtCheckpoint(checkpoints[nextCheckpoint]) && nextCheckpoint < checkpointCount) {
+                Debug.Log("arrived at next");
+                
+                StartCoroutine(WaitForAWhile(duration));
+                nextCheckpoint += 1;
+            } else {
+                Accelerate();
+                UpdateWheels();
+            }
         }
     }
 
-    public void SetCheckpoint(Checkpoint p) {
-        checkpoint = p;
+    public bool Arrived() {
+        return arrived;
     }
 
-    public bool ArrivedAtCheckpoint() {
-        return checkpoint.Arrived(transform.position);
+    public bool ArrivedAtCheckpoint(Checkpoint pt) {
+        return pt.Arrived(transform.position);
+    }
+
+    private IEnumerator WaitForAWhile(int dur) {
+        waitingForHydraulic = true;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        yield return new WaitForSeconds(dur);
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        waitingForHydraulic = false;
+    }
+
+    public bool IsWaiting() {
+        return waitingForHydraulic;
     }
 }
