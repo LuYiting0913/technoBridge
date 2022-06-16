@@ -12,7 +12,7 @@ public class TutorialController : MonoBehaviour {
     public void Start() {
         l = transform.childCount;
         foreach (Point p in allPoints) {
-            isCovered.Add(p, false);
+            if (p != null) isCovered.Add(p, false);
         }
     }
 
