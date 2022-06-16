@@ -7,15 +7,12 @@ public class Point : MonoBehaviour {
     public List<SolidBar> connectedBars = new List<SolidBar>(); 
     // private Vector3 pointPosition;
     private bool isStationary = false;
-    private static int threshold = 8;
+    private static int threshold = 15;
 
     public Vector3 GetPosition() {
         return transform.localPosition;
     }
 
-    // public Vector2 GetPosition() {
-    //     return new Vector2(transform.position.x, transform.position.y);
-    // }
 
     public void AddConnectedBar(SolidBar bar) {
         connectedBars.Add(bar);
