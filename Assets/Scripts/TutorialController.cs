@@ -31,7 +31,7 @@ public class TutorialController : MonoBehaviour {
     }
 
     public void Close() {
-        gameObject.SetActive(false);
+        transform.GetChild(l - 1).gameObject.SetActive(false);
     }
 
     public Point FindGuidePoint(Vector3 pos) {
