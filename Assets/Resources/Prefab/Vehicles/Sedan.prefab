@@ -900,6 +900,8 @@ MonoBehaviour:
   frontRightWheel: {fileID: 4647977738741521179}
   rearLeftWheel: {fileID: 8256912395288488312}
   rearRightWheel: {fileID: 4647977739175976173}
-  motor: 1000
-  brake: 10000
-  checkpoints: []
+  motor: 500
+  brake: 20000
+  checkpoints:
+  - {fileID: 0}
+  - {fileID: 0}
