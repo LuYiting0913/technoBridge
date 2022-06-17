@@ -57,6 +57,14 @@ public class Stage2Controller : MonoBehaviour {
         return true;
     }
 
+    // To see if any vehicle failed
+    private bool AnyVehicleFailed() {
+        for (int i = 0; i < vehicleParent.childCount; i++) {
+            if (vehicleParent.GetChild(i).GetComponent<VehicleController>().Failed()) return true; 
+        }
+        return false;
+    }
+
     // private void ActivateHydraulics() {
     //     for (int i = 0; i < hydraulicParent.childCount; i++) {
     //         hydraulicParent.GetChild(i).GetComponent<HydraulicController>().Activate();
@@ -67,6 +75,8 @@ public class Stage2Controller : MonoBehaviour {
         if (!isPaused) Time.timeScale = playSpeed;
         if (AllVehicleWaiting()) {
             SceneInitiator.ActivateAllHydraulics();
+        } else if (AnyVehicleFailed()) {
+            canvas.transform.GetChild(4).gameObject.SetActive(true);
         } else if (AllVehicleArrived()) {
             // Debug.Log("all arrived");
             canvas.transform.GetChild(3).gameObject.SetActive(true);
