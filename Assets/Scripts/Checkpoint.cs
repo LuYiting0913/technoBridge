@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Checkpoint : MonoBehaviour{
-    private static int threshold = 30;
+    private static int threshold = 50;
     public bool activateHydraulic;
     
     // public Vector3 position;
