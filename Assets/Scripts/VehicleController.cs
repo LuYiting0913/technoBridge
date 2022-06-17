@@ -11,8 +11,8 @@ public class VehicleController : MonoBehaviour {
     public float brake = 10000;
     public List<Checkpoint> checkpoints;
     private int checkpointCount, nextCheckpoint;
-    private bool arrived, waitingForHydraulic;
-    private int duration = 15;
+    private bool arrived, failed, waitingForHydraulic;
+    private int duration = 2;
 
     public void Start() {
         checkpointCount = checkpoints.Count;
@@ -76,6 +76,18 @@ public class VehicleController : MonoBehaviour {
 
     public bool Arrived() {
         return arrived;
+    }
+
+    // To detect if the car fall onto the water
+    public bool Failed() {
+        return failed;
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        Debug.Log(other.gameObject.name);
+        if (other.gameObject.name == "Water") {
+            failed = true;
+        }
     }
 
     public bool ArrivedAtCheckpoint(Checkpoint pt) {
