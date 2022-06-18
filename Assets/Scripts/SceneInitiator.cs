@@ -136,7 +136,7 @@ public class SceneInitiator : MonoBehaviour {
             SolidBar b = Instantiate(scaledTemplate, tempPos, rotation, ropeParent.transform).GetComponent<SolidBar>();
             ConfigurableJoint joint = b.gameObject.GetComponent<ConfigurableJoint>();
             joint.connectedBody = previousSegment.GetComponent<Rigidbody>();
-            joint.anchor = new Vector3(0, -1, 0);
+            joint.anchor = new Vector3(0, -0.8f, 0);
             InitRopeJoint(joint); 
             previousSegment = b.gameObject;        
         }
