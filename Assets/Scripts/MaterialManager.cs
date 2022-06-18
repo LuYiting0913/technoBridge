@@ -40,7 +40,7 @@ public class MaterialManager {
     };
 
     private static Dictionary<int, int> materialIntegrity = new Dictionary<int, int>() {
-        {0, 3000},
+        {0, 4000},
         {1, 5000},
         {2, 9000},
         {3, 1000},

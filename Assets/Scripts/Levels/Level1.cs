@@ -30,9 +30,11 @@ public class Level1 : MonoBehaviour {
         List<Vehicle> vehicles = new List<Vehicle>();
 
         p1.SetFixed();
-        p1.SetPosition(new Vector3(-250, -15, 0));
+        //p1.SetPosition(new Vector3(-250, -15, 0));
+        p1.SetPosition(new Vector3(-100, -15, 0));
         p2.SetFixed();
-        p2.SetPosition(new Vector3(180, -15, 0));
+        //p2.SetPosition(new Vector3(180, -15, 0));
+        p2.SetPosition(new Vector3(100, -15, 0));
         fixedPoints.Add(p1);
         fixedPoints.Add(p2);
         Levels.UpdateLevelData(1, fixedPoints, new List<SolidBarReference>());

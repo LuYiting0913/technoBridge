@@ -32,7 +32,7 @@ public class Level2 : MonoBehaviour {
         p1.SetFixed();
         p1.SetPosition(new Vector3(-250, -15, 0));
         p2.SetFixed();
-        p2.SetPosition(new Vector3(200, -15, 0));
+        p2.SetPosition(new Vector3(180, -15, 0));
         fixedPoints.Add(p1);
         fixedPoints.Add(p2);
         Levels.UpdateLevelData(2, fixedPoints, new List<SolidBarReference>());

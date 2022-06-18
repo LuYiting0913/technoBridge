@@ -206,11 +206,11 @@ public class SceneInitiator : MonoBehaviour {
         foreach (Pavement pave in allPaves) {
             if (pave != null && !pave.disabled) {
                 if (pave.GetCurrentLoad() >= 1) {
-                    // Transform piece1 = pave.transform.GetChild(2);
-                    // Transform piece2 = pave.transform.GetChild(3);
-                    // ActivateBrokenPiece(piece1);
-                    // ActivateBrokenPiece(piece2);
-                    // pave.DisablePave();
+                    Transform piece1 = pave.transform.GetChild(2);
+                    Transform piece2 = pave.transform.GetChild(3);
+                    ActivateBrokenPiece(piece1);
+                    ActivateBrokenPiece(piece2);
+                    pave.DisablePave();
                 } else if (displayStress) {
                     pave.DisplayStress();
                 } else {
