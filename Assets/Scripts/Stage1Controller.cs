@@ -94,6 +94,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void Start() {
         myCam = Camera.main;
+        Time.timeScale = 1f;
         selectionController = SelectionController.GetInstance();
         traceController = TraceController.GetInstance();
         solidbarInitiator = SolidBarInitiator.GetInstance();

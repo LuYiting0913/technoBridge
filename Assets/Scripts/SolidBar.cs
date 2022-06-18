@@ -131,8 +131,8 @@ public class SolidBar : MonoBehaviour {
     }
 
     public Vector3 CutOff(Vector3 cursor, float scale) {
-        Vector3 offset = cursor - head.GetPosition();
-        return head.GetPosition() + Vector3.ClampMagnitude(offset, GetMaxLength() * scale); 
+        Vector3 offset = cursor - head.GetWorldPosition();
+        return head.GetWorldPosition() + Vector3.ClampMagnitude(offset, GetMaxLength() * scale); 
     }
 
     public Vector2 GetDirection() {
