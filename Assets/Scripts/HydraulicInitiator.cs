@@ -65,7 +65,7 @@ public class HydraulicInitiator : MonoBehaviour {
             // Vector2 dir = (e.curPoint - e.startPoint) / 200;
             slider.transform.position = e.curPoint;
             float position;
-            Debug.Log(slider.transform.localPosition);
+            // Debug.Log(slider.transform.localPosition);
             if (slider.localPosition.x > limit) {
                 position = limit;
             } else if (slider.localPosition.x < - limit) {
