@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -2579617682378732371}
   - component: {fileID: -8614885985222791352}
   - component: {fileID: 8838747309722859569}
+  - component: {fileID: 5993590649472223358}
   m_Layer: 7
   m_Name: FIxedPoint
   m_TagString: Untagged
@@ -149,6 +150,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectedBars: []
+--- !u!114 &5993590649472223358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102080542520066435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df14730acdf51bc4e987f8647633876c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8272961703792916538
 GameObject:
   m_ObjectHideFlags: 0

@@ -44,6 +44,11 @@ public class HydraulicInitiator : MonoBehaviour {
                 limit = hit.transform.parent.gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
                 limit /= hit.transform.parent.localScale.x;
                 isModifying = true;
+            } else if (hit.collider != null && hit.transform.gameObject.GetComponent<Point>() != null) {
+                DoubleClick clickedPoint = hit.transform.gameObject.GetComponent<DoubleClick>();
+                if (clickedPoint.RegisterClick()) {
+                    Debug.Log("regied 2 click");
+                }
             }
         }
 
