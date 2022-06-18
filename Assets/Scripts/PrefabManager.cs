@@ -5,6 +5,7 @@ using UnityEngine;
 public class PrefabManager {
     private static string point2D = "Prefab/Object2D/Point";
     private static string fixedPoint2D = "Prefab/Object2D/FixedPoint";
+    // private static string splitPoint = "Prefab/Object2D/SplitPoint";
     private static string gridLine = "Prefab/GridLine";
 
 

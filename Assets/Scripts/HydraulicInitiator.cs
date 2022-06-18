@@ -44,6 +44,13 @@ public class HydraulicInitiator : MonoBehaviour {
                 limit = hit.transform.parent.gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
                 limit /= hit.transform.parent.localScale.x;
                 isModifying = true;
+            } else if (hit.collider != null && hit.transform.gameObject.GetComponent<Point>() != null) {
+                DoubleClick clickedPoint = hit.transform.gameObject.GetComponent<DoubleClick>();
+                // Debug.Log("chckking double");
+                if (clickedPoint.RegisterClick()) {
+                    // Debug.Log("regied 2 click");
+                    clickedPoint.GetComponent<SplitPointController>().ToggleSplit();
+                }
             }
         }
 
@@ -60,7 +67,7 @@ public class HydraulicInitiator : MonoBehaviour {
             // Vector2 dir = (e.curPoint - e.startPoint) / 200;
             slider.transform.position = e.curPoint;
             float position;
-            Debug.Log(slider.transform.localPosition);
+            // Debug.Log(slider.transform.localPosition);
             if (slider.localPosition.x > limit) {
                 position = limit;
             } else if (slider.localPosition.x < - limit) {

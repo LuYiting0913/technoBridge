@@ -30,10 +30,11 @@ public class DragController : MonoBehaviour {
         if (isActive) {
             RaycastHit2D hit = Physics2D.Raycast(e.startPoint, new Vector3(0, 0, 1));
             if (hit.collider != null) {
-                e.ActivateCursor();
+                
                 Point hittedPoint = hit.transform.GetComponent<Point>();
                 if (hittedPoint != null && !hittedPoint.IsFixed()) {
                     SelectPoint(hit.transform);
+                    e.ActivateCursor();
                     isDragging = true;
                 }
             } else {
@@ -45,8 +46,7 @@ public class DragController : MonoBehaviour {
 
     public void OnReleased(object source, Stage1Controller e) {
         if (isActive) {
-            if (isDragging) {
-                e.DeactivateCursor();
+            if (isDragging) { 
                 ReleasePoint();
             } else if (isDraggingBackground) {
                 e.backgroundPosition = e.gameObject.transform.position; 
@@ -54,7 +54,9 @@ public class DragController : MonoBehaviour {
             }
             isDragging = false;
             isDraggingBackground = false;
+            e.DeactivateCursor();
         }
+        
     }
 
     public void OnDragged(object source, Stage1Controller e) {
