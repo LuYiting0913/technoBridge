@@ -31,12 +31,12 @@ public class Point : MonoBehaviour {
         Vector2 v;
         foreach (SolidBar bar in connectedBars) {
             if (bar != null) {
-                if (Contain(bar.GetHead())) {
-                    v = new Vector2(bar.GetTail().x, bar.GetTail().y);
+                if (Contain(bar.head.transform.position)) {
+                    v = bar.tail.transform.position;
                 } else {
-                    v = new Vector2(bar.GetHead().x, bar.GetHead().y);
+                    v = bar.head.transform.position;
                 }
-                bool temp = (v - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial()) * scale;
+                bool temp = (new Vector2(v.x, v.y) - cursor).magnitude >= MaterialManager.GetMaxLength(bar.GetMaterial()) * scale;
                 if (temp) bar.ActivateLimit();
                 check = check || temp;
             }

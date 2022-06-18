@@ -13,10 +13,7 @@ public class DoubleClick : MonoBehaviour {
         // coroutineAllowed = true;        
     }
 
-    // public void Update() {
-    //     // if ()
-        
-    // }
+
 
     public bool RegisterClick() {
         if (clickCount == 0) {

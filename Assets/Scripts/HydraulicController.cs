@@ -40,7 +40,7 @@ public class HydraulicController : MonoBehaviour {
     }
 
     private void SetAction(float factor) {
-        Debug.Log(factor);
+        // Debug.Log(factor);
         if (factor >= 1) {
             SetExtend(factor);
         } else {
