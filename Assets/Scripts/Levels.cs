@@ -26,6 +26,9 @@ public class Levels {
                 case 2:
                     Level2.InitLevel();
                     break;
+                case 3:
+                    Level3.InitLevel();
+                    break;
                 default:
                     break;
             }
