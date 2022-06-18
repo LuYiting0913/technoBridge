@@ -60,7 +60,7 @@ public class SolidBarInitiator : MonoBehaviour {
             backgroundPosition = e.backgroundPosition;
             backgroundScale = Stage1Controller.backgroundScale;
             e.ActivateCursor();
-            ActivateBoundary(e.startPoint);
+            // ActivateBoundary(e.startPoint);
             InitializeBar(e.startPoint, e.currentMaterial, e.pointParent, e.barParent);
         }
     }
@@ -126,21 +126,14 @@ public class SolidBarInitiator : MonoBehaviour {
         //Vector2 relativeToCanvas = WorldToCanvas(headPos);
         Vector3 head = new Vector3(headPos.x, headPos.y, 0);
         
-        // check if beginPoint already exists
-        // if (AssetManager.HasPoint(headPos)) {
-            beginPoint = AssetManager.GetPoint(headPos);
-            currentBar.SetHead(beginPoint);
-        // } else {
-        //     beginPoint = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
-        //     beginPoint.transform.position = head;
-        //     AssetManager.AddPoint(beginPoint);
-        //     currentBar.SetHead(beginPoint);
-        // }
+        beginPoint = AssetManager.GetPoint(headPos);
+        currentBar.SetHead(beginPoint);
         endPoint = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
         endPoint.transform.position = head;
         currentBar.SetTail(endPoint);    
         beginPoint.AddConnectedBar(currentBar);
         endPoint.AddConnectedBar(currentBar);
+        ActivateBoundary(beginPoint.GetPosition());
     }
 
     public void FinalizeBar(Vector2 tailPos, bool autoComplete, float scale) {

@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DoubleClick : MonoBehaviour {
-    private float firstClickTime, clickInterval;
-    private int clickCount;
-    private bool doubleClicked = false;
+    public float firstClickTime, clickInterval;
+    public int clickCount;
+    public bool doubleClicked = false;
 
     public void Start() {
         clickCount = 0;
-        clickInterval = 0.3f;
-        // coroutineAllowed = true;        
+        clickInterval = 0.3f;      
     }
-
-
 
     public bool RegisterClick() {
         if (clickCount == 0) {
@@ -27,12 +24,18 @@ public class DoubleClick : MonoBehaviour {
 
     private void RegisterFirstClick() {
         firstClickTime = Time.time;
-        clickCount += 1;
+        clickCount = 1;
         doubleClicked = false;
     }
 
     private void RegisterSecondClick() {
         doubleClicked = Time.time < firstClickTime + clickInterval;
-        clickCount = 0;
+        if (!doubleClicked) {
+            RegisterFirstClick();
+        } else {
+            clickCount = 0;
+            firstClickTime = 0f;
+        }
+
     }
 }

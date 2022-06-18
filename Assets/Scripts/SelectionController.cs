@@ -142,7 +142,7 @@ public class SelectionController : MonoBehaviour {
             // deselect
             RemoveFromSelection(hit.transform);
         } else {
-             AddToSelection(hit.transform);
+            AddToSelection(hit.transform);
         }
     }
 
