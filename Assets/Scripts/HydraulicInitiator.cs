@@ -46,8 +46,10 @@ public class HydraulicInitiator : MonoBehaviour {
                 isModifying = true;
             } else if (hit.collider != null && hit.transform.gameObject.GetComponent<Point>() != null) {
                 DoubleClick clickedPoint = hit.transform.gameObject.GetComponent<DoubleClick>();
+                // Debug.Log("chckking double");
                 if (clickedPoint.RegisterClick()) {
-                    Debug.Log("regied 2 click");
+                    // Debug.Log("regied 2 click");
+                    clickedPoint.GetComponent<SplitPointController>().ToggleSplit();
                 }
             }
         }
