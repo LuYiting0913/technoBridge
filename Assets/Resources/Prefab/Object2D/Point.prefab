@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: -3818798965439374857}
   - component: {fileID: -8665696450139799490}
   - component: {fileID: 3625761804511812586}
+  - component: {fileID: 6712519293382730404}
   m_Layer: 7
   m_Name: Point
   m_TagString: Untagged
@@ -224,3 +225,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectedBars: []
+--- !u!114 &6712519293382730404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431229652509840814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df14730acdf51bc4e987f8647633876c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
