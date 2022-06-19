@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DoubleClick : MonoBehaviour {
-    public float firstClickTime, clickInterval;
-    public int clickCount;
-    public bool doubleClicked = false;
+    private float firstClickTime, clickInterval;
+    private int clickCount;
+    private bool doubleClicked = false;
 
     public void Start() {
         clickCount = 0;

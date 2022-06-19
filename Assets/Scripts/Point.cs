@@ -7,6 +7,7 @@ public class Point : MonoBehaviour {
     public List<SolidBar> connectedBars = new List<SolidBar>(); 
     // private Vector3 pointPosition;
     private bool isStationary = false;
+    private bool isSplit = false;
     private static int threshold = 15;
 
     public Vector3 GetPosition() {
@@ -56,9 +57,9 @@ public class Point : MonoBehaviour {
     }
 
     public void UpdateConnectedBars() {
-        foreach (SolidBar bar in connectedBars) {
-            // bar.UpdatePosition();
-        }
+        // foreach (SolidBar bar in connectedBars) {
+        //     // bar.UpdatePosition();
+        // }
     }
 
     public bool IsSingle() {
@@ -84,6 +85,22 @@ public class Point : MonoBehaviour {
     public void SetFree() {
         isStationary = false;
     }
+
+    public void SetSplit(bool b) {
+        isSplit = b;
+        foreach (SolidBar bar in connectedBars) {
+            if (bar.head.Contain(GetPosition())) {
+                bar.headSplitNum = b ? 0 : -1;
+            } else {
+                bar.tailSplitNum = b ? 0 : -1;
+            }
+        }
+    }
+    
+    public bool IsSplit() {
+        return isSplit;
+    }
+
 
     public void InitRigidBody(PointReference p) {
         Rigidbody pointRb = gameObject.GetComponent<Rigidbody>();

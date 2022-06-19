@@ -5,7 +5,10 @@ using UnityEngine;
 public class SceneInitiator : MonoBehaviour {
     public GameObject barTemplate;
     public Point pointTemplate;
+    public Point splitPointTemplate;
     public Transform pointParent, barParent, vehicleParent;// hydraulicParent;
+    public Transform splitPointParent;
+
 
     private int roadWidth = 100;
     private bool displayStress;
@@ -29,7 +32,11 @@ public class SceneInitiator : MonoBehaviour {
         // render all points
         foreach (PointReference p in pointToInit) {
             for (int i = 0; i <= 1; i += 1) {
-                InstantiatePoint(p, i);
+                // if (p.IsSplit()) {
+                //     InstantiateSplit(p, i);
+                // } else {
+                    InstantiatePoint(p, i, p.IsSplit());
+                // }
             }
         }    
         //store in asset manager
@@ -78,18 +85,32 @@ public class SceneInitiator : MonoBehaviour {
         allBars = new List<SolidBar>();
     }
 
-    private void InstantiatePoint(PointReference point, int i) {
+    private void InstantiatePoint(PointReference point, int i, bool isSplit) {
         Vector3 pos = point.GetPosition();
         pos.z += i * roadWidth;
-        Point scaledTemplate = pointTemplate;
+        Point scaledTemplate = isSplit ? splitPointTemplate : pointTemplate;
+        Transform parent = isSplit ? splitPointParent : pointParent;
         scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
-        Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), pointParent);
+        Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), parent);
         
-        pointInstantiated.InitRigidBody(point);
+        if (!isSplit) pointInstantiated.InitRigidBody(point);
         //pointInstantiated.UpdatePosition();
 
         allPoints.Add(pointInstantiated);
     }
+
+    // private void InstantiateSplit(PointReference point, int i) {
+    //     Vector3 pos = point.GetPosition();
+    //     pos.z += i * roadWidth;
+    //     GameObject scaledTemplate = splitPointTemplate;
+    //     scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
+    //     GameObject parentInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), splitPointParent);    
+    //     // pointInstantiated.InitRigidBody(point);
+    //     // //pointInstantiated.UpdatePosition();
+
+    //     allPoints.Add(parentInstantiated.GetComponent<Point>());
+
+    // }
 
     private SolidBar InstantiateBar(SolidBarReference bar, int i) {
         Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
@@ -106,7 +127,11 @@ public class SceneInitiator : MonoBehaviour {
 
         newBar.SetMaterial(bar.GetMaterial());
         newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);
-        newBar.InitTemp(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
+
+        Point head = bar.GetHeadSplit(AssetManager.GetPoint(headPosition));
+        Point tail = bar.GetTailSplit(AssetManager.GetPoint(tailPosition));
+
+        newBar.InitTemp(head, tail);
     	// allBars.Add(newBar);
         return newBar;
     }

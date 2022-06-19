@@ -15,6 +15,7 @@ public class SplitPointController : MonoBehaviour {
             GetComponent<SpriteRenderer>().color = new Color(1, 1, 0);
             isSplitPoint = false;
         }
+        GetComponent<Point>().SetSplit(isSplitPoint);
     }
 
 }
