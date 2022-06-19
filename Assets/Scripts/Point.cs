@@ -12,6 +12,10 @@ public class Point : MonoBehaviour {
     public Vector3 GetPosition() {
         return transform.localPosition;
     }
+    
+    public Vector3 GetWorldPosition() {
+        return transform.position;
+    }
 
 
     public void AddConnectedBar(SolidBar bar) {

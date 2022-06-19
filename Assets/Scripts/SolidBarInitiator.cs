@@ -133,7 +133,9 @@ public class SolidBarInitiator : MonoBehaviour {
         currentBar.SetTail(endPoint);    
         beginPoint.AddConnectedBar(currentBar);
         endPoint.AddConnectedBar(currentBar);
-        ActivateBoundary(beginPoint.GetPosition());
+
+        // Vector2 temp = new Vector2(beginPoint.GetPosition().x, beginPoint.GetPosition().y);
+        ActivateBoundary(beginPoint.GetWorldPosition());
     }
 
     public void FinalizeBar(Vector2 tailPos, bool autoComplete, float scale) {
@@ -190,9 +192,9 @@ public class SolidBarInitiator : MonoBehaviour {
         for (int i = 0; i < numOfPoints; i++) {
             float x = radius * Mathf.Sin((float) i / numOfPoints * 2 * Mathf.PI);
             float y = radius * Mathf.Cos((float) i / numOfPoints * 2 * Mathf.PI);
-            Instantiate(boundaryPoint, new Vector3(x, y, 0) + newPos,
-                        Quaternion.identity, boundParent);
-        } 
+            Transform pt = Instantiate(boundaryPoint, boundParent).transform;
+            pt.localPosition = new Vector3(x, y, 0);
+        }  
     }
 
     private void DeactivateBoundary() {
