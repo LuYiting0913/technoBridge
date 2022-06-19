@@ -5,19 +5,23 @@ using UnityEngine;
 public class SolidBarReference {
     private Vector2 headPosition;
     private Vector2 tailPosition;
+    private int headSplitNum, tailSplitNum;
     private int material;
     private float maxLength = 200f; 
     private float hydraulicFactor;
 
-    public SolidBarReference(Vector2 head, Vector2 tail, int m, float factor) {
+    public SolidBarReference(Vector2 head, Vector2 tail, int m, float factor, int headSplit, int tailSplit) {
         headPosition = head;
         tailPosition = tail;
         material = m;
+        headSplitNum = headSplit;
+        tailSplitNum = tailSplit;
         hydraulicFactor = factor;
     }
 
     public static SolidBarReference of(SolidBar bar) {
-        return new SolidBarReference(bar.GetHead(), bar.GetTail(), bar.material, bar.GetHydraulicFactor());
+        return new SolidBarReference(bar.GetHead(), bar.GetTail(), bar.material, bar.GetHydraulicFactor(),
+                                    bar.headSplitNum, bar.tailSplitNum);
     }
 
     public void SetHead(Vector2 vector) {
@@ -54,6 +58,30 @@ public class SolidBarReference {
 
     public int GetMaterial() {
         return material;
+    }
+
+    public bool IsHeadSplit() {
+        return headSplitNum != -1;
+    }
+
+    public bool IsTailSplit() {
+        return tailSplitNum != -1;
+    }
+
+    public Point GetHeadSplit(Point point) {
+        if (IsHeadSplit()) {
+            return point.transform.GetChild(headSplitNum).GetComponent<Point>();
+        }
+        return point.GetComponent<Point>();
+        
+    }
+
+    public Point GetTailSplit(Point point) {
+        if (IsTailSplit()) {
+            return point.transform.GetChild(tailSplitNum).GetComponent<Point>();
+        }
+        return point.GetComponent<Point>();
+        
     }
 
     public float GetHydraulicFactor() {

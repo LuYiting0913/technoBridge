@@ -5,11 +5,13 @@ using UnityEngine;
 public class PointReference {
     private Vector3 pointPosition;
     private bool isStationary = false;
+    private bool isSplit;
 
     public static PointReference of(Point p, bool stationary) {
         PointReference reference = new PointReference();
         reference.pointPosition = p.GetPosition();
-        reference.isStationary = stationary;
+        reference.isStationary = p.IsFixed();
+        reference.isSplit = p.IsSplit();
         return reference;
     }
 
@@ -21,9 +23,9 @@ public class PointReference {
         return pointPosition;
     }
     
-    // public Vector2 GetPosition2D() {
-    //     return new Vector2(pointPosition.x, ;
-    // }
+    public bool IsSplit() {
+        return isSplit;
+    }
 
     public bool IsFixed() {
         return isStationary;

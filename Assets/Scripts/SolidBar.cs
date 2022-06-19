@@ -8,6 +8,8 @@ public class SolidBar : MonoBehaviour {
     // private Vector3 tail.GetPosition();
     public Point head;
     public Point tail;
+    public int headSplitNum = -1;
+    public int tailSplitNum = -1;
     private ConfigurableJoint headJoint,tailJoint;
 
     private Color baseColor;
@@ -21,6 +23,11 @@ public class SolidBar : MonoBehaviour {
     private SpriteRenderer barRenderer;
     // private float maxLength = 200f; 
 
+    private void Start() {
+        headSplitNum = -1;
+        tailSplitNum = -1;
+    }
+    
     private bool isRope() {
         return material == 3 || material == 4;
     }
@@ -228,5 +235,8 @@ public class SolidBar : MonoBehaviour {
     public float GetHydraulicFactor() {
         return hydraulicFactor;
     }
+
+
+
 
 }
