@@ -14,6 +14,11 @@ public class TutorialController : MonoBehaviour {
         foreach (Point p in allPoints) {
             if (p != null) isCovered.Add(p, false);
         }
+
+        // for (int i = 0; i < l; i++) {
+        //     transform.GetChild(i).gameObject.SetActive(i == step);
+        // }
+        // DontDestroyOnLoad(this.gameObject);
     }
 
     public void NextStep() {
@@ -35,7 +40,9 @@ public class TutorialController : MonoBehaviour {
     }
 
     public Point FindGuidePoint(Vector3 pos) {
+        // Debug.Log(pos);
         foreach (Point p in allPoints) {
+            // Debug.Log(p.GetPosition());
             if (p.Contain(pos)) {
                 CoverPoint(p);
                 Debug.Log(AllPointsCovered());

@@ -70,6 +70,10 @@ public class Point : MonoBehaviour {
         return (GetPosition() - v).magnitude < threshold;
     }
 
+    public bool ContainInWorldPosition(Vector3 v) {
+        return (GetWorldPosition() - v).magnitude < threshold;
+    }
+
     public float DistanceTo(Point p) {
         return (p.GetPosition() - GetPosition()).magnitude;
     }
