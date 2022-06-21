@@ -18,4 +18,9 @@ public class SplitPointController : MonoBehaviour {
         GetComponent<Point>().SetSplit(isSplitPoint);
     }
 
+    public void OnSplited(object source, Stage2Controller e) {
+        Debug.Log("recieve split");
+        Destroy(transform.GetChild(0).GetComponent<FixedJoint>());
+    }
+
 }

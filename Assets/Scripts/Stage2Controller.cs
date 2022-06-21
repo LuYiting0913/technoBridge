@@ -12,10 +12,34 @@ public class Stage2Controller : MonoBehaviour {
     public GameObject playSpeedSlider;
     public GameObject canvas;
     public Transform vehicleParent;//, hydraulicParent;
+    public Transform splitPointParent, hydraulicParent;
     // public List<VehicleController> allVehicles = new List<VehicleController>();
 
     public void Start() {
         playSpeed = 2f;
+    }
+
+    public delegate void HydraulicEventHandler(object source, Stage2Controller e);
+    public event HydraulicEventHandler Activated;
+    public event HydraulicEventHandler Splited;
+
+
+    protected virtual void OnActivated() {
+        if (Activated != null) Activated(this, this);
+    }
+
+    protected virtual void OnSplited() {
+        if (Splited != null) Splited(this, this);
+    }
+
+
+    public void InitAllDelegates() {
+        for (int i = 0; i < splitPointParent.childCount; i++) {
+            Splited += splitPointParent.GetChild(i).GetComponent<SplitPointController>().OnSplited;
+        }
+        for (int i = 0; i < hydraulicParent.childCount; i++) {
+            Activated += hydraulicParent.GetChild(i).GetComponent<HydraulicController>().OnActivated;
+        }
     }
 
     public void TogglePause() {
@@ -65,16 +89,14 @@ public class Stage2Controller : MonoBehaviour {
         return false;
     }
 
-    // private void ActivateHydraulics() {
-    //     for (int i = 0; i < hydraulicParent.childCount; i++) {
-    //         hydraulicParent.GetChild(i).GetComponent<HydraulicController>().Activate();
-    //     }
-    // }
 
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
+                    // Debug.Log(AllVehicleWaiting());
         if (AllVehicleWaiting()) {
-            SceneInitiator.ActivateAllHydraulics();
+            // SceneInitiator.ActivateAllHydraulics();
+            OnSplited();
+            OnActivated();
         } else if (AnyVehicleFailed()) {
             canvas.transform.GetChild(4).gameObject.SetActive(true);
         } else if (AllVehicleArrived()) {

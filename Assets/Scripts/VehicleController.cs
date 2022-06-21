@@ -11,8 +11,8 @@ public class VehicleController : MonoBehaviour {
     public float brake = 10000;
     public List<Checkpoint> checkpoints;
     private int checkpointCount, nextCheckpoint;
-    private bool arrived, failed, waitingForHydraulic;
-    private int duration = 2;
+    public bool arrived, failed, waitingForHydraulic;
+    private int duration = 10;
 
     public void Start() {
         checkpointCount = checkpoints.Count;
@@ -64,8 +64,10 @@ public class VehicleController : MonoBehaviour {
             // Debug.Log("moving");
             if (ArrivedAtCheckpoint(checkpoints[nextCheckpoint]) && nextCheckpoint < checkpointCount) {
                 Debug.Log("arrived at next");
-                
-                StartCoroutine(WaitForAWhile(duration));
+                // waitingForHydraulic = true;
+                Stop();
+                // StartCoroutine(WaitForAWhile(duration));
+                // waitingForHydraulic = false;
                 nextCheckpoint += 1;
             } else {
                 Accelerate();
@@ -92,6 +94,16 @@ public class VehicleController : MonoBehaviour {
 
     public bool ArrivedAtCheckpoint(Checkpoint pt) {
         return pt.Arrived(transform.position);
+    }
+
+    private void Stop() {
+        waitingForHydraulic = true;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+    }
+
+    private void Restart() {
+        waitingForHydraulic = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
     }
 
     private IEnumerator WaitForAWhile(int dur) {
