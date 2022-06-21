@@ -49,7 +49,7 @@ public class SelectionController : MonoBehaviour {
             RaycastHit2D hit = Physics2D.Raycast(e.startPoint, new Vector3(0, 0, 1));
             if (draggingCopied) {
                 originalPosition = copiedParent.transform.position;
-            } else if (hit.collider != null) {
+            } else if (hit.collider != null && hit.transform.gameObject.GetComponent<SplitBarController>() == null) {
                 //individual select
                 ToggleIndividual(hit);
             } else {

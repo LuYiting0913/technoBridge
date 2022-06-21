@@ -66,6 +66,10 @@ public class Point : MonoBehaviour {
         return ConnectedBarCount() == 0;
     }
 
+    public bool Equals(Point p) {
+        return Contain(p.GetPosition());
+    }
+
     public bool Contain(Vector3 v) {
         return (GetPosition() - v).magnitude < threshold;
     }
@@ -92,13 +96,24 @@ public class Point : MonoBehaviour {
 
     public void SetSplit(bool b) {
         isSplit = b;
-        foreach (SolidBar bar in connectedBars) {
-            if (bar.head.Contain(GetPosition())) {
-                bar.headSplitNum = b ? 0 : -1;
-            } else {
-                bar.tailSplitNum = b ? 0 : -1;
+        if (b) {
+            foreach (SolidBar bar in connectedBars) {
+                if (bar.head.Contain(GetPosition())) {
+                    bar.ActivateSplit(0);
+                } else {
+                    bar.ActivateSplit(1);
+                }
+            }
+        } else {
+            foreach (SolidBar bar in connectedBars) {
+                if (bar.head.Contain(GetPosition())) {
+                    bar.DeactivateSplit(0);
+                } else {
+                    bar.DeactivateSplit(1);
+                }
             }
         }
+        
     }
     
     public bool IsSplit() {

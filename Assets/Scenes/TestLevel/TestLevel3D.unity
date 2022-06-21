@@ -2522,6 +2522,8 @@ MonoBehaviour:
   playSpeedSlider: {fileID: 723715858}
   canvas: {fileID: 2085794617}
   vehicleParent: {fileID: 1646396425}
+  splitPointParent: {fileID: 731047097}
+  hydraulicParent: {fileID: 278233480}
 --- !u!1 &1413122368
 GameObject:
   m_ObjectHideFlags: 0

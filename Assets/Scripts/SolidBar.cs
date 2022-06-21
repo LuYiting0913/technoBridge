@@ -10,6 +10,7 @@ public class SolidBar : MonoBehaviour {
     public Point tail;
     public int headSplitNum = -1;
     public int tailSplitNum = -1;
+    public Transform headSplitController, tailSplitController;
     private ConfigurableJoint headJoint,tailJoint;
 
     private Color baseColor;
@@ -234,6 +235,57 @@ public class SolidBar : MonoBehaviour {
 
     public float GetHydraulicFactor() {
         return hydraulicFactor;
+    }
+
+    public void DeactivateSplit(int i) {
+        // 0: head, 1: tail
+        if (i == 0) {
+            headSplitController.gameObject.SetActive(false);
+            headSplitNum = -1;
+        } else {
+            tailSplitController.gameObject.SetActive(false);
+            tailSplitNum = -1;
+        }
+    }
+
+    public void ActivateSplit(int i) {
+        // 0: head, 1: tail
+        if (i == 0) {
+            headSplitController.gameObject.SetActive(true);
+            headSplitNum = 0;
+        } else {
+            tailSplitController.gameObject.SetActive(true);
+            tailSplitNum = 0;
+        }
+    }
+
+    public void ToggleSplitParent(int i) {
+        // 0: head, 1: tail
+        // Transform target = i == 0 ? headSplitController ? tailSplitController;
+        Color yellow = new Color(1, 1, 0);
+        Color green = new Color(0, 1, 0);
+        Debug.Log("toggled");
+        Debug.Log(i);
+        if (i == 0) {
+            if (headSplitNum == 0) {
+                headSplitController.GetComponent<SpriteRenderer>().material.color = yellow;
+                headSplitNum = 1;
+
+            } else {
+                headSplitController.GetComponent<SpriteRenderer>().material.color = green;
+                headSplitNum = 0;
+            }
+        } else {
+            if (tailSplitNum == 0) {
+                tailSplitController.GetComponent<SpriteRenderer>().material.color = yellow;
+                tailSplitNum = 1;
+
+            } else {
+                tailSplitController.GetComponent<SpriteRenderer>().material.color = green;
+                tailSplitNum = 0;
+            }
+        }
+
     }
 
 

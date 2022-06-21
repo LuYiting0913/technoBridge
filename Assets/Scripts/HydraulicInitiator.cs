@@ -51,6 +51,9 @@ public class HydraulicInitiator : MonoBehaviour {
                     // Debug.Log("regied 2 click");
                     clickedPoint.GetComponent<SplitPointController>().ToggleSplit();
                 }
+            } else if (hit.collider != null && hit.transform.gameObject.GetComponent<SplitBarController>() != null) {
+                SplitBarController splitBar = hit.transform.gameObject.GetComponent<SplitBarController>();
+                splitBar.ToggleSplit();
             }
         }
 
