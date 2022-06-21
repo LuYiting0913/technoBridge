@@ -251,26 +251,28 @@ public class SolidBar : MonoBehaviour {
     public void ActivateSplit(int i) {
         // 0: head, 1: tail
         if (i == 0) {
+            Vector3 newPos = (transform.position + head.transform.position) / 2;
             headSplitController.gameObject.SetActive(true);
+            headSplitController.transform.position = newPos;
             headSplitNum = 0;
         } else {
+            Vector3 newPos = (transform.position + tail.transform.position) / 2;
             tailSplitController.gameObject.SetActive(true);
+            tailSplitController.transform.position = newPos;
             tailSplitNum = 0;
         }
     }
 
     public void ToggleSplitParent(int i) {
         // 0: head, 1: tail
-        // Transform target = i == 0 ? headSplitController ? tailSplitController;
         Color yellow = new Color(1, 1, 0);
         Color green = new Color(0, 1, 0);
-        Debug.Log("toggled");
-        Debug.Log(i);
+        // Debug.Log("toggled");
+        // Debug.Log(i);
         if (i == 0) {
             if (headSplitNum == 0) {
                 headSplitController.GetComponent<SpriteRenderer>().material.color = yellow;
                 headSplitNum = 1;
-
             } else {
                 headSplitController.GetComponent<SpriteRenderer>().material.color = green;
                 headSplitNum = 0;
@@ -279,7 +281,6 @@ public class SolidBar : MonoBehaviour {
             if (tailSplitNum == 0) {
                 tailSplitController.GetComponent<SpriteRenderer>().material.color = yellow;
                 tailSplitNum = 1;
-
             } else {
                 tailSplitController.GetComponent<SpriteRenderer>().material.color = green;
                 tailSplitNum = 0;
