@@ -46,7 +46,7 @@ public class SelectionController : MonoBehaviour {
 
     public void OnPressed(object source, Stage1Controller e) {
         if (isActive) {
-            RaycastHit2D hit = Physics2D.Raycast(e.startPoint, new Vector3(0, 0, 1));
+            RaycastHit2D hit = Physics2D.Raycast(e.GetStartPoint(), new Vector3(0, 0, 1));
             if (draggingCopied) {
                 originalPosition = copiedParent.transform.position;
             } else if (hit.collider != null && hit.transform.gameObject.GetComponent<SplitBarController>() == null) {
@@ -54,7 +54,7 @@ public class SelectionController : MonoBehaviour {
                 ToggleIndividual(hit);
             } else {
                 // box select
-                InitFirstCorner(e.startPoint);
+                InitFirstCorner(e.GetStartPoint());
                 boxSelection = true;
             }
         }
@@ -74,10 +74,10 @@ public class SelectionController : MonoBehaviour {
     public void OnDragged(object source, Stage1Controller e) {
         if (isActive) {
             if (draggingCopied) {
-                Vector2 dir = e.curPoint - e.startPoint;
+                Vector2 dir = e.GetCurPoint() - e.GetStartPoint();
                 copiedParent.transform.position = originalPosition + new Vector3(dir.x, dir.y, 0);
             } else if (boxSelection) {
-                InitSecondCorner(e.curPoint);
+                InitSecondCorner(e.GetCurPoint());
                 RenderSelectionBox();
             }
         }

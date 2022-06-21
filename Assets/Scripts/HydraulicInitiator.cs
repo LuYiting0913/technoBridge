@@ -37,7 +37,7 @@ public class HydraulicInitiator : MonoBehaviour {
 
     public void OnPressed(object source, Stage1Controller e) {
         if (isActive) {
-            RaycastHit2D hit = Physics2D.Raycast(e.startPoint, new Vector3(0, 0, 1));
+            RaycastHit2D hit = Physics2D.Raycast(e.GetStartPoint(), new Vector3(0, 0, 1));
             if (hit.collider != null && hit.transform.gameObject.GetComponent<HydraulicController>() != null) {
                 slider = hit.transform;
                 hydraulic = hit.transform.parent.gameObject.GetComponent<SolidBar>();
@@ -67,8 +67,8 @@ public class HydraulicInitiator : MonoBehaviour {
     public void OnDragged(object source, Stage1Controller e) {
         if (isActive && isModifying) {
             AssetManager.DeleteBar(hydraulic);
-            // Vector2 dir = (e.curPoint - e.startPoint) / 200;
-            slider.transform.position = e.curPoint;
+            // Vector2 dir = (e.GetCurPoint() - e.GetStartPoint()) / 200;
+            slider.transform.position = e.GetCurPoint();
             float position;
             // Debug.Log(slider.transform.localPosition);
             if (slider.localPosition.x > limit) {

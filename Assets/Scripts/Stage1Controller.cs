@@ -8,13 +8,14 @@ using System;
 public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     public int level = 0;
     public bool isTutorial;
+    public int budget;
 
-    public Vector2 startPoint, endPoint, curPoint;
-    public bool isPointerDown = false;
+    private Vector2 startPoint, endPoint, curPoint;
+    private bool isPointerDown = false;
     private int currentEditMode = 0;
     // 0 add; 1 select; 2 drag joint; 3: drag copied segment; 4: tracing
     public bool autoComplete, gridSnap, autoTriangulate;
-    public int currentMaterial = 0;
+    private int currentMaterial = 0;
 
     private ToggleButton select, drag, trace, steel, wood, pavement, rope, cable, hydraulic;
     public Transform barParent, pointParent, gridParent;
@@ -37,9 +38,9 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public static float backgroundScale = 1f;
 
     private int gridInterval = 20;
-    private Camera myCam;
+    // private Camera myCam;
     private int popUpSec = 1;
-    private int budget;
+
 
     // delegates
     public delegate void ModeChangeEventHandler(object source, int i);
@@ -96,14 +97,12 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     }
 
     public void Start() {
-        myCam = Camera.main;
         Time.timeScale = 1f;
         selectionController = SelectionController.GetInstance();
         traceController = TraceController.GetInstance();
         solidbarInitiator = SolidBarInitiator.GetInstance();
         dragController = DragController.GetInstance();
         hydraulicInitiator = HydraulicInitiator.GetInstance();
-        // splitBarController = SplitBarController.GetInstance();
         
         InitDelegates();
 
@@ -111,7 +110,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         backgroundPosition = new Vector3(0,0,0);//Levels.GetBackgroundPosition(level);
         
         Levels.InitLevel(level);
-        budget = Levels.GetBudget(level);
+        // budget = Levels.GetBudget(level);
         costDisplay.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Budget: " + MoneyToString(budget);
 
         pointTemplate = PrefabManager.GetPoint2DTemplate();
@@ -174,12 +173,15 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void OnPointerDown(PointerEventData eventData) {
         startPoint = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
+        // startPoint = WorldToCanvas(startPoint);
         isPointerDown = true;
+        Debug.Log(WorldToCanvas(startPoint));
         OnPressed();
     }
 
     public void OnPointerUp(PointerEventData eventData) {
         endPoint = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
+        // endPoint = WorldToCanvas(endPoint);
         isPointerDown = false;
         OnReleased();
     }
@@ -204,6 +206,22 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
 
     }
+
+    public Vector2 GetStartPoint() {
+        return startPoint;
+    } 
+
+    public Vector2 GetEndPoint() {
+        return endPoint;
+    }
+
+    public Vector2 GetCurPoint() {
+        return curPoint;
+    }
+
+    public Vector2 GetCurPointInWorld() {
+        return curPoint;
+    }    
 
     public void SelectMode() {
         Debug.Log("select mode");
@@ -232,8 +250,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         selectionController.ClearAll();
         OnModeChanged();
     }
-
-    
+ 
     public void TracingMode() {
         currentEditMode = 4;
         TurnOffAll();
@@ -272,8 +289,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 break;
             default:
                 break;
-        }
-        
+        }    
+    }
+
+    public int GetCurrentMaterial() {
+        return currentMaterial;
     }
 
     public void UpdateBackgroundInfo() {
@@ -282,8 +302,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
     }
 
-    private Vector2 WorldToCanvas(Vector2 v) {
-        return v - new Vector2(backgroundPosition.x, backgroundPosition.y);
+    public Vector2 WorldToCanvas(Vector2 v) {
+        return (v - new Vector2(backgroundPosition.x, backgroundPosition.y)) / backgroundScale;
     } 
 
     public void TurnOffAll() {
