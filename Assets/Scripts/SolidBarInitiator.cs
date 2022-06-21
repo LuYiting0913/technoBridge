@@ -146,6 +146,7 @@ public class SolidBarInitiator : MonoBehaviour {
         if (AssetManager.HasPoint(cutOffVector)) {
             Destroy(endPoint.gameObject);
             endPoint = AssetManager.GetPoint(cutOffVector);
+            endPoint.AddConnectedBar(currentBar);
         } else {
             endPoint.transform.position = cutOffVector; 
             // endPoint.UpdatePosition();
