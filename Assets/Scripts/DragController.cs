@@ -28,7 +28,7 @@ public class DragController : MonoBehaviour {
 
     public void OnPressed(object source, Stage1Controller e) {
         if (isActive) {
-            RaycastHit2D hit = Physics2D.Raycast(e.startPoint, new Vector3(0, 0, 1));
+            RaycastHit2D hit = Physics2D.Raycast(e.GetStartPoint(), new Vector3(0, 0, 1));
             if (hit.collider != null) {
                 
                 Point hittedPoint = hit.transform.GetComponent<Point>();
@@ -62,9 +62,9 @@ public class DragController : MonoBehaviour {
     public void OnDragged(object source, Stage1Controller e) {
         if (isActive) {
             if (isDragging) {
-                e.UpdateCursor(DragPointTo(e.curPoint, Stage1Controller.backgroundScale));
+                e.UpdateCursor(DragPointTo(e.GetCurPoint(), Stage1Controller.backgroundScale));
             } else if (isDraggingBackground) {
-                Vector2 dir = e.curPoint - e.startPoint;
+                Vector2 dir = e.GetCurPoint() - e.GetStartPoint();
                 e.gameObject.transform.position = e.backgroundPosition + new Vector3(dir.x, dir.y, 0);
             }
         }
