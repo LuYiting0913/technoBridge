@@ -6,7 +6,7 @@ using System;
 public class Pavement : MonoBehaviour {
     private Vector3 headPosition;
     private Vector3 tailPosition;
-    private ConfigurableJoint[] hinges = new ConfigurableJoint[4];
+    public ConfigurableJoint[] hinges = new ConfigurableJoint[4];
     private Vector3[] anchors = new Vector3[4];
     private static float maxLoad = MaterialManager.GetIntegrity(0);
     public bool disabled = false;
@@ -68,8 +68,11 @@ public class Pavement : MonoBehaviour {
     }
 
     public float GetCurrentTension() {
-        return Math.Max(hinges[0] == null ? 0 : hinges[0].currentForce.x, 
-                        hinges[2] == null ? 0 : hinges[2].currentForce.x);
+        return Math.Max(
+            Math.Max(hinges[0] == null ? 0 : hinges[0].currentForce.x, 
+                    hinges[1] == null ? 0 : hinges[1].currentForce.x),
+            Math.Max(hinges[2] == null ? 0 : hinges[2].currentForce.x,
+                    hinges[3] == null ? 0 : hinges[3].currentForce.x));
     }
 
     public float GetCurrentLoad() {
