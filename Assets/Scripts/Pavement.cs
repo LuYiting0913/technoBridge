@@ -68,8 +68,6 @@ public class Pavement : MonoBehaviour {
     }
 
     public float GetCurrentTension() {
-        // return Math.Max(hinges[1] == null ? 0 : hinges[1].currentForce.x, 
-        //             hinges[2] == null ? 0 : hinges[2].currentForce.x);
         int valid = 4;
         float force = 0f;
         foreach (ConfigurableJoint joint in hinges) {
@@ -77,12 +75,8 @@ public class Pavement : MonoBehaviour {
             force += joint.currentForce.magnitude;
         }
         // float force = hinges[1].currentForce.x < 1 ? hinges[2].currentForce.x : (hinges[1].currentForce.x + hinges[2].currentForce.x) / 2;
-        Debug.Log(force / valid);
+        // Debug.Log(force / valid);
         return force / valid;
-            // Math.Max(hinges[0] == null ? 0 : hinges[0].currentForce.x, 
-            //         hinges[1] == null ? 0 : hinges[1].currentForce.x),
-            // Math.Max(hinges[2] == null ? 0 : hinges[2].currentForce.x,
-            //         hinges[3] == null ? 0 : hinges[3].currentForce.x));
     }
 
     public float GetCurrentLoad() {
