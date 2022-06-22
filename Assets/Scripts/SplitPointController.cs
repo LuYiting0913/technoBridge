@@ -19,7 +19,7 @@ public class SplitPointController : MonoBehaviour {
     }
 
     public void OnSplited(object source, Stage2Controller e) {
-        Debug.Log("recieve split");
+        // Debug.Log("recieve split");
         Destroy(transform.GetChild(0).GetComponent<FixedJoint>());
     }
 

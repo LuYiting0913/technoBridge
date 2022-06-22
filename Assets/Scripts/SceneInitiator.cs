@@ -6,7 +6,7 @@ public class SceneInitiator : MonoBehaviour {
     public GameObject barTemplate;
     public Point pointTemplate;
     public Point splitPointTemplate;
-    public Transform pointParent, barParent, vehicleParent;// hydraulicParent;
+    public Transform pointParent, barParent, vehicleParent, hydraulicParent;
     public Transform splitPointParent;
 
 
@@ -48,7 +48,7 @@ public class SceneInitiator : MonoBehaviour {
                 // for non-pavement barsm init twice
                 if (b.GetMaterial() < 3) {
                     for (int i = 0; i <= 1; i += 1) {
-                        allBars.Add(InstantiateBar(b, i));
+                        allBars.Add(InstantiateBar(b, i, barParent));
                     }
                 } else if (b.GetMaterial() < 5) {
                     // ropes
@@ -57,7 +57,7 @@ public class SceneInitiator : MonoBehaviour {
                     }
                 } else {
                     for (int i = 0; i <= 1; i += 1) {
-                        SolidBar bar = InstantiateBar(b, i);
+                        SolidBar bar = InstantiateBar(b, i, hydraulicParent);
                         bar.GetComponent<HydraulicController>().ConvertToHydraulic(b.GetHydraulicFactor());
                         allBars.Add(bar);
                         allHydraulics.Add(bar.GetComponent<HydraulicController>());
@@ -105,7 +105,7 @@ public class SceneInitiator : MonoBehaviour {
 
     }
 
-    private SolidBar InstantiateBar(SolidBarReference bar, int i) {
+    private SolidBar InstantiateBar(SolidBarReference bar, int i, Transform parent) {
         Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
         Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth);
         Vector2 dir = bar.GetDirection();
@@ -116,7 +116,7 @@ public class SceneInitiator : MonoBehaviour {
         scaledTemplate.transform.localScale = new Vector3(50, dir.magnitude / 2, 50);
 
         SolidBar newBar = Instantiate(scaledTemplate, midPoint, 
-                            Quaternion.Euler(new Vector3(0, 0, angle)), barParent).GetComponent<SolidBar>();
+                            Quaternion.Euler(new Vector3(0, 0, angle)), parent).GetComponent<SolidBar>();
 
         newBar.SetMaterial(bar.GetMaterial());
         newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);

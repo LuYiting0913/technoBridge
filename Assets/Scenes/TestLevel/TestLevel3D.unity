@@ -1323,6 +1323,7 @@ MonoBehaviour:
   pointParent: {fileID: 545778166}
   barParent: {fileID: 387352986}
   vehicleParent: {fileID: 1646396425}
+  hydraulicParent: {fileID: 278233480}
   splitPointParent: {fileID: 731047097}
 --- !u!1 &578437579
 GameObject:
