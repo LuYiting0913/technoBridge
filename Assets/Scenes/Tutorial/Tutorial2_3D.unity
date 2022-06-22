@@ -1240,7 +1240,7 @@ MonoBehaviour:
   pointParent: {fileID: 545778166}
   barParent: {fileID: 387352986}
   vehicleParent: {fileID: 1646396425}
-  splitPointParent: {fileID: 0}
+  splitPointParent: {fileID: 1784205479}
 --- !u!1 &588228036
 GameObject:
   m_ObjectHideFlags: 0
@@ -2495,7 +2495,7 @@ Transform:
   m_GameObject: {fileID: 1135770569}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 265, y: -4.6, z: 45.5}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2607,7 +2607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1258053961
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2892,6 +2892,7 @@ Transform:
   - {fileID: 545778166}
   - {fileID: 387352986}
   - {fileID: 278233480}
+  - {fileID: 1784205479}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2910,6 +2911,8 @@ MonoBehaviour:
   playSpeedSlider: {fileID: 723715858}
   canvas: {fileID: 2085794617}
   vehicleParent: {fileID: 1646396425}
+  splitPointParent: {fileID: 1784205479}
+  hydraulicParent: {fileID: 278233480}
 --- !u!1 &1413122368
 GameObject:
   m_ObjectHideFlags: 0
@@ -3628,6 +3631,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1725999045}
   m_CullTransparentMesh: 1
+--- !u!1 &1784205478
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1784205479}
+  m_Layer: 0
+  m_Name: SplitPointParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1784205479
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784205478}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1386884404}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1829401492
 GameObject:
   m_ObjectHideFlags: 0
@@ -4464,7 +4498,7 @@ PrefabInstance:
     - target: {fileID: 6356771345415526830, guid: 4459da960377d60409efef82f229917c,
         type: 3}
       propertyPath: m_Constraints
-      value: 8
+      value: 104
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4459da960377d60409efef82f229917c, type: 3}

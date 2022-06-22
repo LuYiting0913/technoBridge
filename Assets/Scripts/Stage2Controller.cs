@@ -93,15 +93,15 @@ public class Stage2Controller : MonoBehaviour {
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
                     // Debug.Log(AllVehicleWaiting());
-        if (AllVehicleWaiting()) {
+        if (AllVehicleArrived()) {
+            Debug.Log("all arrived");
+            canvas.transform.GetChild(3).gameObject.SetActive(true);
+        } else if (AllVehicleWaiting()) {
             // SceneInitiator.ActivateAllHydraulics();
             OnSplited();
             OnActivated();
         } else if (AnyVehicleFailed()) {
             canvas.transform.GetChild(4).gameObject.SetActive(true);
-        } else if (AllVehicleArrived()) {
-            // Debug.Log("all arrived");
-            canvas.transform.GetChild(3).gameObject.SetActive(true);
-        }
+        } 
     }
 }

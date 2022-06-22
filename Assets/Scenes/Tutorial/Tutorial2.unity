@@ -1819,14 +1819,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 2
   isTutorial: 1
-  startPoint: {x: 0, y: 0}
-  endPoint: {x: 0, y: 0}
-  curPoint: {x: 0, y: 0}
-  isPointerDown: 0
+  budget: 1200
   autoComplete: 0
   gridSnap: 0
   autoTriangulate: 0
-  currentMaterial: 0
   barParent: {fileID: 661020757}
   pointParent: {fileID: 1590620279}
   gridParent: {fileID: 1527536029}
