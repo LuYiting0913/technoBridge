@@ -49,7 +49,7 @@ public class SelectionController : MonoBehaviour {
             RaycastHit2D hit = Physics2D.Raycast(e.GetStartPoint(), new Vector3(0, 0, 1));
             if (draggingCopied) {
                 originalPosition = copiedParent.transform.position;
-            } else if (hit.collider != null && hit.transform.gameObject.GetComponent<SplitBarController>() == null) {
+            } else if (hit.collider != null && IsBarOrPoint(hit.transform)) {
                 //individual select
                 ToggleIndividual(hit);
             } else {
@@ -91,6 +91,10 @@ public class SelectionController : MonoBehaviour {
         selectedPoints = new List<Point>();
     }
 
+    private bool IsBarOrPoint(Transform transform) {
+        return transform.GetComponent<SolidBar>() != null || transform.GetComponent<Point>() != null;
+    }
+
     private void ClearAllDummy() {
         foreach (Transform child in copiedParent) GameObject.Destroy(child.gameObject);
         dummyBars = new List<SolidBar>();
@@ -121,7 +125,7 @@ public class SelectionController : MonoBehaviour {
         for (int i = leftBound; i < rightBound; i += scanInterval) {
             for (int j = lowerBound; j < upperBound; j += scanInterval) {
                 RaycastHit2D hit = Physics2D.Raycast(new Vector3(i, j, -10), new Vector3(0, 0, 1));
-                if (hit.collider != null) {
+                if (hit.collider != null && IsBarOrPoint(hit.transform)) {
                     bool isActive = hit.transform.GetChild(0).gameObject.activeSelf;
                     if (!isActive) {
                         AddToSelection(hit.transform);

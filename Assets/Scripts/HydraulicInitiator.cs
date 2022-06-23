@@ -32,7 +32,7 @@ public class HydraulicInitiator : MonoBehaviour {
     }
      
     public void OnModeChanged(object source, int i) {
-        isActive = true;
+        isActive = i != 0;
     }
 
     public void OnPressed(object source, Stage1Controller e) {

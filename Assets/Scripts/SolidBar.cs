@@ -265,13 +265,13 @@ public class SolidBar : MonoBehaviour {
 
     public void ToggleSplitParent(int i) {
         // 0: head, 1: tail
-        Color yellow = new Color(1, 1, 0);
+        Color red = new Color(1, 0, 0);
         Color green = new Color(0, 1, 0);
         // Debug.Log("toggled");
         // Debug.Log(i);
         if (i == 0) {
             if (headSplitNum == 0) {
-                headSplitController.GetComponent<SpriteRenderer>().material.color = yellow;
+                headSplitController.GetComponent<SpriteRenderer>().material.color = red;
                 headSplitNum = 1;
             } else {
                 headSplitController.GetComponent<SpriteRenderer>().material.color = green;
@@ -279,7 +279,7 @@ public class SolidBar : MonoBehaviour {
             }
         } else {
             if (tailSplitNum == 0) {
-                tailSplitController.GetComponent<SpriteRenderer>().material.color = yellow;
+                tailSplitController.GetComponent<SpriteRenderer>().material.color = red;
                 tailSplitNum = 1;
             } else {
                 tailSplitController.GetComponent<SpriteRenderer>().material.color = green;
