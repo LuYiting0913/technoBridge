@@ -11,6 +11,7 @@ public class SolidBar : MonoBehaviour {
     public int headSplitNum = -1;
     public int tailSplitNum = -1;
     public Transform headSplitController, tailSplitController;
+    // public Transform hydraulicSlider;
     private ConfigurableJoint headJoint,tailJoint;
 
     private Color baseColor;
@@ -19,7 +20,7 @@ public class SolidBar : MonoBehaviour {
     private Color originColor;
     public bool disabled = false;
 
-    private float hydraulicFactor = 0.5f;
+    public float hydraulicFactor = 0.5f;
 
     private SpriteRenderer barRenderer;
     // private float maxLength = 200f; 
@@ -43,6 +44,8 @@ public class SolidBar : MonoBehaviour {
     public void RenderSolidBar(float scale) {
         InitRenderer();
         transform.localPosition = (head.GetPosition() + tail.GetPosition()) / 2;// + new Vector3(0, 0, 5);
+        // transform.GetChild(2).gameObject.GetComponent<HydraulicController>().SetInitialPosition(hydraulicFactor, GetLength());
+        // InitHydraulicSlider();
 
         Vector3 dir = tail.GetPosition() - head.GetPosition();
         float angle = Vector2.SignedAngle(Vector2.right, new Vector3(dir.x, dir.y));
@@ -93,6 +96,11 @@ public class SolidBar : MonoBehaviour {
         joint.axis = new Vector3(0, 0, 1); 
     }
 
+    private void InitHydraulicSlider() {
+        Vector3 temp = transform.GetChild(2).transform.localPosition;
+        transform.GetChild(2).transform.localPosition = new Vector3(GetLength() * (hydraulicFactor - 0.5f) / 10, temp.y, temp.z);
+    }
+
     public void SetMaterial(int m) {
         material = m;
         maxLoad = MaterialManager.GetIntegrity(m);
@@ -114,16 +122,23 @@ public class SolidBar : MonoBehaviour {
         if (tail != null) InitBarTail();
     }
 
-    public void SetTailR(Point point) {
-        tail = point;
-    }
-   // redundant...........
+//     public void SetTailR(Point point) {
+//         tail = point;
+//     }
+//    // redundant...........
     public void SetHead(Point point) {
         head = point;
     }
 
     public void SetTail(Point point) {
         tail = point;
+    }
+
+    public void InitHydraulicParams(float factor, int headSplit, int tailSplit) {
+        hydraulicFactor = factor;
+        headSplitNum = headSplit;
+        tailSplitNum = tailSplit;
+        InitHydraulicSlider();
     }
 
     public Vector3 GetHead() {
