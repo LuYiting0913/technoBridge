@@ -1296,6 +1296,7 @@ MonoBehaviour:
   pointParent: {fileID: 545778166}
   barParent: {fileID: 387352986}
   vehicleParent: {fileID: 1646396425}
+  hydraulicParent: {fileID: 0}
   splitPointParent: {fileID: 7558252}
 --- !u!1 &588228036
 GameObject:
@@ -3855,7 +3856,7 @@ RectTransform:
   m_GameObject: {fileID: 1898883348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 146.7}
-  m_LocalScale: {x: 25, y: 15, z: 1}
+  m_LocalScale: {x: 50, y: 30, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2085794622}
