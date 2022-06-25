@@ -68,6 +68,14 @@ public class SolidBarReference {
         return tailSplitNum != -1;
     }
 
+    public int GetTailSplitNum() {
+        return tailSplitNum;
+    }
+
+    public int GetHeadSplitNum() {
+        return headSplitNum;
+    }
+
     public Point GetHeadSplit(Point point) {
         if (IsHeadSplit()) {
             return point.transform.GetChild(headSplitNum).GetComponent<Point>();
