@@ -158,7 +158,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             tail.AddConnectedBar(bar);
            
             bar.SetR(head, tail);
-
+            bar.InitHydraulicParams(barReference.GetHydraulicFactor(), barReference.GetHeadSplitNum(), barReference.GetTailSplitNum());
             bar.RenderSolidBar(backgroundScale);
             existingBars.Add(bar);
         }
@@ -262,7 +262,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         currentEditMode = 3;
         popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
         popupToolBar.transform.GetChild(1).gameObject.SetActive(true);
-        // TurnOffAll();
+        TurnOffAll();
     }
 
     public void SetMaterial(int material) {
