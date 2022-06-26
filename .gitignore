@@ -70,3 +70,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Firebase bundle
+/[Aa]ssets/[Ff]irebase/[Pp]lugins/x86_64/[Ff]irebaseCppApp-9_1_0.bundle
+/[Aa]ssets/[Ff]irebase/[Pp]lugins/x86_64/[Ff]irebaseCppApp-9_1_0.bundle.meta
