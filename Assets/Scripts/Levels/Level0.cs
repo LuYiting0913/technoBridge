@@ -29,7 +29,7 @@ public class Level0 : MonoBehaviour {
         p5.SetPosition(new Vector3(300, 90, 0));
         p6.SetPosition(new Vector3(50, -50, 0));
         
-    
+
         fixedPoints.Add(p1);
         fixedPoints.Add(p2);
         fixedPoints.Add(p3);
