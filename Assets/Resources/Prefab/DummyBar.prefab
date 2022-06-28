@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3049301320886875963}
   - component: {fileID: -2505887726700754596}
   m_Layer: 6
-  m_Name: DummyWoodBar
+  m_Name: DummyBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
