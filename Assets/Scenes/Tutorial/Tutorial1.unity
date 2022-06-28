@@ -12050,7 +12050,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 1
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1071158352
@@ -13701,7 +13701,6 @@ GameObject:
   - component: {fileID: 1216033046}
   - component: {fileID: 1216033045}
   - component: {fileID: 1216033049}
-  - component: {fileID: 1216033050}
   m_Layer: 5
   m_Name: UI Canvas
   m_TagString: Untagged
@@ -13806,18 +13805,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8c492e243e13de458faea13719836cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1216033050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216033044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 162b6e1ea7f73db4db37a9348f76d49d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1219080866
@@ -22337,7 +22324,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 1
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2073428859
