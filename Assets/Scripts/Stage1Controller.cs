@@ -143,6 +143,12 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                 point = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
                 point.transform.localPosition = position;
             }
+            point.SetSplit(p.IsSplit());  
+            if (p.IsSplit()) {
+                point.SetSplit(true);
+                point.GetComponent<SplitPointController>().ToggleSplit();
+            //  .\   point.SetSplit(p.IsSplit());
+            }
             existingPoints.Add(point);
         }
         AssetManager.Init(existingPoints, null);
@@ -162,6 +168,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             bar.RenderSolidBar(backgroundScale);
             existingBars.Add(bar);
         }
+        
+        foreach (Point p in existingPoints) {
+            p.SetSplit(p.IsSplit());
+        }
+        
         AssetManager.Init(existingPoints, existingBars);
         AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
         // Init grid lines
@@ -169,6 +180,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
         transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, 0);
+
+
     }
 
     public void OnPointerDown(PointerEventData eventData) {

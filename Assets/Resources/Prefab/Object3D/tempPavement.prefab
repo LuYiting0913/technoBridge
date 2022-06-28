@@ -144,7 +144,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 49c3addc55bf63642b8fb365546a2a40, type: 2}
+  - {fileID: 2100000, guid: 113b9c3121cca004db9ab32fcd8a866f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -194,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 8242864210448482709}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 48.353786, y: 49.16807, z: 207.3392}
-  m_LocalScale: {x: 75, y: 110.61322, z: 330}
+  m_LocalScale: {x: 75, y: 105.22333, z: 330}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3569610128401010792}
@@ -232,6 +232,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a483b9f7812ea643b0a6b4f0cd2eacf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hinges:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   disabled: 0
 --- !u!65 &2376219339678570659
 BoxCollider:
