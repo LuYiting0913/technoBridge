@@ -201,10 +201,12 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void Update() {
         existingBars = AssetManager.GetAllBars();
+        // Debug.Log(existingBars.ToString());
         existingPoints = AssetManager.GetAllPoints();
         int cost = 0; 
 
         foreach (SolidBar bar in existingBars) {
+            // Debug.Log("The bar is " + bar.ToString());
             if (bar != null) {
                 bar.RenderSolidBar(backgroundScale);
                 cost += bar.CalculateCost();    
