@@ -32,11 +32,11 @@ public class SceneInitiator : MonoBehaviour {
         // render all points
         foreach (PointReference p in pointToInit) {
             for (int i = 0; i <= 1; i += 1) {
-                if (p.IsSplit()) {
-                    InstantiateSplit(p, i);
-                } else {
+                // if (p.IsSplit()) {
+                //     InstantiateSplit(p, i);
+                // } else {
                     InstantiatePoint(p, i, p.IsSplit());
-                }
+                // }
             }
         }    
         //store in asset manager
@@ -93,17 +93,17 @@ public class SceneInitiator : MonoBehaviour {
         allPoints.Add(pointInstantiated);
     }
 
-    private void InstantiateSplit(PointReference point, int i) {
-        Vector3 pos = point.GetPosition();
-        pos.z += i * roadWidth;
-        Point scaledTemplate = splitPointTemplate;
-        scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
-        GameObject parentInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), splitPointParent).gameObject;    
-        // pointInstantiated.InitRigidBody(point);
+    // private void InstantiateSplit(PointReference point, int i) {
+    //     Vector3 pos = point.GetPosition();
+    //     pos.z += i * roadWidth;
+    //     Point scaledTemplate = splitPointTemplate;
+    //     scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
+    //     GameObject parentInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), splitPointParent).gameObject;    
+    //     // pointInstantiated.InitRigidBody(point);
 
-        allPoints.Add(parentInstantiated.GetComponent<Point>());
+    //     allPoints.Add(parentInstantiated.GetComponent<Point>());
 
-    }
+    // }
 
     private SolidBar InstantiateBar(SolidBarReference bar, int i, Transform parent) {
         Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
@@ -115,7 +115,7 @@ public class SceneInitiator : MonoBehaviour {
         GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
         scaledTemplate.transform.localScale = new Vector3(50, dir.magnitude / 2, 50);
 
-        SolidBar newBar = Instantiate(scaledTemplate, midPoint, 
+        SolidBar newBar = Instantiate(scaledTemplate, midPoint,  
                             Quaternion.Euler(new Vector3(0, 0, angle)), parent).GetComponent<SolidBar>();
 
         newBar.SetMaterial(bar.GetMaterial());

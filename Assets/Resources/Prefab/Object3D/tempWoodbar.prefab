@@ -166,7 +166,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 24e34c0d3a1744248ab54a8d09977ab0, type: 2}
+  - {fileID: 2100000, guid: 152e479d578e2ee499d0a7bc33943c97, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -231,8 +231,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   head: {fileID: 0}
   tail: {fileID: 0}
+  headSplitNum: -1
+  tailSplitNum: -1
+  headSplitController: {fileID: 0}
+  tailSplitController: {fileID: 0}
   material: 1
   disabled: 0
+  hydraulicFactor: 0.5
 --- !u!1 &3868616733796652369
 GameObject:
   m_ObjectHideFlags: 0
