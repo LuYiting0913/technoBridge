@@ -7,7 +7,7 @@ public class Point : MonoBehaviour {
     public List<SolidBar> connectedBars = new List<SolidBar>(); 
     // private Vector3 pointPosition;
     private bool isStationary = false;
-    private bool isSplit = false;
+    public bool isSplit = false;
     private static int threshold = 15;
 
     public Vector3 GetPosition() {
@@ -17,7 +17,6 @@ public class Point : MonoBehaviour {
     public Vector3 GetWorldPosition() {
         return transform.position;
     }
-
 
     public void AddConnectedBar(SolidBar bar) {
         connectedBars.Add(bar);
@@ -94,10 +93,10 @@ public class Point : MonoBehaviour {
         isStationary = false;
     }
 
-    public void SetSplit(bool b) {
-        isSplit = b;
-        if (b) {
+    public void SetSplit() {
+        if (isSplit) {
             foreach (SolidBar bar in connectedBars) {
+                // Debug.Log("activate spl");
                 if (bar.head.Contain(GetPosition())) {
                     bar.ActivateSplit(0);
                 } else {
@@ -106,6 +105,7 @@ public class Point : MonoBehaviour {
             }
         } else {
             foreach (SolidBar bar in connectedBars) {
+                // Debug.Log("deactivate spl");
                 if (bar.head.Contain(GetPosition())) {
                     bar.DeactivateSplit(0);
                 } else {
@@ -120,10 +120,21 @@ public class Point : MonoBehaviour {
         return isSplit;
     }
 
+    public void InitSplitSetting2D(PointReference p) {
+        isSplit = p.IsSplit();
+        GetComponent<SplitPointController>().InitSplit(isSplit);
+    }
+
+    public void InitSplitSetting3D(PointReference p) {
+        isSplit = p.IsSplit();
+    }
+
 
     public void InitRigidBody(PointReference p) {
-        Rigidbody pointRb = gameObject.GetComponent<Rigidbody>();
-        pointRb.isKinematic = p.IsFixed();
+        if (!isSplit) {
+            Rigidbody pointRb = gameObject.GetComponent<Rigidbody>();
+            pointRb.isKinematic = p.IsFixed();
+        }
     }
         
     public void RemoveConnectedNull() {

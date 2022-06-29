@@ -80,7 +80,7 @@ public class SolidBarReference {
         if (IsHeadSplit()) {
             return point.transform.GetChild(headSplitNum).GetComponent<Point>();
         }
-        return point.GetComponent<Point>();
+        return point;
         
     }
 
@@ -88,7 +88,7 @@ public class SolidBarReference {
         if (IsTailSplit()) {
             return point.transform.GetChild(tailSplitNum).GetComponent<Point>();
         }
-        return point.GetComponent<Point>();
+        return point;
         
     }
 

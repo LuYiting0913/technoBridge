@@ -142,16 +142,16 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             } else {
                 point = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
                 point.transform.localPosition = position;
+                point.InitSplitSetting2D(p);
             }
-            point.SetSplit(p.IsSplit());  
-            if (p.IsSplit()) {
-                point.SetSplit(true);
-                point.GetComponent<SplitPointController>().ToggleSplit();
-            //  .\   point.SetSplit(p.IsSplit());
-            }
+
+            
+
             existingPoints.Add(point);
         }
         AssetManager.Init(existingPoints, null);
+
+        // SolidBar debugBar = null;
         // render all bars
         foreach (SolidBarReference barReference in barData) {
             //Instantiate
@@ -164,13 +164,15 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             tail.AddConnectedBar(bar);
            
             bar.SetR(head, tail);
-            bar.InitHydraulicParams(barReference.GetHydraulicFactor(), barReference.GetHeadSplitNum(), barReference.GetTailSplitNum());
+            bar.InitHydraulicParams(barReference.GetHydraulicFactor());//, barReference.GetHeadSplitNum(), barReference.GetTailSplitNum());
             bar.RenderSolidBar(backgroundScale);
             existingBars.Add(bar);
+            
+
         }
         
         foreach (Point p in existingPoints) {
-            p.SetSplit(p.IsSplit());
+            p.SetSplit();
         }
         
         AssetManager.Init(existingPoints, existingBars);
@@ -180,15 +182,20 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
         transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, 0);
+        // if (existingBars.Count > 0) {
+        //             debugBar = existingBars[0];
+        // Debug.Log(debugBar.tailSplitNum);
+        // Debug.Log(debugBar.headSplitNum);
+        // }
 
-
+        
     }
 
     public void OnPointerDown(PointerEventData eventData) {
         startPoint = SnapToGrid(Camera.main.ScreenToWorldPoint(eventData.position));
         // startPoint = WorldToCanvas(startPoint);
         isPointerDown = true;
-        Debug.Log(WorldToCanvas(startPoint));
+        // Debug.Log(WorldToCanvas(startPoint));
         OnPressed();
     }
 

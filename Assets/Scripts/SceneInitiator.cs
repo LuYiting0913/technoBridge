@@ -25,21 +25,12 @@ public class SceneInitiator : MonoBehaviour {
     public void Start() {
         List<PointReference> pointToInit = Levels.GetPointData(currentLevel);
         List<SolidBarReference> barToInit = Levels.GetBarData(currentLevel);
-        // List<Vehicle> vehicleToInit = Levels.GetVehicleData(currentLevel);
-        // Vector3 temp = Levels.GetBackgroundPosition(currentLevel);
-        // scale = Levels.GetBackgroundScale(currentLevel);
-        // backgroundPosition = new Vector3(temp.x, temp.y, 0);
-        // render all points
+
         foreach (PointReference p in pointToInit) {
             for (int i = 0; i <= 1; i += 1) {
-                // if (p.IsSplit()) {
-                //     InstantiateSplit(p, i);
-                // } else {
-                    InstantiatePoint(p, i, p.IsSplit());
-                // }
+                allPoints.Add(InstantiatePoint(p, i));
             }
         }    
-        //store in asset manager
         AssetManager.Init(allPoints, new List<SolidBar>());
 
 // use oop here
@@ -72,40 +63,28 @@ public class SceneInitiator : MonoBehaviour {
         transform.parent.GetComponent<Stage2Controller>().InitAllDelegates();
     }
 
-    // transfer all the data from 2d UI
     public static void InitScene(int level) {
         currentLevel = level;
         allPoints = new List<Point>();
         allBars = new List<SolidBar>();
     }
 
-    private void InstantiatePoint(PointReference point, int i, bool isSplit) {
+    private Point InstantiatePoint(PointReference point, int i) {
         Vector3 pos = point.GetPosition();
         pos.z += i * roadWidth;
-        Point scaledTemplate = isSplit ? splitPointTemplate : pointTemplate;
-        Transform parent = isSplit ? splitPointParent : pointParent;
+        Point scaledTemplate = point.IsSplit() ? splitPointTemplate : pointTemplate;
+        Transform parent = point.IsSplit() ? splitPointParent : pointParent;
         scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
         Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), parent);
-        
-        if (!isSplit) pointInstantiated.InitRigidBody(point);
+        pointInstantiated.InitSplitSetting3D(point);
+        pointInstantiated.InitRigidBody(point);
         //pointInstantiated.UpdatePosition();
 
-        allPoints.Add(pointInstantiated);
+        return pointInstantiated;
     }
 
-    // private void InstantiateSplit(PointReference point, int i) {
-    //     Vector3 pos = point.GetPosition();
-    //     pos.z += i * roadWidth;
-    //     Point scaledTemplate = splitPointTemplate;
-    //     scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
-    //     GameObject parentInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), splitPointParent).gameObject;    
-    //     // pointInstantiated.InitRigidBody(point);
 
-    //     allPoints.Add(parentInstantiated.GetComponent<Point>());
-
-    // }
-
-    private SolidBar InstantiateBar(SolidBarReference bar, int i, Transform parent) {
+    private SolidBar InstantiateBar(SolidBarReference bar, int i,Transform parent) {
         Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
         Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth);
         Vector2 dir = bar.GetDirection();
