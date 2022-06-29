@@ -22,6 +22,7 @@ public class Stage2Controller : MonoBehaviour {
     public delegate void HydraulicEventHandler(object source, Stage2Controller e);
     public event HydraulicEventHandler Activated;
     public event HydraulicEventHandler Splited;
+    public event HydraulicEventHandler VehicleRestarted;
 
 
     protected virtual void OnActivated() {
@@ -32,6 +33,10 @@ public class Stage2Controller : MonoBehaviour {
         if (Splited != null) Splited(this, this);
     }
 
+    protected virtual void OnRestarted() {
+        if (VehicleRestarted != null) VehicleRestarted(this, this);
+    }
+
 
     public void InitAllDelegates() {
         for (int i = 0; i < splitPointParent.childCount; i++) {
@@ -39,6 +44,9 @@ public class Stage2Controller : MonoBehaviour {
         }
         for (int i = 0; i < hydraulicParent.childCount; i++) {
             Activated += hydraulicParent.GetChild(i).GetComponent<HydraulicController>().OnActivated;
+        }
+        for (int i = 0; i < vehicleParent.childCount; i++) {
+            VehicleRestarted += vehicleParent.GetChild(i).GetComponent<VehicleController>().OnRestarted;
         }
     }
 
@@ -89,6 +97,17 @@ public class Stage2Controller : MonoBehaviour {
         return false;
     }
 
+    // private void PlayAnimation() {
+        
+    //     StartCoroutine(WaitForAWhile(3));
+    // }
+
+    private IEnumerator PlayAnimation() {
+        Debug.Log("playing animation");
+        yield return new WaitForSeconds(5);
+        OnRestarted();
+    }
+
 
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
@@ -100,6 +119,9 @@ public class Stage2Controller : MonoBehaviour {
             // SceneInitiator.ActivateAllHydraulics();
             OnSplited();
             OnActivated();
+            // StartCoroutine(WaitForAWhile(3));
+            StartCoroutine(PlayAnimation());
+            
         } else if (AnyVehicleFailed()) {
             canvas.transform.GetChild(4).gameObject.SetActive(true);
         } 

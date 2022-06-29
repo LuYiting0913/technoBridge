@@ -76,6 +76,11 @@ public class VehicleController : MonoBehaviour {
         }
     }
 
+    public void OnRestarted(object source, Stage2Controller e) {
+        // Debug.Log("restarted");
+        Restart();
+    }
+
     public bool Arrived() {
         return arrived;
     }
