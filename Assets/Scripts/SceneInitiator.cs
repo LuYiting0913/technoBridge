@@ -121,11 +121,14 @@ public class SceneInitiator : MonoBehaviour {
         float l = dir.magnitude;
         int numberOfSegments = (int) (l / maxPerSegment);
 
+        Point head = bar.GetHeadSplit(AssetManager.GetPoint(headPosition));
+        Point tail = bar.GetTailSplit(AssetManager.GetPoint(tailPosition));
+
         GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
         scaledTemplate.transform.localScale = new Vector3(10, l / numberOfSegments / 1.9f, 10);
         Quaternion rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, bar.GetDirection()));
         
-        GameObject previousSegment = AssetManager.GetPoint(headPosition).gameObject;
+        GameObject previousSegment = head.gameObject;
         for (int j = 1; j <= numberOfSegments; j++) {
             Vector3 tempHead = headPosition + ((float) (j - 1) / numberOfSegments) * dir; 
             Vector3 tempTail = headPosition + ((float) j / numberOfSegments) * dir;
@@ -138,14 +141,15 @@ public class SceneInitiator : MonoBehaviour {
             previousSegment = b.gameObject;        
         }
         ConfigurableJoint jt = previousSegment.AddComponent<ConfigurableJoint>();
-        jt.connectedBody = AssetManager.GetPoint(tailPosition).gameObject.GetComponent<Rigidbody>();
+        jt.connectedBody = tail.GetComponent<Rigidbody>();
         jt.anchor = new Vector3(0, 1, 0);
         InitRopeJoint(jt); 
 
         newRope.SetMaterial(bar.GetMaterial());
         newRope.SetBaseColor(previousSegment.GetComponent<MeshRenderer>().material.color);
-        newRope.SetR(AssetManager.GetPoint(headPosition), AssetManager.GetPoint(tailPosition));
-    	// allBars.Add(newRope);
+
+        newRope.SetR(head, tail);
+
         return newRope;
     }
 
@@ -164,8 +168,8 @@ public class SceneInitiator : MonoBehaviour {
                                         GetComponent<Pavement>();
 
         newPave.SetPosition(headPosition, tailPosition);
-        newPave.InitPavementHinge(allPoints, roadWidth);
-        // allPaves.Add(newPave);
+        newPave.InitPavementHinge(bar, roadWidth);
+
         return newPave;
     }
 

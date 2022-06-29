@@ -21,41 +21,72 @@ public class Pavement : MonoBehaviour {
         anchors[3] = new Vector3(0, 0.5f, 0.15f);
     }
 
-    public void InitPavementHinge(List<Point> allPoints, int roadWidth) {
+    public void InitPavementHinge(SolidBarReference bar, int roadWidth) {
         Vector3 headMirror = headPosition + new Vector3(0, 0, roadWidth);
         Vector3 tailMirror = tailPosition + new Vector3(0, 0, roadWidth);
         GameObject brokenHead = transform.GetChild(2).gameObject;
         GameObject brokenTail = transform.GetChild(3).gameObject;
-    	foreach (Point p in allPoints) {
-            int index = -1;
-            if (p.Contain(headPosition)) {
-                index = 0;
-            } else if (p.Contain(headMirror)) {
-                index = 1;
-            } else if (p.Contain(tailPosition)) {
-                index = 2;
-            } else if (p.Contain(tailMirror)) {
-                index = 3;
-            }
 
-            if (index != -1) {
-                hinges[index] = gameObject.AddComponent<ConfigurableJoint>();
-                hinges[index].connectedBody = p.GetComponent<Rigidbody>();
-                InitJointSetting(hinges[index]);
-                hinges[index].anchor = anchors[index];
-    	        
-                // broken child
-                ConfigurableJoint joint;
-                if  (index <= 1) {
-                    joint = brokenHead.AddComponent<ConfigurableJoint>();
-                } else {
-                    joint = brokenTail.AddComponent<ConfigurableJoint>();
-                }
-                joint.connectedBody = p.GetComponent<Rigidbody>();
-                InitJointSetting(joint);
-                joint.anchor = anchors[index];
+        List<Point> points = new List<Point>();
+
+        Point head = bar.GetHeadSplit(AssetManager.GetPoint(headPosition));
+        Point tail = bar.GetTailSplit(AssetManager.GetPoint(tailPosition));
+        Point headMir = bar.GetHeadSplit(AssetManager.GetPoint(headMirror));
+        Point tailMir = bar.GetTailSplit(AssetManager.GetPoint(tailMirror));
+        points.Add(head);
+        points.Add(headMir);
+        points.Add(tail);
+        points.Add(tailMir);
+
+        for (int index = 0; index < 4; index++) {
+            Rigidbody rb = points[index].GetComponent<Rigidbody>();
+            hinges[index] = gameObject.AddComponent<ConfigurableJoint>();
+            hinges[index].connectedBody = rb;
+            InitJointSetting(hinges[index]);
+            hinges[index].anchor = anchors[index];
+            
+            // broken child
+            ConfigurableJoint joint;
+            if  (index <= 1) {
+                joint = brokenHead.AddComponent<ConfigurableJoint>();
+            } else {
+                joint = brokenTail.AddComponent<ConfigurableJoint>();
             }
+            joint.connectedBody = rb;
+            InitJointSetting(joint);
+            joint.anchor = anchors[index];
         }
+
+    	// foreach (Point p in allPoints) {
+        //     int index = -1;
+        //     if (p.Contain(headPosition)) {
+        //         index = 0;
+        //     } else if (p.Contain(headMirror)) {
+        //         index = 1;
+        //     } else if (p.Contain(tailPosition)) {
+        //         index = 2;
+        //     } else if (p.Contain(tailMirror)) {
+        //         index = 3;
+        //     }
+
+        //     if (index != -1) {
+        //         hinges[index] = gameObject.AddComponent<ConfigurableJoint>();
+        //         hinges[index].connectedBody = GetComponent<SolidBar>(). p.GetComponent<Rigidbody>();
+        //         InitJointSetting(hinges[index]);
+        //         hinges[index].anchor = anchors[index];
+    	        
+        //         // broken child
+        //         ConfigurableJoint joint;
+        //         if  (index <= 1) {
+        //             joint = brokenHead.AddComponent<ConfigurableJoint>();
+        //         } else {
+        //             joint = brokenTail.AddComponent<ConfigurableJoint>();
+        //         }
+        //         joint.connectedBody = p.GetComponent<Rigidbody>();
+        //         InitJointSetting(joint);
+        //         joint.anchor = anchors[index];
+        //     }
+        // }
     }
 
     private void InitJointSetting(ConfigurableJoint joint) {
