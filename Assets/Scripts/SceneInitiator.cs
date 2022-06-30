@@ -28,35 +28,24 @@ public class SceneInitiator : MonoBehaviour {
 
         foreach (PointReference p in pointToInit) {
             for (int i = 0; i <= 1; i += 1) {
-                // allPoints.Add(InstantiatePoint(p, i));
                 allPoints.Add(Point.Instantiate3D(p, i * roadWidth, pointParent, splitPointParent));
             }
         }    
         AssetManager.Init(allPoints, new List<SolidBar>());
 
-// use oop here
+
         foreach (SolidBarReference b in barToInit) {
             if (b.GetMaterial() != 0) {
-                // for non-pavement barsm init twice
-                if (b.GetMaterial() < 3) {
-                    for (int i = 0; i <= 1; i += 1) {
-                        allBars.Add(InstantiateBar(b, i, barParent));
+                for (int i = 0; i <= 1; i += 1) {
+                    SolidBar newBar = SolidBar.Instantiate3D(b, i * roadWidth, barParent, hydraulicParent);
+                    if (b.GetMaterial() == 5) {
+                        newBar.GetComponent<HydraulicController>().ConvertToHydraulic(b.GetHydraulicFactor());
+                        allHydraulics.Add(newBar.GetComponent<HydraulicController>());
                     }
-                } else if (b.GetMaterial() < 5) {
-                    // ropes
-                    for (int i = 0; i <= 1; i += 1) {
-                        allBars.Add(InstantiateRope(b, i));
-                    }
-                } else {
-                    for (int i = 0; i <= 1; i += 1) {
-                        SolidBar bar = InstantiateBar(b, i, hydraulicParent);
-                        bar.GetComponent<HydraulicController>().ConvertToHydraulic(b.GetHydraulicFactor());
-                        allBars.Add(bar);
-                        allHydraulics.Add(bar.GetComponent<HydraulicController>());
-                    }
+                    allBars.Add(newBar);
                 }
             } else {
-                allPaves.Add(InstantiatePavement(b));
+                allPaves.Add(Pavement.Instantiate3DPavement(b, roadWidth, barParent));
             }           
         }
 
@@ -68,119 +57,6 @@ public class SceneInitiator : MonoBehaviour {
         currentLevel = level;
         allPoints = new List<Point>();
         allBars = new List<SolidBar>();
-    }
-
-    // private Point InstantiatePoint(PointReference point, int i) {
-    //     Vector3 pos = point.GetPosition();
-    //     pos.z += i * roadWidth;
-    //     Point scaledTemplate = point.IsSplit() ? splitPointTemplate : pointTemplate;
-    //     Transform parent = point.IsSplit() ? splitPointParent : pointParent;
-    //     scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
-    //     Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), parent);
-    //     pointInstantiated.InitSplitSetting3D(point);
-    //     pointInstantiated.InitRigidBody(point);
-    //     //pointInstantiated.UpdatePosition();
-
-    //     return pointInstantiated;
-    // }
-
-
-    private SolidBar InstantiateBar(SolidBarReference bar, int i,Transform parent) {
-        Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
-        Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth);
-        Vector2 dir = bar.GetDirection();
-        Vector3 midPoint = (headPosition + tailPosition) / 2;
-        float angle = Vector2.SignedAngle(Vector2.up, dir);
-        
-        GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
-        scaledTemplate.transform.localScale = new Vector3(50, dir.magnitude / 2, 50);
-
-        SolidBar newBar = Instantiate(scaledTemplate, midPoint,  
-                            Quaternion.Euler(new Vector3(0, 0, angle)), parent).GetComponent<SolidBar>();
-
-        newBar.SetMaterial(bar.GetMaterial());
-        newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);
-
-        Point head = bar.GetHeadSplit(AssetManager.GetPoint(headPosition));
-        Point tail = bar.GetTailSplit(AssetManager.GetPoint(tailPosition));
-
-        newBar.InitTemp(head, tail);
-    	// allBars.Add(newBar);
-        return newBar;
-    }
-
-
-    private SolidBar InstantiateRope(SolidBarReference bar, int i) {
-        GameObject ropeParent = new GameObject("RopeParent");
-        ropeParent.transform.parent = barParent;
-        SolidBar newRope = ropeParent.AddComponent<SolidBar>();
-        
-        int maxPerSegment = 20;
-        Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i * roadWidth);
-        Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i * roadWidth);
-        Vector3 dir = tailPosition - headPosition;
-        float l = dir.magnitude;
-        int numberOfSegments = (int) (l / maxPerSegment);
-
-        Point head = bar.GetHeadSplit(AssetManager.GetPoint(headPosition));
-        Point tail = bar.GetTailSplit(AssetManager.GetPoint(tailPosition));
-
-        GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
-        scaledTemplate.transform.localScale = new Vector3(10, l / numberOfSegments / 1.9f, 10);
-        Quaternion rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, bar.GetDirection()));
-        
-        GameObject previousSegment = head.gameObject;
-        for (int j = 1; j <= numberOfSegments; j++) {
-            Vector3 tempHead = headPosition + ((float) (j - 1) / numberOfSegments) * dir; 
-            Vector3 tempTail = headPosition + ((float) j / numberOfSegments) * dir;
-            Vector3 tempPos = (tempHead + tempTail) / 2;
-            SolidBar b = Instantiate(scaledTemplate, tempPos, rotation, ropeParent.transform).GetComponent<SolidBar>();
-            ConfigurableJoint joint = b.gameObject.GetComponent<ConfigurableJoint>();
-            joint.connectedBody = previousSegment.GetComponent<Rigidbody>();
-            joint.anchor = new Vector3(0, -0.8f, 0);
-            InitRopeJoint(joint); 
-            previousSegment = b.gameObject;        
-        }
-        ConfigurableJoint jt = previousSegment.AddComponent<ConfigurableJoint>();
-        jt.connectedBody = tail.GetComponent<Rigidbody>();
-        jt.anchor = new Vector3(0, 1, 0);
-        InitRopeJoint(jt); 
-
-        newRope.SetMaterial(bar.GetMaterial());
-        newRope.SetBaseColor(previousSegment.GetComponent<MeshRenderer>().material.color);
-
-        newRope.SetR(head, tail);
-
-        return newRope;
-    }
-
-    private Pavement InstantiatePavement(SolidBarReference bar) {
-        Vector3 headPosition = bar.GetHead3D();
-        Vector3 tailPosition = bar.GetTail3D();
-        Vector2 dir = bar.GetDirection();
-        Vector3 midPoint = (headPosition + tailPosition) / 2 + new Vector3(0, 0, roadWidth / 2);
-        float angle = Vector2.SignedAngle(Vector2.up, dir);      
-        GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
-        //....
-        scaledTemplate.transform.localScale = new Vector3(75, dir.magnitude, 330);
-
-        Pavement newPave = Instantiate(scaledTemplate, midPoint, 
-                                        Quaternion.Euler(new Vector3(0, 0, angle)), barParent).
-                                        GetComponent<Pavement>();
-
-        newPave.SetPosition(headPosition, tailPosition);
-        newPave.InitPavementHinge(bar, roadWidth);
-
-        return newPave;
-    }
-
-    private void InitRopeJoint(ConfigurableJoint joint) {
-        joint.xMotion = ConfigurableJointMotion.Locked;
-        joint.yMotion = ConfigurableJointMotion.Locked;
-        joint.zMotion = ConfigurableJointMotion.Locked;
-        joint.angularYMotion = ConfigurableJointMotion.Locked;
-        joint.angularZMotion = ConfigurableJointMotion.Locked;
-        joint.axis = new Vector3(0, 0, 1); 
     }
 
     public void ToggleStressDisplay() {
@@ -226,11 +102,5 @@ public class SceneInitiator : MonoBehaviour {
         piece.gameObject.SetActive(true);
         piece.SetParent(barParent, true);
     }
-
-    // public static void ActivateAllHydraulics() {
-    //     foreach (HydraulicController hydraulic in allHydraulics) hydraulic.Activate();
-    // }
-
-    // public static void
 
 }

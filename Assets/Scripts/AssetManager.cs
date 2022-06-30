@@ -6,8 +6,8 @@ using System;
 public class AssetManager : MonoBehaviour {
     private static List<Point> allPoints = new List<Point>();
     private static List<SolidBar> allBars = new List<SolidBar>();
-    private static double offsetDistance = 30.0;
-    private static double snapDistance = 30.0;
+    private static double offsetDistance = 15.0;
+    private static double snapDistance = 15.0;
     private static float backgroundScale;
     private static Vector3 backgroundPosition;
 

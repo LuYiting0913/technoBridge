@@ -12,6 +12,26 @@ public class Pavement : MonoBehaviour {
     public bool disabled = false;
     private Color baseColor;
 
+    public static Pavement Instantiate3DPavement(SolidBarReference bar, int roadWidth, Transform parent) {
+        Vector3 headPosition = bar.GetHead3D();
+        Vector3 tailPosition = bar.GetTail3D();
+        Vector2 dir = bar.GetDirection();
+        Vector3 midPoint = (headPosition + tailPosition) / 2 + new Vector3(0, 0, roadWidth / 2);
+        float angle = Vector2.SignedAngle(Vector2.up, dir);      
+        GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
+
+        scaledTemplate.transform.localScale = new Vector3(75, dir.magnitude, 330);
+
+        Pavement newPave = Instantiate(scaledTemplate, midPoint, 
+                                        Quaternion.Euler(new Vector3(0, 0, angle)), parent).
+                                        GetComponent<Pavement>();
+
+        newPave.SetPosition(headPosition, tailPosition);
+        newPave.InitPavementHinge(bar, roadWidth);
+
+        return newPave;
+    }
+
     public void SetPosition(Vector3 head, Vector3 tail) {
         headPosition = head;
         tailPosition = tail;
