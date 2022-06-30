@@ -23,11 +23,19 @@ public class SolidBar : MonoBehaviour {
     public float hydraulicFactor = 0.5f;
 
     private SpriteRenderer barRenderer;
-    // private float maxLength = 200f; 
 
-    private void Start() {
-        // headSplitNum = -1;
-        // tailSplitNum = -1;
+    public static SolidBar Instantiate2D(SolidBarReference barReference, Transform barParent) {
+        GameObject template = MaterialManager.GetTemplate2D(barReference.GetMaterial());
+        SolidBar bar = Instantiate(template, barParent).GetComponent<SolidBar>();
+
+        Point head = AssetManager.GetPoint(barReference.GetHead3D());
+        Point tail = AssetManager.GetPoint(barReference.GetTail3D());
+        head.AddConnectedBar(bar);
+        tail.AddConnectedBar(bar);
+        
+        bar.SetR(head, tail);
+        bar.InitHydraulicParams(barReference.GetHydraulicFactor());
+        return bar;
     }
     
     private bool isRope() {
@@ -113,9 +121,9 @@ public class SolidBar : MonoBehaviour {
     public void SetR(Point point1, Point point2) {
         head = point1;
         tail = point2;
-        Debug.Log("RRR");
-        Debug.Log(head.IsSplit());
-        Debug.Log(tail.IsSplit());
+        // Debug.Log("RRR");
+        // Debug.Log(head.IsSplit());
+        // Debug.Log(tail.IsSplit());
 
         if (head.IsSplit()) {
             headSplitNum = 0;
@@ -141,10 +149,8 @@ public class SolidBar : MonoBehaviour {
         tail = point;
     }
 
-    public void InitHydraulicParams(float factor) {//, int headSplit, int tailSplit) {
+    public void InitHydraulicParams(float factor) {
         hydraulicFactor = factor;
-        // headSplitNum = headSplit;
-        // tailSplitNum = tailSplit;
         InitHydraulicSlider();
     }
 
@@ -191,7 +197,7 @@ public class SolidBar : MonoBehaviour {
     }
 
     public float GetCurrentLoad() {
-        return GetCurrentTension() / maxLoad; // max load implement later
+        return GetCurrentTension() / maxLoad; 
     }
 
     public void SetBaseColor(Color color) {
@@ -202,7 +208,6 @@ public class SolidBar : MonoBehaviour {
         return baseColor;
     }
 
-    // amend later
     public Color GetLoadColor() {
         float load = GetCurrentLoad();
         if (load < 0.5) {
@@ -273,14 +278,14 @@ public class SolidBar : MonoBehaviour {
     public void ActivateSplit(int i) {
         // 0: head, 1: tail
         if (i == 0) {
-            Vector3 newPos = (transform.position + head.transform.position) / 2;
+            // Vector3 newPos = (transform.position + head.transform.position) / 2;
             headSplitController.gameObject.SetActive(true);
-            headSplitController.transform.position = newPos;
+            headSplitController.transform.localPosition = new Vector3(-GetLength() / 40, 0, 0);
             headSplitNum = 0;
         } else {
-            Vector3 newPos = (transform.position + tail.transform.position) / 2;
+            // Vector3 newPos = (transform.position + tail.transform.position) / 2;
             tailSplitController.gameObject.SetActive(true);
-            tailSplitController.transform.position = newPos;
+            tailSplitController.transform.localPosition = new Vector3(GetLength() / 40, 0, 0);;
             tailSplitNum = 0;
         }
     }

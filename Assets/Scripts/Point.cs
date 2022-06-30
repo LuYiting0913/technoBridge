@@ -25,6 +25,27 @@ public class Point : MonoBehaviour {
         return pt;      
     }
 
+    public static Point Instantiate3D(PointReference p, int z, Transform pointParent, Transform splitPointParent) {
+        Vector3 pos = p.GetPosition();
+        pos.z += z;
+        Point scaledTemplate = null;
+        Transform parent = null;
+        if (p.IsSplit()) {
+            scaledTemplate = PrefabManager.GetSplitPoint3DTemplate().GetComponent<Point>();
+            parent = splitPointParent;
+        } else {
+            scaledTemplate = PrefabManager.GetPoint3DTemplate().GetComponent<Point>();
+            parent = pointParent;
+        }
+
+        scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
+        Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), parent);
+        pointInstantiated.InitSplitSetting3D(p);
+        pointInstantiated.InitRigidBody(p);
+
+        return pointInstantiated;
+    } 
+
 
     public Vector3 GetPosition() {
         return transform.localPosition;
@@ -71,12 +92,6 @@ public class Point : MonoBehaviour {
         return cursor;
     }
 
-    public void UpdateConnectedBars() {
-        // foreach (SolidBar bar in connectedBars) {
-        //     // bar.UpdatePosition();
-        // }
-    }
-
     public bool IsSingle() {
         return ConnectedBarCount() == 0;
     }
@@ -111,6 +126,7 @@ public class Point : MonoBehaviour {
 
     public void SetSplit() {
         if (isSplit) {
+            GetComponent<SpriteRenderer>().sprite = PrefabManager.GetSplitPointSprite();
             foreach (SolidBar bar in connectedBars) {
                 // Debug.Log("activate spl");
                 if (bar.head.Contain(GetPosition())) {
@@ -119,7 +135,8 @@ public class Point : MonoBehaviour {
                     bar.ActivateSplit(1);
                 }
             }
-        } else {
+        } else if (!isStationary) {
+            GetComponent<SpriteRenderer>().sprite = PrefabManager.GetPointSprite();
             foreach (SolidBar bar in connectedBars) {
                 // Debug.Log("deactivate spl");
                 if (bar.head.Contain(GetPosition())) {

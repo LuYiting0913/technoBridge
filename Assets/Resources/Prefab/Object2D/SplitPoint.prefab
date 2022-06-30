@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: -8665696450139799490}
   - component: {fileID: 3625761804511812586}
   - component: {fileID: 6712519293382730404}
+  - component: {fileID: 7320759878952198198}
   m_Layer: 7
   m_Name: SplitPoint
   m_TagString: Untagged
@@ -163,7 +164,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2413806693520163455, guid: e621d9a198a06bd4ab8895d94a3e8077,
+  m_Sprite: {fileID: 7482667652216324306, guid: 84e55cb4d23451e4098b575603e0ff86,
     type: 3}
   m_Color: {r: 0.029242735, g: 0.8679245, b: 0.073882006, a: 1}
   m_FlipX: 0
@@ -225,6 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectedBars: []
+  isSplit: 0
 --- !u!114 &6712519293382730404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,3 +239,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df14730acdf51bc4e987f8647633876c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7320759878952198198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431229652509840814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9758afea3a009ac4886670520b7853ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSplitPoint: 0
