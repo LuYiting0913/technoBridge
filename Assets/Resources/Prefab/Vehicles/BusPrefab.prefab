@@ -437,7 +437,7 @@ GameObject:
   - component: {fileID: 3095013362950115782}
   - component: {fileID: 3095013362950115785}
   m_Layer: 0
-  m_Name: BusSedan
+  m_Name: BusPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
