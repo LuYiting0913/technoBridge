@@ -45,7 +45,7 @@ public class SceneInitiator : MonoBehaviour {
                     allBars.Add(newBar);
                 }
             } else {
-                allPaves.Add(InstantiatePavement(b));
+                allPaves.Add(Pavement.Instantiate3DPavement(b, roadWidth, barParent));
             }           
         }
 
@@ -57,36 +57,6 @@ public class SceneInitiator : MonoBehaviour {
         currentLevel = level;
         allPoints = new List<Point>();
         allBars = new List<SolidBar>();
-    }
-
-
-    private Pavement InstantiatePavement(SolidBarReference bar) {
-        Vector3 headPosition = bar.GetHead3D();
-        Vector3 tailPosition = bar.GetTail3D();
-        Vector2 dir = bar.GetDirection();
-        Vector3 midPoint = (headPosition + tailPosition) / 2 + new Vector3(0, 0, roadWidth / 2);
-        float angle = Vector2.SignedAngle(Vector2.up, dir);      
-        GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
-        //....
-        scaledTemplate.transform.localScale = new Vector3(75, dir.magnitude, 330);
-
-        Pavement newPave = Instantiate(scaledTemplate, midPoint, 
-                                        Quaternion.Euler(new Vector3(0, 0, angle)), barParent).
-                                        GetComponent<Pavement>();
-
-        newPave.SetPosition(headPosition, tailPosition);
-        newPave.InitPavementHinge(bar, roadWidth);
-
-        return newPave;
-    }
-
-    private void InitRopeJoint(ConfigurableJoint joint) {
-        joint.xMotion = ConfigurableJointMotion.Locked;
-        joint.yMotion = ConfigurableJointMotion.Locked;
-        joint.zMotion = ConfigurableJointMotion.Locked;
-        joint.angularYMotion = ConfigurableJointMotion.Locked;
-        joint.angularZMotion = ConfigurableJointMotion.Locked;
-        joint.axis = new Vector3(0, 0, 1); 
     }
 
     public void ToggleStressDisplay() {
@@ -132,11 +102,5 @@ public class SceneInitiator : MonoBehaviour {
         piece.gameObject.SetActive(true);
         piece.SetParent(barParent, true);
     }
-
-    // public static void ActivateAllHydraulics() {
-    //     foreach (HydraulicController hydraulic in allHydraulics) hydraulic.Activate();
-    // }
-
-    // public static void
 
 }

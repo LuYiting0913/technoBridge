@@ -53,19 +53,13 @@ public class SolidBarInitiator : MonoBehaviour {
 
     public void OnPressed(object source, Stage1Controller e) {
         Vector3 temp = e.WorldToCanvas(new Vector3(e.GetStartPoint().x, e.GetStartPoint().y, 0));
-        // Debug.Log("click at");
-        //  Debug.Log(temp);
-        //   Debug.Log("search at");
-        //    Debug.Log(temp);
 
         if (isActive && AssetManager.HasPoint(temp)) {
-            // Debug.Log("add pressed");
             creating = true;
             currentMaterial = e.GetCurrentMaterial();
             backgroundPosition = e.backgroundPosition;
             backgroundScale = Stage1Controller.backgroundScale;
             e.ActivateCursor();
-            // ActivateBoundary(e.GetStartPoint());
             InitializeBar(temp, e.GetCurrentMaterial(), e.pointParent, e.barParent);
         }
     }
