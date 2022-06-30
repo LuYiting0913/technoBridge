@@ -125,8 +125,9 @@ public class Point : MonoBehaviour {
     }
 
     public void SetSplit() {
-        if (isSplit && !isStationary) {
-            GetComponent<SpriteRenderer>().sprite = PrefabManager.GetSplitPointSprite();
+        GetComponent<SplitPointController>().InitSplit(isSplit);
+        if (isSplit) {
+            
             foreach (SolidBar bar in connectedBars) {
                 // Debug.Log("activate spl");
                 if (bar.head.Contain(GetPosition())) {
@@ -135,8 +136,8 @@ public class Point : MonoBehaviour {
                     bar.ActivateSplit(1);
                 }
             }
-        } else if (!isStationary) {
-            GetComponent<SpriteRenderer>().sprite = PrefabManager.GetPointSprite();
+        } else {
+            // GetComponent<SpriteRenderer>().sprite = PrefabManager.GetPointSprite();
             foreach (SolidBar bar in connectedBars) {
                 // Debug.Log("deactivate spl");
                 if (bar.head.Contain(GetPosition())) {
@@ -167,6 +168,8 @@ public class Point : MonoBehaviour {
         if (!isSplit) {
             Rigidbody pointRb = gameObject.GetComponent<Rigidbody>();
             pointRb.isKinematic = p.IsFixed();
+        } else if (p.IsFixed()) {
+            transform.GetChild(0).GetComponent<Rigidbody>().isKinematic = true;
         }
     }
         

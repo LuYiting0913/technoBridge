@@ -7,16 +7,6 @@ public class SplitPointController : MonoBehaviour {
     // private Sprite normalPoint = Resources.Load("")
 
     public void ToggleSplit() {
-        // if (!isSplitPoint) {
-        //     // Sprite normalPoint = 
-        //     GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
-        //     GetComponent<SpriteRenderer>().sprite = PrefabManager.GetSplitPointSprite();
-        //     isSplitPoint = true;
-        // } else {
-        //     GetComponent<SpriteRenderer>().color = new Color(1, 1, 0);
-        //     GetComponent<SpriteRenderer>().sprite = PrefabManager.GetPointSprite();
-        //     isSplitPoint = false;
-        // }
         InitSplit(!isSplitPoint);
         GetComponent<Point>().isSplit = isSplitPoint;
         GetComponent<Point>().SetSplit();
