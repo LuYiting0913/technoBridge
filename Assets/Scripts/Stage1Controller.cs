@@ -132,22 +132,19 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         // render all existing points
         foreach (PointReference p in pointData) {
             Vector3 position = p.GetPosition();
-            // Vector3 position = new Vector3(temp.x, temp.y, 0);
-            Point point = null;
+            // // Vector3 position = new Vector3(temp.x, temp.y, 0);
+            // Point point = null;
 
-            if (p.IsFixed()) {
-                point = Instantiate(fixedPointTemplate, pointParent).GetComponent<Point>();
-                point.transform.localPosition = position;
-                point.SetFixed();
-            } else {
-                point = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
-                point.transform.localPosition = position;
-                point.InitSplitSetting2D(p);
-            }
-
-            
-
-            existingPoints.Add(point);
+            // if (p.IsFixed()) {
+            //     point = Instantiate(fixedPointTemplate, pointParent).GetComponent<Point>();
+            //     point.transform.localPosition = position;
+            //     point.SetFixed();
+            // } else {
+            //     point = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
+            //     point.transform.localPosition = position;
+            //     point.InitSplitSetting2D(p);
+            // }
+            existingPoints.Add(Point.Instantiate2D(p, pointParent));
         }
         AssetManager.Init(existingPoints, null);
 

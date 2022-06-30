@@ -5,7 +5,7 @@ using UnityEngine;
 public class PrefabManager {
     private static string point2D = "Prefab/Object2D/Point";
     private static string fixedPoint2D = "Prefab/Object2D/FixedPoint";
-    // private static string splitPoint = "Prefab/Object2D/SplitPoint";
+    private static string splitPoint2D = "Prefab/Object2D/SplitPoint";
     private static string gridLine = "Prefab/GridLine";
 
 
@@ -15,6 +15,10 @@ public class PrefabManager {
 
     public static GameObject GetFixedPoint2DTemplate() {
         return Resources.Load<GameObject>(fixedPoint2D);
+    } 
+
+    public static GameObject GetSplitPoint2DTemplate() {
+        return Resources.Load<GameObject>(splitPoint2D);
     } 
 
     public static GameObject GetGridLine() {
