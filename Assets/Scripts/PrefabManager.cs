@@ -12,8 +12,10 @@ public class PrefabManager {
     // private static string fixedPoint3D = "Prefab/Object3D/FixedPoint";
     private static string splitPoint3D = "Prefab/Object3D/SplitPoint3D";
 
-    private static string splitePointSprite = "Sprite/Object2D/SplitPoint";
+    private static string splitPointSprite = "Sprite/Object2D/SplitPoint";
+    private static string splitFixedPointSprite = "Sprite/Object2D/SplitFixedPoint";
     private static string pointSprite = "Sprite/Object2D/Point";
+    private static string fixedPointSprite = "Sprite/Object2D/FixedPoint";
 
 
 
@@ -42,7 +44,15 @@ public class PrefabManager {
     }
 
     public static Sprite GetSplitPointSprite() {
-        return Resources.Load<Sprite>(splitePointSprite);
+        return Resources.Load<Sprite>(splitPointSprite);
+    }
+
+    public static Sprite GetSplitFixedPointSprite() {
+        return Resources.Load<Sprite>(splitFixedPointSprite);
+    }
+
+    public static Sprite GetFixedPointSprite() {
+        return Resources.Load<Sprite>(fixedPointSprite);
     }
 
     public static Sprite GetPointSprite() {

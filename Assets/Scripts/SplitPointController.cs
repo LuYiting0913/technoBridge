@@ -7,14 +7,17 @@ public class SplitPointController : MonoBehaviour {
     // private Sprite normalPoint = Resources.Load("")
 
     public void ToggleSplit() {
-        if (!isSplitPoint) {
-            // Sprite normalPoint = 
-            GetComponent<SpriteRenderer>().color = new Color(0, 1, 0);
-            isSplitPoint = true;
-        } else {
-            GetComponent<SpriteRenderer>().color = new Color(1, 1, 0);
-            isSplitPoint = false;
-        }
+        // if (!isSplitPoint) {
+        //     // Sprite normalPoint = 
+        //     GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+        //     GetComponent<SpriteRenderer>().sprite = PrefabManager.GetSplitPointSprite();
+        //     isSplitPoint = true;
+        // } else {
+        //     GetComponent<SpriteRenderer>().color = new Color(1, 1, 0);
+        //     GetComponent<SpriteRenderer>().sprite = PrefabManager.GetPointSprite();
+        //     isSplitPoint = false;
+        // }
+        InitSplit(!isSplitPoint);
         GetComponent<Point>().isSplit = isSplitPoint;
         GetComponent<Point>().SetSplit();
     }
@@ -22,9 +25,21 @@ public class SplitPointController : MonoBehaviour {
     public void InitSplit(bool b) {
         isSplitPoint = b;
         if (b) {
-            GetComponent<SpriteRenderer>().color = new Color(0, 1, 0);
+            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+            if (!GetComponent<Point>().IsFixed()) {                
+                GetComponent<SpriteRenderer>().sprite = PrefabManager.GetSplitPointSprite();
+            } else {
+                Debug.Log(PrefabManager.GetSplitFixedPointSprite());
+                GetComponent<SpriteRenderer>().sprite = PrefabManager.GetSplitFixedPointSprite();
+            }
         } else {
-            GetComponent<SpriteRenderer>().color = new Color(1, 1, 0);
+            if (!GetComponent<Point>().IsFixed()) {
+                GetComponent<SpriteRenderer>().color = new Color(1, 1, 0);
+                GetComponent<SpriteRenderer>().sprite = PrefabManager.GetPointSprite();
+            } else {
+                GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
+                GetComponent<SpriteRenderer>().sprite = PrefabManager.GetFixedPointSprite();
+            }
         }
     }
 

@@ -6,7 +6,7 @@ public class Point : MonoBehaviour {
     //public bool isDragging = false;
     public List<SolidBar> connectedBars = new List<SolidBar>(); 
     // private Vector3 pointPosition;
-    private bool isStationary = false;
+    public bool isStationary = false;
     public bool isSplit = false;
     private static int threshold = 5;
 
@@ -125,7 +125,7 @@ public class Point : MonoBehaviour {
     }
 
     public void SetSplit() {
-        if (isSplit) {
+        if (isSplit && !isStationary) {
             GetComponent<SpriteRenderer>().sprite = PrefabManager.GetSplitPointSprite();
             foreach (SolidBar bar in connectedBars) {
                 // Debug.Log("activate spl");
