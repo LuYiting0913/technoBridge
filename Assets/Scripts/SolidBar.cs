@@ -37,6 +37,97 @@ public class SolidBar : MonoBehaviour {
         bar.InitHydraulicParams(barReference.GetHydraulicFactor());
         return bar;
     }
+
+    public static SolidBar Instantiate3D(SolidBarReference barReference, int z, Transform barParent, Transform hydraulicParent) {
+        if (barReference.GetMaterial() < 3) {
+            return Instantiate3DBar(barReference, z, barParent);
+        } else if (barReference.GetMaterial() < 5) {
+            return Instantiate3DRope(barReference, z, barParent);
+        } else {
+            return Instantiate3DHydraulic(barReference, z, hydraulicParent);
+        }
+    }
+
+    private static SolidBar Instantiate3DBar(SolidBarReference bar, int i, Transform parent) {
+        Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i);
+        Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i);
+        Vector2 dir = bar.GetDirection();
+        Vector3 midPoint = (headPosition + tailPosition) / 2;
+        float angle = Vector2.SignedAngle(Vector2.up, dir);
+        
+        GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
+        scaledTemplate.transform.localScale = new Vector3(50, dir.magnitude / 2, 50);
+
+        SolidBar newBar = Instantiate(scaledTemplate, midPoint,  
+                            Quaternion.Euler(new Vector3(0, 0, angle)), parent).GetComponent<SolidBar>();
+
+        newBar.SetMaterial(bar.GetMaterial());
+        newBar.SetBaseColor(newBar.GetComponent<MeshRenderer>().material.color);
+
+        Point head = bar.GetHeadSplit(AssetManager.GetPoint(headPosition));
+        Point tail = bar.GetTailSplit(AssetManager.GetPoint(tailPosition));
+
+        newBar.InitTemp(head, tail);
+        return newBar;
+    }
+
+    private static SolidBar Instantiate3DRope(SolidBarReference bar, int i, Transform parent) {
+        GameObject ropeParent = new GameObject("RopeParent");
+        ropeParent.transform.parent = parent;
+        SolidBar newRope = ropeParent.AddComponent<SolidBar>();
+        
+        int maxPerSegment = 20;
+        Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i);
+        Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i);
+        Vector3 dir = tailPosition - headPosition;
+        float l = dir.magnitude;
+        int numberOfSegments = (int) (l / maxPerSegment);
+
+        Point head = bar.GetHeadSplit(AssetManager.GetPoint(headPosition));
+        Point tail = bar.GetTailSplit(AssetManager.GetPoint(tailPosition));
+
+        GameObject scaledTemplate = MaterialManager.GetTemplate3D(bar.GetMaterial());
+        scaledTemplate.transform.localScale = new Vector3(10, l / numberOfSegments / 1.9f, 10);
+        Quaternion rotation = Quaternion.Euler(0, 0, Vector2.SignedAngle(Vector2.up, bar.GetDirection()));
+        
+        GameObject previousSegment = head.gameObject;
+        for (int j = 1; j <= numberOfSegments; j++) {
+            Vector3 tempHead = headPosition + ((float) (j - 1) / numberOfSegments) * dir; 
+            Vector3 tempTail = headPosition + ((float) j / numberOfSegments) * dir;
+            Vector3 tempPos = (tempHead + tempTail) / 2;
+            SolidBar b = Instantiate(scaledTemplate, tempPos, rotation, ropeParent.transform).GetComponent<SolidBar>();
+            ConfigurableJoint joint = b.gameObject.GetComponent<ConfigurableJoint>();
+            joint.connectedBody = previousSegment.GetComponent<Rigidbody>();
+            joint.anchor = new Vector3(0, -0.8f, 0);
+            InitRopeJoint(joint); 
+            previousSegment = b.gameObject;        
+        }
+        ConfigurableJoint jt = previousSegment.AddComponent<ConfigurableJoint>();
+        jt.connectedBody = tail.GetComponent<Rigidbody>();
+        jt.anchor = new Vector3(0, 1, 0);
+        InitRopeJoint(jt); 
+
+        newRope.SetMaterial(bar.GetMaterial());
+        newRope.SetBaseColor(previousSegment.GetComponent<MeshRenderer>().material.color);
+
+        newRope.SetR(head, tail);
+
+        return newRope;
+    }
+
+    private static SolidBar Instantiate3DHydraulic(SolidBarReference barReference, int i, Transform parent) {
+        return Instantiate3DBar(barReference, i, parent);
+    }
+
+    private static void InitRopeJoint(ConfigurableJoint joint) {
+        joint.xMotion = ConfigurableJointMotion.Locked;
+        joint.yMotion = ConfigurableJointMotion.Locked;
+        joint.zMotion = ConfigurableJointMotion.Locked;
+        joint.angularYMotion = ConfigurableJointMotion.Locked;
+        joint.angularZMotion = ConfigurableJointMotion.Locked;
+        joint.axis = new Vector3(0, 0, 1); 
+    }
+
     
     private bool isRope() {
         return material == 3 || material == 4;
