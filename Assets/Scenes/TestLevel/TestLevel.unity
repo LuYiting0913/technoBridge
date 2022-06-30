@@ -9468,9 +9468,9 @@ MonoBehaviour:
   pointParent: {fileID: 0}
   dummyPointTemplate: {fileID: 397061632768504934, guid: 9afc1405728fcc740b6d31f29213617d,
     type: 3}
-  PointTemplate: {fileID: 6431229652509840814, guid: 648f609a68c9296459f3dfbb1845598b,
+  PointTemplate: {fileID: 6431229652509840814, guid: 2ebde93bcf171d0459ee87d7329bd573,
     type: 3}
-  dummyBarTemplate: {fileID: 2623621743740210181, guid: 9e209761fafc6da4bab691211e9755d8,
+  dummyBarTemplate: {fileID: 2623621743740210181, guid: 9c2bbe9ad0f35a442b5c0403436219db,
     type: 3}
 --- !u!224 &589511391430181863
 RectTransform:
