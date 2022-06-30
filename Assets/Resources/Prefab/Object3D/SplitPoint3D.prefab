@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 5207192504011620362}
   - component: {fileID: -2055280883640313913}
   m_Layer: 0
-  m_Name: SplitPoint
+  m_Name: SplitPoint3D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

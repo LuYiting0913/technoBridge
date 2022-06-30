@@ -106,15 +106,14 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         
         InitDelegates();
 
-        backgroundScale = 1f;//Levels.GetBackgroundScale(level);
-        backgroundPosition = new Vector3(0,0,0);//Levels.GetBackgroundPosition(level);
+        backgroundScale = 1f;
+        backgroundPosition = new Vector3(0,0,0);
         
         Levels.InitLevel(level);
-        // budget = Levels.GetBudget(level);
         costDisplay.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Budget: " + MoneyToString(budget);
 
-        pointTemplate = PrefabManager.GetPoint2DTemplate();
-        fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();  
+        // pointTemplate = PrefabManager.GetPoint2DTemplate();
+        // fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();  
         List<PointReference> pointData = Levels.GetPointData(level);
         List<SolidBarReference> barData = Levels.GetBarData(level);
 
@@ -129,66 +128,27 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         hydraulic = GameObject.Find("Hydraulic").GetComponent<ToggleButton>();
         popupToolBar = GameObject.Find("PopupToolBar");
         
-        // render all existing points
         foreach (PointReference p in pointData) {
-            Vector3 position = p.GetPosition();
-            // Vector3 position = new Vector3(temp.x, temp.y, 0);
-            Point point = null;
-
-            if (p.IsFixed()) {
-                point = Instantiate(fixedPointTemplate, pointParent).GetComponent<Point>();
-                point.transform.localPosition = position;
-                point.SetFixed();
-            } else {
-                point = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
-                point.transform.localPosition = position;
-                point.InitSplitSetting2D(p);
-            }
-
-            
-
-            existingPoints.Add(point);
+            existingPoints.Add(Point.Instantiate2D(p, pointParent));
         }
+
         AssetManager.Init(existingPoints, null);
 
-        // SolidBar debugBar = null;
-        // render all bars
         foreach (SolidBarReference barReference in barData) {
-            //Instantiate
-            barTemplate = MaterialManager.GetTemplate2D(barReference.GetMaterial());
-            SolidBar bar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
-
-            Point head = AssetManager.GetPoint(barReference.GetHead3D());
-            Point tail = AssetManager.GetPoint(barReference.GetTail3D());
-            head.AddConnectedBar(bar);
-            tail.AddConnectedBar(bar);
-           
-            bar.SetR(head, tail);
-            bar.InitHydraulicParams(barReference.GetHydraulicFactor());//, barReference.GetHeadSplitNum(), barReference.GetTailSplitNum());
-            bar.RenderSolidBar(backgroundScale);
-            existingBars.Add(bar);
-            
-
+            existingBars.Add(SolidBar.Instantiate2D(barReference, barParent));
         }
         
         foreach (Point p in existingPoints) {
             p.SetSplit();
         }
-        
+
         AssetManager.Init(existingPoints, existingBars);
         AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
-        // Init grid lines
+
         InstantiateGrid();
 
         transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
-        transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, 0);
-        // if (existingBars.Count > 0) {
-        //             debugBar = existingBars[0];
-        // Debug.Log(debugBar.tailSplitNum);
-        // Debug.Log(debugBar.headSplitNum);
-        // }
-
-        
+        transform.position = new Vector3(backgroundPosition.x, backgroundPosition.y, 0);        
     }
 
     public void OnPointerDown(PointerEventData eventData) {
@@ -208,12 +168,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void Update() {
         existingBars = AssetManager.GetAllBars();
-        // Debug.Log(existingBars.ToString());
         existingPoints = AssetManager.GetAllPoints();
         int cost = 0; 
 
         foreach (SolidBar bar in existingBars) {
-            // Debug.Log("The bar is " + bar.ToString());
             if (bar != null) {
                 bar.RenderSolidBar(backgroundScale);
                 cost += bar.CalculateCost();    

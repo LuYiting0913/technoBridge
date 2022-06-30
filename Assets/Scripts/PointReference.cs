@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PointReference {
     private Vector3 pointPosition;
     private bool isStationary = false;
     private bool isSplit;
+    private GameObject template;
 
     public static PointReference of(Point p, bool stationary) {
         PointReference reference = new PointReference();
@@ -20,7 +22,7 @@ public class PointReference {
     }
 
     public Vector3 GetPosition() {
-        return pointPosition;
+        return new Vector3(pointPosition.x, pointPosition.y, 0);
     }
     
     public bool IsSplit() {

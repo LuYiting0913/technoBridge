@@ -28,7 +28,8 @@ public class SceneInitiator : MonoBehaviour {
 
         foreach (PointReference p in pointToInit) {
             for (int i = 0; i <= 1; i += 1) {
-                allPoints.Add(InstantiatePoint(p, i));
+                // allPoints.Add(InstantiatePoint(p, i));
+                allPoints.Add(Point.Instantiate3D(p, i * roadWidth, pointParent, splitPointParent));
             }
         }    
         AssetManager.Init(allPoints, new List<SolidBar>());
@@ -69,19 +70,19 @@ public class SceneInitiator : MonoBehaviour {
         allBars = new List<SolidBar>();
     }
 
-    private Point InstantiatePoint(PointReference point, int i) {
-        Vector3 pos = point.GetPosition();
-        pos.z += i * roadWidth;
-        Point scaledTemplate = point.IsSplit() ? splitPointTemplate : pointTemplate;
-        Transform parent = point.IsSplit() ? splitPointParent : pointParent;
-        scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
-        Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), parent);
-        pointInstantiated.InitSplitSetting3D(point);
-        pointInstantiated.InitRigidBody(point);
-        //pointInstantiated.UpdatePosition();
+    // private Point InstantiatePoint(PointReference point, int i) {
+    //     Vector3 pos = point.GetPosition();
+    //     pos.z += i * roadWidth;
+    //     Point scaledTemplate = point.IsSplit() ? splitPointTemplate : pointTemplate;
+    //     Transform parent = point.IsSplit() ? splitPointParent : pointParent;
+    //     scaledTemplate.transform.localScale = new Vector3(10, 5, 10);
+    //     Point pointInstantiated = Instantiate(scaledTemplate, pos, Quaternion.Euler(90, 0, 0), parent);
+    //     pointInstantiated.InitSplitSetting3D(point);
+    //     pointInstantiated.InitRigidBody(point);
+    //     //pointInstantiated.UpdatePosition();
 
-        return pointInstantiated;
-    }
+    //     return pointInstantiated;
+    // }
 
 
     private SolidBar InstantiateBar(SolidBarReference bar, int i,Transform parent) {
