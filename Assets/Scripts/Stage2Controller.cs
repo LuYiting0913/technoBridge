@@ -102,9 +102,9 @@ public class Stage2Controller : MonoBehaviour {
         for (int i = 0; i < vehicleParent.childCount; i++) {
             if (!vehicleParent.GetChild(i).GetComponent<VehicleController>().Arrived()) return false; 
         }
-        if (GameObject.Find("Boat") != null && !GameObject.Find("Boat").GetComponent<Animatable>().Arrived()) {
-            return false;
-        }
+        // if (GameObject.Find("Boat") != null && !GameObject.Find("Boat").GetComponent<Animatable>().Arrived()) {
+        //     return false;
+        // }
         return true;
     }
 
@@ -129,29 +129,25 @@ public class Stage2Controller : MonoBehaviour {
         return false;
     }
 
-    // private void PlayAnimation() {
-        
-    //     StartCoroutine(WaitForAWhile(3));
-    // }
-
     private IEnumerator PlayAnimation() {
+        Debug.Log("enter");
+        yield return new WaitForSeconds(5); 
         Debug.Log("playing animation");
-        // startAnimationTime = Time.deltaTime;
-        // animationDuration = 10f;
-        foreach (Animatable a in animatableBatches[currentBatch]) a.StartAnimation();
+        foreach (Animatable a in animatableBatches[currentBatch]) {
+            Debug.Log(a);
+            a.StartAnimation();
+        }
         Debug.Log("start waitng");
-        yield return new WaitForSeconds(20);  
+        yield return new WaitForSeconds(10);  
         Debug.Log("end waiting");
-        OnRestarted();  
-        
+        currentBatch += 1; 
+        InitVehicleDelegates();
+        OnRestarted();
+         
     }
 
     private IEnumerator WaitForAWhile(int sec) {
         yield return new WaitForSeconds(sec);
-    }
-
-    private bool Animating() {
-        return startAnimationTime + animationDuration >= Time.deltaTime;
     }
 
 
@@ -171,8 +167,8 @@ public class Stage2Controller : MonoBehaviour {
             animating = true;
             StartCoroutine(PlayAnimation());
             // OnRestarted();
-            currentBatch += 1;
-            InitVehicleDelegates();
+            
+            
         } else if (AnyVehicleFailed()) {
             canvas.transform.GetChild(4).gameObject.SetActive(true);
         } 

@@ -67,11 +67,11 @@ public class SceneInitiator : MonoBehaviour {
         foreach (SolidBar bar in allBars) {
             if (bar != null && !bar.disabled) {
                 if (bar.GetCurrentLoad() >= 1) {
-                    Transform piece1 = bar.transform.GetChild(0);
-                    Transform piece2 = bar.transform.GetChild(1);
-                    ActivateBrokenPiece(piece1);
-                    ActivateBrokenPiece(piece2);
-                    bar.DisableBar();
+                    // Transform piece1 = bar.transform.GetChild(0);
+                    // Transform piece2 = bar.transform.GetChild(1);
+                    // ActivateBrokenPiece(piece1);
+                    // ActivateBrokenPiece(piece2);
+                    bar.Break();
                 } else if (displayStress) {
                     bar.DisplayStress();
                 } else {
@@ -84,11 +84,12 @@ public class SceneInitiator : MonoBehaviour {
         foreach (Pavement pave in allPaves) {
             if (pave != null && !pave.disabled) {
                 if (pave.GetCurrentLoad() >= 1) {
-                    Transform piece1 = pave.transform.GetChild(2);
-                    Transform piece2 = pave.transform.GetChild(3);
-                    ActivateBrokenPiece(piece1);
-                    ActivateBrokenPiece(piece2);
-                    pave.DisablePave();
+                    // Transform piece1 = pave.transform.GetChild(2);
+                    // Transform piece2 = pave.transform.GetChild(3);
+                    // ActivateBrokenPiece(piece1);
+                    // ActivateBrokenPiece(piece2);
+                    // pave.DisablePave();
+                    pave.Break();
                 } else if (displayStress) {
                     pave.DisplayStress();
                 } else {
@@ -98,9 +99,6 @@ public class SceneInitiator : MonoBehaviour {
         }
     }
 
-    private void ActivateBrokenPiece(Transform piece) {
-        piece.gameObject.SetActive(true);
-        piece.SetParent(barParent, true);
-    }
+
 
 }

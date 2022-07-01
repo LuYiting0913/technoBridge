@@ -13,7 +13,7 @@ public class VehicleController : MonoBehaviour {
     private int checkpointCount, nextCheckpoint;
     public bool arrived, failed, waitingForHydraulic;
     private int duration = 10;
-    public float boatSpeed = 0.5f;
+    // public float boatSpeed = 0.5f;
 
     public void Start() {
         checkpointCount = checkpoints.Count;
@@ -66,18 +66,15 @@ public class VehicleController : MonoBehaviour {
             // Debug.Log("moving");
             if (ArrivedAtCheckpoint(checkpoints[nextCheckpoint]) && nextCheckpoint < checkpointCount) {
                 Debug.Log("arrived at next");
-                // waitingForHydraulic = true;
                 Stop();
-                // StartCoroutine(WaitForAWhile(duration));
-                // waitingForHydraulic = false;
                 nextCheckpoint += 1;
             } else {
-                if (gameObject.name == "Boat") {
-                    gameObject.transform.position -= new Vector3(0, 0, boatSpeed);
-                } else {
-                    Accelerate();
-                    UpdateWheels();
-                }
+                // if (gameObject.name == "Boat") {
+                //     gameObject.transform.position -= new Vector3(0, 0, boatSpeed);
+                // } else {
+                Accelerate();
+                UpdateWheels();
+                // }
             }
         }
     }

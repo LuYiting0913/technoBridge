@@ -332,7 +332,20 @@ public class SolidBar : MonoBehaviour {
         }
     }
 
-    public void DisableBar() {
+    public void Break() {
+        Transform piece1 = transform.GetChild(2);
+        Transform piece2 = transform.GetChild(3);
+        ActivateBrokenPiece(piece1);
+        ActivateBrokenPiece(piece2);
+        DisableBar();
+    }
+
+    private void ActivateBrokenPiece(Transform piece) {
+        piece.gameObject.SetActive(true);
+        piece.SetParent(transform.parent, true);
+    }
+
+    private void DisableBar() {
         Destroy(headJoint);
         Destroy(tailJoint);
         gameObject.SetActive(false);

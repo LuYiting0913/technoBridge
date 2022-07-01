@@ -77,36 +77,6 @@ public class Pavement : MonoBehaviour {
             joint.anchor = anchors[index];
         }
 
-    	// foreach (Point p in allPoints) {
-        //     int index = -1;
-        //     if (p.Contain(headPosition)) {
-        //         index = 0;
-        //     } else if (p.Contain(headMirror)) {
-        //         index = 1;
-        //     } else if (p.Contain(tailPosition)) {
-        //         index = 2;
-        //     } else if (p.Contain(tailMirror)) {
-        //         index = 3;
-        //     }
-
-        //     if (index != -1) {
-        //         hinges[index] = gameObject.AddComponent<ConfigurableJoint>();
-        //         hinges[index].connectedBody = GetComponent<SolidBar>(). p.GetComponent<Rigidbody>();
-        //         InitJointSetting(hinges[index]);
-        //         hinges[index].anchor = anchors[index];
-    	        
-        //         // broken child
-        //         ConfigurableJoint joint;
-        //         if  (index <= 1) {
-        //             joint = brokenHead.AddComponent<ConfigurableJoint>();
-        //         } else {
-        //             joint = brokenTail.AddComponent<ConfigurableJoint>();
-        //         }
-        //         joint.connectedBody = p.GetComponent<Rigidbody>();
-        //         InitJointSetting(joint);
-        //         joint.anchor = anchors[index];
-        //     }
-        // }
     }
 
     private void InitJointSetting(ConfigurableJoint joint) {
@@ -162,7 +132,20 @@ public class Pavement : MonoBehaviour {
         transform.GetChild(1).GetComponent<MeshRenderer>().material.color = GetBaseColor();
     }
 
-    public void DisablePave() {
+    public void Break() {
+        Transform piece1 = transform.GetChild(2);
+        Transform piece2 = transform.GetChild(3);
+        ActivateBrokenPiece(piece1);
+        ActivateBrokenPiece(piece2);
+        DisablePave();
+    }
+
+    private void ActivateBrokenPiece(Transform piece) {
+        piece.gameObject.SetActive(true);
+        piece.SetParent(transform.parent, true);
+    }
+
+    private void DisablePave() {
         // for (int i = 0; i < 4; i ++) Destroy(hinges[i]);
         gameObject.SetActive(false);
         disabled = true;
