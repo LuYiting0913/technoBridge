@@ -15,18 +15,26 @@ public class Stage2Controller : MonoBehaviour {
 
     public List<VehicleController> VehicleBatch1;  
     public List<VehicleController> VehicleBatch2;  
-    public List<VehicleController> VehicleBatch3;  
-    public List<VehicleController> VehicleBatch4;  
+    // public List<VehicleController> VehicleBatch3;  
+    // public List<VehicleController> VehicleBatch4;  
     private List<List<VehicleController>> batches = new List<List<VehicleController>>();
     private int currentBatch;
+    private float startAnimationTime, animationDuration;
+    private bool animating = false;
+
+    public List<Animatable> AnimatableBatch1;
+    public List<Animatable> AnimatableBatch2;
+    private List<List<Animatable>> animatableBatches = new List<List<Animatable>>();
 
     public void Start() {
         playSpeed = 2f;
         currentBatch = 0;
         batches.Add(VehicleBatch1);
         batches.Add(VehicleBatch2);
-        batches.Add(VehicleBatch3);
-        batches.Add(VehicleBatch4);
+        // batches.Add(VehicleBatch3);
+        // batches.Add(VehicleBatch4);
+        animatableBatches.Add(AnimatableBatch1);
+        animatableBatches.Add(AnimatableBatch2);
     }
 
     public delegate void HydraulicEventHandler(object source, Stage2Controller e);
@@ -58,6 +66,11 @@ public class Stage2Controller : MonoBehaviour {
         for (int i = 0; i < vehicleParent.childCount; i++) {
             VehicleRestarted += vehicleParent.GetChild(i).GetComponent<VehicleController>().OnRestarted;
         }
+    }
+
+    private void InitVehicleDelegates() {
+        VehicleRestarted = null;
+        foreach (VehicleController vc in batches[currentBatch]) VehicleRestarted += vc.OnRestarted;
     }
 
     public void TogglePause() {
@@ -105,7 +118,6 @@ public class Stage2Controller : MonoBehaviour {
         }
     }
 
-    // To see if any vehicle failed
     private bool AnyVehicleFailed() {
         for (int i = 0; i < vehicleParent.childCount; i++) {
             if (vehicleParent.GetChild(i).GetComponent<VehicleController>().Failed()) return true; 
@@ -120,28 +132,47 @@ public class Stage2Controller : MonoBehaviour {
 
     private IEnumerator PlayAnimation() {
         Debug.Log("playing animation");
-        yield return new WaitForSeconds(5);
-        OnRestarted();
+        // startAnimationTime = Time.deltaTime;
+        // animationDuration = 10f;
+        foreach (Animatable a in animatableBatches[currentBatch]) a.StartAnimation();
+        Debug.Log("start waitng");
+        yield return new WaitForSeconds(20);  
+        Debug.Log("end waiting");
+        OnRestarted();  
+        
+    }
+
+    private IEnumerator WaitForAWhile(int sec) {
+        yield return new WaitForSeconds(sec);
+    }
+
+    private bool Animating() {
+        return startAnimationTime + animationDuration >= Time.deltaTime;
     }
 
 
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
-
-        if (currentBatch > 3 || batches[currentBatch].Count == 0) {
+        // if (!Animating() && ) Debug.Log("animna");
+        // if(!Animating()) { 
+        if (currentBatch > 1 || batches[currentBatch].Count == 0) {
             Debug.Log("all arrived");
             canvas.transform.GetChild(3).gameObject.SetActive(true);
-        } else if (AllVehicleWaiting(currentBatch)) {
+        } else if (AllVehicleWaiting(currentBatch) && !animating) {
             Debug.Log("all waiting");
             OnSplited();
             OnActivated();
-            // StartCoroutine(WaitForAWhile(3));
+            // StartCoroutine(WaitForAWhile(5));
+            animating = true;
             StartCoroutine(PlayAnimation());
+            // OnRestarted();
             currentBatch += 1;
-            StartBatch(currentBatch);
+            InitVehicleDelegates();
         } else if (AnyVehicleFailed()) {
             canvas.transform.GetChild(4).gameObject.SetActive(true);
-        }          
+        } 
+        // }
+         
  
     }
 }
