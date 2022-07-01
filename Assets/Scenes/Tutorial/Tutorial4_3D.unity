@@ -942,7 +942,7 @@ PrefabInstance:
     - target: {fileID: 6015711203088630545, guid: 4c90465aa7edb0d4aabf1f1062ed4662,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6356771345415526827, guid: 4c90465aa7edb0d4aabf1f1062ed4662,
         type: 3}
@@ -2631,8 +2631,8 @@ MonoBehaviour:
   - {fileID: 119792550}
   VehicleBatch2:
   - {fileID: 1587587851}
-  VehicleBatch3: []
-  VehicleBatch4: []
+  AnimatableBatch1: []
+  AnimatableBatch2: []
 --- !u!1 &1413122368
 GameObject:
   m_ObjectHideFlags: 0
