@@ -295,6 +295,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         rope.TurnOff();
         cable.TurnOff();
         trace.TurnOff();
+        hydraulic.TurnOff();
         popupToolBar.transform.GetChild(0).gameObject.SetActive(false);
 
     }

@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-
-
 public class Stage2Controller : MonoBehaviour {
     private bool isPaused, displayStress;
     private float playSpeed;
@@ -15,8 +13,20 @@ public class Stage2Controller : MonoBehaviour {
     public Transform splitPointParent, hydraulicParent;
     // public List<VehicleController> allVehicles = new List<VehicleController>();
 
+    public List<VehicleController> VehicleBatch1;  
+    public List<VehicleController> VehicleBatch2;  
+    public List<VehicleController> VehicleBatch3;  
+    public List<VehicleController> VehicleBatch4;  
+    private List<List<VehicleController>> batches = new List<List<VehicleController>>();
+    private int currentBatch;
+
     public void Start() {
         playSpeed = 2f;
+        currentBatch = 0;
+        batches.Add(VehicleBatch1);
+        batches.Add(VehicleBatch2);
+        batches.Add(VehicleBatch3);
+        batches.Add(VehicleBatch4);
     }
 
     public delegate void HydraulicEventHandler(object source, Stage2Controller e);
@@ -82,11 +92,17 @@ public class Stage2Controller : MonoBehaviour {
         return true;
     }
 
-    private bool AllVehicleWaiting() {
-        for (int i = 0; i < vehicleParent.childCount; i++) {
-            if (!vehicleParent.GetChild(i).GetComponent<VehicleController>().IsWaiting()) return false; 
+    private bool AllVehicleWaiting(int batch) {
+        foreach (VehicleController vc in batches[batch]) {
+            if (!vc.IsWaiting()) return false; 
         }
         return true;
+    }
+
+    private void StartBatch(int batch) {
+        foreach (VehicleController vc in batches[batch]) {
+            vc.Restart();
+        }
     }
 
     // To see if any vehicle failed
@@ -111,19 +127,21 @@ public class Stage2Controller : MonoBehaviour {
 
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
-                    // Debug.Log(AllVehicleWaiting());
-        if (AllVehicleArrived()) {
+
+        if (currentBatch > 3 || batches[currentBatch].Count == 0) {
             Debug.Log("all arrived");
             canvas.transform.GetChild(3).gameObject.SetActive(true);
-        } else if (AllVehicleWaiting()) {
-            // SceneInitiator.ActivateAllHydraulics();
+        } else if (AllVehicleWaiting(currentBatch)) {
+            Debug.Log("all waiting");
             OnSplited();
             OnActivated();
             // StartCoroutine(WaitForAWhile(3));
             StartCoroutine(PlayAnimation());
-            
+            currentBatch += 1;
+            StartBatch(currentBatch);
         } else if (AnyVehicleFailed()) {
             canvas.transform.GetChild(4).gameObject.SetActive(true);
-        } 
+        }          
+ 
     }
 }

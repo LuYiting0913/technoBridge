@@ -101,12 +101,12 @@ public class VehicleController : MonoBehaviour {
         return pt.Arrived(transform.position);
     }
 
-    private void Stop() {
+    public void Stop() {
         waitingForHydraulic = true;
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
     }
 
-    private void Restart() {
+    public void Restart() {
         waitingForHydraulic = false;
         gameObject.GetComponent<Rigidbody>().isKinematic = false;
     }
