@@ -385,24 +385,30 @@ public class SolidBar : MonoBehaviour {
         // 0: head, 1: tail
         Color red = new Color(1, 0, 0);
         Color green = new Color(0, 1, 0);
+        Color yellow = new Color(1, 1, 0);
+        Color color;
         // Debug.Log("toggled");
         // Debug.Log(i);
         if (i == 0) {
             if (headSplitNum == 0) {
-                headSplitController.GetComponent<SpriteRenderer>().material.color = red;
-                headSplitNum = 1;
+                color = head.IsFixed() ? red : yellow;
+                // headSplitNum = 1;
             } else {
-                headSplitController.GetComponent<SpriteRenderer>().material.color = green;
-                headSplitNum = 0;
+                color = green;
+                // headSplitNum = 0;
             }
+            headSplitController.GetComponent<SpriteRenderer>().material.color = color;
+            headSplitNum = (headSplitNum + 1) % 2;
         } else {
             if (tailSplitNum == 0) {
-                tailSplitController.GetComponent<SpriteRenderer>().material.color = red;
-                tailSplitNum = 1;
+                color = tail.IsFixed() ? red : yellow;
+                // tailSplitNum = 1;
             } else {
-                tailSplitController.GetComponent<SpriteRenderer>().material.color = green;
-                tailSplitNum = 0;
+                color = green;
+                // tailSplitNum = 0;
             }
+            tailSplitController.GetComponent<SpriteRenderer>().material.color = color;
+            tailSplitNum = (tailSplitNum + 1) % 2;
         }
 
     }
