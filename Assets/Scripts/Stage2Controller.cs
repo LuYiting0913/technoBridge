@@ -101,6 +101,7 @@ public class Stage2Controller : MonoBehaviour {
 
     private void StartBatch(int batch) {
         foreach (VehicleController vc in batches[batch]) {
+            Debug.Log("Current vehicle is " + vc.gameObject.name + " in batch " + batch);
             vc.Restart();
         }
     }

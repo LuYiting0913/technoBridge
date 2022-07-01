@@ -13,6 +13,7 @@ public class VehicleController : MonoBehaviour {
     private int checkpointCount, nextCheckpoint;
     public bool arrived, failed, waitingForHydraulic;
     private int duration = 10;
+    public float boatSpeed = 0.5f;
 
     public void Start() {
         checkpointCount = checkpoints.Count;
@@ -58,9 +59,10 @@ public class VehicleController : MonoBehaviour {
     }
 
     public void FixedUpdate() {
+        // Debug.Log(gameObject.name);
         if (nextCheckpoint >= checkpointCount) {
             arrived = true;
-        } else if (!waitingForHydraulic) {
+	    } else if (!waitingForHydraulic) {
             // Debug.Log("moving");
             if (ArrivedAtCheckpoint(checkpoints[nextCheckpoint]) && nextCheckpoint < checkpointCount) {
                 Debug.Log("arrived at next");
@@ -70,8 +72,12 @@ public class VehicleController : MonoBehaviour {
                 // waitingForHydraulic = false;
                 nextCheckpoint += 1;
             } else {
-                Accelerate();
-                UpdateWheels();
+                if (gameObject.name == "Boat") {
+                    gameObject.transform.position -= new Vector3(0, 0, boatSpeed);
+                } else {
+                    Accelerate();
+                    UpdateWheels();
+                }
             }
         }
     }
@@ -92,7 +98,7 @@ public class VehicleController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         Debug.Log(other.gameObject.name);
-        if (other.gameObject.name == "Water") {
+        if (other.gameObject.name == "Water" && gameObject.name != "Boat") {
             failed = true;
         }
     }
