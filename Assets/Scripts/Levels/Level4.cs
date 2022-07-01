@@ -37,7 +37,7 @@ public class Level4 : MonoBehaviour {
         // p4.SetFixed();
 
         p1.SetPosition(new Vector3(-250, -15, 0));    
-        p2.SetPosition(new Vector3(89, -15, 0));      
+        p2.SetPosition(new Vector3(123, -15, 0));      
         // p3.SetPosition(new Vector3(-250, 80, 0));       
         // p4.SetPosition(new Vector3(180, 100, 0));
 
