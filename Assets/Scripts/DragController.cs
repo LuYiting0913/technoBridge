@@ -74,12 +74,15 @@ public class DragController : MonoBehaviour {
         selectedPoint = point;
         initialPosition = point.transform.position;
         selectedPoint.GetChild(0).gameObject.SetActive(true);
+        AssetManager.DeletePoint(selectedPoint.GetComponent<Point>());
     }
 
     private void ReleasePoint() {
         selectedPoint.GetChild(0).gameObject.SetActive(false);
         foreach (SolidBar b in selectedPoint.GetComponent<Point>().connectedBars) b.DeactivateLimit();
+        AssetManager.AddPoint(selectedPoint.GetComponent<Point>());
         selectedPoint = null;
+
     }
 
     private Vector2 DragPointTo(Vector2 cursor, float scale) {
