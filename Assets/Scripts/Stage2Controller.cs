@@ -18,7 +18,7 @@ public class Stage2Controller : MonoBehaviour {
     // public List<VehicleController> VehicleBatch3;  
     // public List<VehicleController> VehicleBatch4;  
     private List<List<VehicleController>> batches = new List<List<VehicleController>>();
-    private int currentBatch;
+    public int currentBatch;
     private float startAnimationTime, animationDuration;
     private bool animating = false;
 
@@ -102,6 +102,9 @@ public class Stage2Controller : MonoBehaviour {
         for (int i = 0; i < vehicleParent.childCount; i++) {
             if (!vehicleParent.GetChild(i).GetComponent<VehicleController>().Arrived()) return false; 
         }
+        if (GameObject.Find("Boat") != null && !GameObject.Find("Boat").GetComponent<Animatable>().Arrived()) {
+            return false;
+        }
         return true;
     }
 
@@ -156,7 +159,8 @@ public class Stage2Controller : MonoBehaviour {
         if (!isPaused) Time.timeScale = playSpeed;
         // if (!Animating() && ) Debug.Log("animna");
         // if(!Animating()) { 
-        if (currentBatch > 1 || batches[currentBatch].Count == 0) {
+        // if (currentBatch > 1 || batches[currentBatch].Count == 0) {
+        if (AllVehicleArrived()) {
             Debug.Log("all arrived");
             canvas.transform.GetChild(3).gameObject.SetActive(true);
         } else if (AllVehicleWaiting(currentBatch) && !animating) {
