@@ -115,8 +115,9 @@ public class TraceController : MonoBehaviour {
             currTail = Instantiate(PointTemplate, guidePoints[i].GetPosition(), Quaternion.identity, pointParent).GetComponent<Point>();
             SolidBar b = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
             b.SetR(currHead, currTail);
-            b.RenderSolidBar(Stage1Controller.backgroundScale);
-            
+            currHead.AddConnectedBar(b);
+            currTail.AddConnectedBar(b);
+            // b.RenderSolidBar(Stage1Controller.backgroundScale);
             AssetManager.AddPoint(currTail);
             AssetManager.AddBar(b);
             
@@ -124,7 +125,9 @@ public class TraceController : MonoBehaviour {
         }
         SolidBar bar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
         bar.SetR(currHead, tail);
-        bar.RenderSolidBar(Stage1Controller.backgroundScale);
+        currHead.AddConnectedBar(bar);
+        tail.AddConnectedBar(bar);
+        // bar.RenderSolidBar(Stage1Controller.backgroundScale);
         AssetManager.AddBar(bar);
         
     }

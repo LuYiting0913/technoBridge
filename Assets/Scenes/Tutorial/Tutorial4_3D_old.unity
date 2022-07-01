@@ -3510,11 +3510,11 @@ MonoBehaviour:
   hydraulicParent: {fileID: 278233480}
   VehicleBatch1:
   - {fileID: 1266305467}
-  - {fileID: 2035031900}
   VehicleBatch2:
+  - {fileID: 1266305467}
+  AnimatableBatch1:
   - {fileID: 2035031900}
-  VehicleBatch3: []
-  VehicleBatch4: []
+  AnimatableBatch2: []
 --- !u!1 &1413122368
 GameObject:
   m_ObjectHideFlags: 0
@@ -4124,7 +4124,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1266305466}
-  - {fileID: 2035031898}
   m_Father: {fileID: 1386884404}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5023,12 +5022,12 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1646396425}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4241449106837503288, guid: 082a03a8aa5146049a1a6fe6f9651613,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 4241449106837503288, guid: 082a03a8aa5146049a1a6fe6f9651613,
         type: 3}
@@ -5097,12 +5096,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 082a03a8aa5146049a1a6fe6f9651613, type: 3}
---- !u!4 &2035031898 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4241449106837503288, guid: 082a03a8aa5146049a1a6fe6f9651613,
-    type: 3}
-  m_PrefabInstance: {fileID: 2035031897}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2035031899 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4241449106837503291, guid: 082a03a8aa5146049a1a6fe6f9651613,
@@ -5118,26 +5111,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2035031899}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbd42c3aab373ff4cb0ca1b2eca5b58d, type: 3}
+  m_Script: {fileID: 11500000, guid: 208302ecbad305c4bbb3cc51ddcc1808, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontLeft: {fileID: 0}
-  frontRight: {fileID: 0}
-  rearLeft: {fileID: 0}
-  rearRight: {fileID: 0}
-  frontLeftWheel: {fileID: 0}
-  frontRightWheel: {fileID: 0}
-  rearLeftWheel: {fileID: 0}
-  rearRightWheel: {fileID: 0}
-  motor: 300
-  brake: 10000
-  checkpoints:
-  - {fileID: 1502319882}
-  - {fileID: 567128146}
-  arrived: 0
-  failed: 0
-  waitingForHydraulic: 0
-  boatSpeed: 0.5
 --- !u!1 &2085794617
 GameObject:
   m_ObjectHideFlags: 0
