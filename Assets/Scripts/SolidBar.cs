@@ -333,8 +333,8 @@ public class SolidBar : MonoBehaviour {
     }
 
     public void Break() {
-        Transform piece1 = transform.GetChild(2);
-        Transform piece2 = transform.GetChild(3);
+        Transform piece1 = transform.GetChild(0);
+        Transform piece2 = transform.GetChild(1);
         ActivateBrokenPiece(piece1);
         ActivateBrokenPiece(piece2);
         DisableBar();

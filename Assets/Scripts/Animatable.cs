@@ -12,9 +12,9 @@ public class Animatable : MonoBehaviour {
         animating = true;
     }
 	
-	// public bool ArrivedAtCheckpoint(Checkpoint pt) {
-    //     return pt.Arrived(transform.position);
-    // }
+    private void OnCollisionEnter(Collision other) {
+        Debug.Log("hit sth");
+    }
 
     public void FixedUpdate() {
 		// if (ArrivedAtCheckpoint(checkpoint)) {
@@ -23,6 +23,8 @@ public class Animatable : MonoBehaviour {
             transform.position -= new Vector3(0, 0, speed); 
             if (transform.position.z < -700) animating = false; 
         }
+
+        // DetectCollision()
     }
 	
 	// public bool Arrived() {
