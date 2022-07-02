@@ -13,7 +13,7 @@ public class PrefabManager {
     private static string splitPoint3D = "Prefab/Object3D/SplitPoint3D";
 
     private static string splitPointSprite = "Sprite/Object2D/SplitPoint";
-    private static string splitFixedPointSprite = "Sprite/Object2D/SplitFixedPoint";
+    private static string splitFixedPointSprite = "Sprite/Object2D/SplitPointFixed";
     private static string pointSprite = "Sprite/Object2D/Point";
     private static string fixedPointSprite = "Sprite/Object2D/FixedPoint";
 

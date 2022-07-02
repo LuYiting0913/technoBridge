@@ -8,6 +8,7 @@ public class SceneInitiator : MonoBehaviour {
     public Point splitPointTemplate;
     public Transform pointParent, barParent, vehicleParent, hydraulicParent;
     public Transform splitPointParent;
+    public AudioManager audioManager;
 
 
     private int roadWidth = 100;
@@ -72,6 +73,7 @@ public class SceneInitiator : MonoBehaviour {
                     // ActivateBrokenPiece(piece1);
                     // ActivateBrokenPiece(piece2);
                     bar.Break();
+                    audioManager.PlayBreakSound();
                 } else if (displayStress) {
                     bar.DisplayStress();
                 } else {
@@ -90,6 +92,7 @@ public class SceneInitiator : MonoBehaviour {
                     // ActivateBrokenPiece(piece2);
                     // pave.DisablePave();
                     pave.Break();
+                    audioManager.PlayBreakSound();
                 } else if (displayStress) {
                     pave.DisplayStress();
                 } else {
