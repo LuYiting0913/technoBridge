@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 // using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEditor;
 using System;
 
 public class TraceController : MonoBehaviour {
     private static TraceController m_Instance; 
     private bool isActive = false;
+    private bool isEditing = false;
     private float scale;
+    private int lineType = 0;
+    // 0: straight, 1: curve
 
     private int material;
     private Point head, tail;
@@ -36,18 +40,18 @@ public class TraceController : MonoBehaviour {
         isActive = i == 4;
     }
 
-    
     public void OnPressed(object source, Stage1Controller e) {
-        if (isActive) {
+        if (isActive && !isEditing) {
             // Debug.Log("stracecontroller receieved press");
             e.ActivateCursor();
             StartTrace(e.GetStartPoint(), e.GetCurrentMaterial(), e.barParent, e.pointParent);
             scale = Stage1Controller.backgroundScale;
+
         }
     }
 
     public void OnReleased(object source, Stage1Controller e) {
-        if (isActive) {
+        if (isActive && !isEditing) {
             // Debug.Log("tracecontroller receieved release");
             e.DeactivateCursor();
             EndTrace();
@@ -57,19 +61,30 @@ public class TraceController : MonoBehaviour {
     public void OnDragged(object source, Stage1Controller e) {
         if (isActive) {
             // Debug.Log("tracecontroller receieved drag");
-            e.UpdateCursor(e.GetCurPoint());
-            RenderDummy(e.GetCurPoint());
+            if (!isEditing) {
+                e.UpdateCursor(e.GetCurPoint());
+                RenderDummy(e.GetCurPoint());
+            } else {
+                DestroyAllDummy();
+                InstantiateGuidePoint(GetComponent<CurveEditor>().UpdateEditor(e.GetCurPoint()));
+            }
         }
     }
 
-    public void Update() {
-
+    public void SetStraightLine() {
+        lineType = 0;
+        InstantiateGuidePoint(GetComponent<CurveEditor>().DrawTrace(head.transform.position, tail.transform.position, material, lineType));
     }
+
+    public void SetCurve() {
+        lineType = 1;
+        InstantiateGuidePoint(GetComponent<CurveEditor>().DrawTrace(head.transform.position, tail.transform.position, material, lineType));
+    }
+
 
     public void StartTrace(Vector2 headPosition, int m, Transform bParent, Transform pParent) {
         DestroyAllDummy();
-        // if (dummyBar != null) GameObject.Destroy(dummyBar.gameObject);
-        // dummyBar = null;
+
         material = m;
         barParent = bParent;
         pointParent = pParent;
@@ -92,32 +107,33 @@ public class TraceController : MonoBehaviour {
         } else {
             AssetManager.AddPoint(tail);
         }
+        InstantiateGuidePoint(GetComponent<CurveEditor>().DrawTrace(head.transform.position, tail.transform.position, material, lineType));
 
-        float maxLength = MaterialManager.GetMaxLength(material);
-        Vector2 headPos = head.transform.position;
-        Vector2 tailPos = tail.transform.position;
-        Vector2 dir = tailPos - headPos;
-        int numberOfSegments = (int) Math.Ceiling(dir.magnitude / maxLength);
-        for (int i = 1; i < numberOfSegments; i++) {
-            Vector2 position = headPos + dir * i / numberOfSegments;
-            Point dummy = Instantiate(dummyPointTemplate, position, Quaternion.identity, traceParent).GetComponent<Point>();
-            guidePoints.Add(dummy);
-        }
         GameObject traceToolBar = GameObject.Find("PopupToolBar").transform.GetChild(2).gameObject;
         traceToolBar.SetActive(true);
+        isEditing = true;
+    }
+
+    private void InstantiateGuidePoint(List<Vector3> points) {
+        DestroyAllDummy();
+        foreach (Vector3 v in points) {
+            Point dummy = Instantiate(dummyPointTemplate, v, Quaternion.identity, traceParent).GetComponent<Point>();
+            guidePoints.Add(dummy);
+        }
     }
 
     public void FillTrace() {
+        isEditing = false;
+        GetComponent<CurveEditor>().Close();
         Point currHead = head;
         Point currTail;
         GameObject barTemplate = MaterialManager.GetTemplate2D(material);
         for (int i = 0; i < guidePoints.Count; i++) {
-            currTail = Instantiate(PointTemplate, guidePoints[i].GetPosition(), Quaternion.identity, pointParent).GetComponent<Point>();
+            currTail = Instantiate(PointTemplate, guidePoints[i].transform.position, Quaternion.identity, pointParent).GetComponent<Point>();
             SolidBar b = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
             b.SetR(currHead, currTail);
             currHead.AddConnectedBar(b);
             currTail.AddConnectedBar(b);
-            // b.RenderSolidBar(Stage1Controller.backgroundScale);
             AssetManager.AddPoint(currTail);
             AssetManager.AddBar(b);
             
@@ -144,5 +160,12 @@ public class TraceController : MonoBehaviour {
     public void DestroyAllDummy() {
         foreach (Point p in guidePoints) if (p != null) GameObject.Destroy(p.gameObject);
         if (dummyBar != null) GameObject.Destroy(dummyBar.gameObject);
+        guidePoints = new List<Point>();
+    }
+
+    public void Update() {
+        // if (lineType == 1) {
+            
+        // }
     }
 }
