@@ -23,6 +23,7 @@ public class CurveEditor : MonoBehaviour {
             DeactivateCurveEditor();
         }
         segmentLength = MaterialManager.GetMaxLength(material);
+        segmentLength = segmentLength > 300 ? 100 : segmentLength;
 
         numOfVert = (int) ((Math.PI * (head - tail).magnitude / 2) / segmentLength) - 1;
         Draw();
@@ -32,16 +33,18 @@ public class CurveEditor : MonoBehaviour {
     public void Draw() {
         points = new List<Vector3>();
         points.Add(head);
-        for (float ratio = 0; ratio <= 1; ratio += 1 / (float) numOfVert) {
+        for (float i = 1f; i < numOfVert; i++) {
+            float ratio = i / ((float) numOfVert);
             Vector3 tangent1 = Vector3.Lerp(head, control, ratio);
             Vector3 tangent2 = Vector3.Lerp(control, tail, ratio);
             Vector3 curve = Vector3.Lerp(tangent1, tangent2, ratio);
 
             points.Add(curve);
         }
+        // points.RemoveAt(points.Count - 1);
         points.Add(tail);
         renderer.enabled = true;
-        renderer.positionCount = numOfVert + 2;
+        renderer.positionCount = numOfVert + 1;
         renderer.SetPositions(points.ToArray());
         // return points;
     }

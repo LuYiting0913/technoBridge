@@ -128,7 +128,7 @@ public class TraceController : MonoBehaviour {
         Point currHead = head;
         Point currTail;
         GameObject barTemplate = MaterialManager.GetTemplate2D(material);
-        for (int i = 0; i < guidePoints.Count; i++) {
+        for (int i = 1; i < guidePoints.Count - 1; i++) {
             currTail = Instantiate(PointTemplate, guidePoints[i].transform.position, Quaternion.identity, pointParent).GetComponent<Point>();
             SolidBar b = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
             b.SetR(currHead, currTail);

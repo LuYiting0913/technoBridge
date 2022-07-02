@@ -76,12 +76,13 @@ public class SolidBar : MonoBehaviour {
         ropeParent.transform.parent = parent;
         SolidBar newRope = ropeParent.AddComponent<SolidBar>();
         
-        int maxPerSegment = 20;
+        float maxPerSegment = 20f;
         Vector3 headPosition = bar.GetHead3D() + new Vector3(0, 0, i);
         Vector3 tailPosition = bar.GetTail3D() + new Vector3(0, 0, i);
         Vector3 dir = tailPosition - headPosition;
         float l = dir.magnitude;
         int numberOfSegments = (int) (l / maxPerSegment);
+        // Debug.Log(numberOfSegments);
 
         Point head = bar.GetHeadSplit(AssetManager.GetPoint(headPosition));
         Point tail = bar.GetTailSplit(AssetManager.GetPoint(tailPosition));
