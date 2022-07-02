@@ -28,6 +28,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private DragController dragController;
     private HydraulicInitiator hydraulicInitiator;
     // private SplitBarController splitBarController;
+    public AudioManager audioManager;
 
     private List<Point> existingPoints = new List<Point>();
     private List<SolidBar> existingBars = new List<SolidBar>();
@@ -274,6 +275,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public int GetCurrentMaterial() {
         return currentMaterial;
+    }
+
+    public AudioManager GetAudio() {
+	    return audioManager;
     }
 
     public void UpdateBackgroundInfo() {
