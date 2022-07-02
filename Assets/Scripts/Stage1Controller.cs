@@ -236,6 +236,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         currentEditMode = 4;
         TurnOffAll();
         trace.ToggleSprite();
+        TurnOnMaterialToggle(currentMaterial);
         OnModeChanged();
     }
 
@@ -249,7 +250,11 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public void SetMaterial(int material) {
         AddMode();
         currentMaterial = material;
-        switch (material) {
+        TurnOnMaterialToggle(material);  
+    }
+
+    private void TurnOnMaterialToggle(int mat) {
+        switch (mat) {
             case 0:
                 pavement.ToggleSprite();
                 break;
