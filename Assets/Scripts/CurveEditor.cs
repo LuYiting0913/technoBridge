@@ -44,7 +44,10 @@ public class CurveEditor : MonoBehaviour {
         // points.RemoveAt(points.Count - 1);
         points.Add(tail);
         renderer.enabled = true;
+        renderer.startColor = new Color(0.3f, 0.3f, 0.3f, 0.3f);
+        renderer.endColor = new Color(0.3f, 0.3f, 0.3f, 0.3f);
         renderer.positionCount = numOfVert + 1;
+        
         renderer.SetPositions(points.ToArray());
         // return points;
     }
@@ -55,6 +58,8 @@ public class CurveEditor : MonoBehaviour {
         LineRenderer controlLine = curveEditor.GetChild(1).GetComponent<LineRenderer>();
         List<Vector3> pts = new List<Vector3>() {head, control};
         controlLine.positionCount = 2;
+        controlLine.startColor = new Color(0f, 0f, 0f, 0.6f);
+        controlLine.endColor = new Color(0f, 0f, 0f, 0.6f);
         controlLine.SetPositions(pts.ToArray());
     }
 
