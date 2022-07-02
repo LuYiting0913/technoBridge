@@ -1052,6 +1052,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 239373610}
   m_CullTransparentMesh: 1
+--- !u!1 &255460376
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 255460377}
+  m_Layer: 5
+  m_Name: CurveEditor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &255460377
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255460376}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1552968308}
+  - {fileID: 524914823}
+  m_Father: {fileID: 2132681296}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &313008772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2819,7 +2857,7 @@ GameObject:
   - component: {fileID: 524914823}
   - component: {fileID: 524914824}
   m_Layer: 5
-  m_Name: Line (1)
+  m_Name: EditorLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2837,7 +2875,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2132681296}
+  m_Father: {fileID: 255460377}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -2852,7 +2890,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 524914822}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -5396,7 +5434,7 @@ GameObject:
   - component: {fileID: 992741526}
   - component: {fileID: 992741525}
   m_Layer: 5
-  m_Name: Line
+  m_Name: TraceLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7595,17 +7633,17 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 2132681296}
+    m_TransformParent: {fileID: 255460377}
     m_Modifications:
     - target: {fileID: 397061632768504934, guid: 9afc1405728fcc740b6d31f29213617d,
         type: 3}
       propertyPath: m_Name
-      value: DummyPoint
+      value: EditorPoint
       objectReference: {fileID: 0}
     - target: {fileID: 3384005870080749909, guid: 9afc1405728fcc740b6d31f29213617d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3384005870080749909, guid: 9afc1405728fcc740b6d31f29213617d,
         type: 3}
@@ -10767,8 +10805,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 992741526}
-  - {fileID: 524914823}
-  - {fileID: 1552968308}
+  - {fileID: 255460377}
   m_Father: {fileID: 190600006}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10811,7 +10848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderer: {fileID: 992741525}
-  curveEditor: {fileID: 0}
+  curveEditor: {fileID: 255460377}
 --- !u!1 &2144381737
 GameObject:
   m_ObjectHideFlags: 0
