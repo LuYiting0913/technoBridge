@@ -109,6 +109,9 @@ public class AuthManager : MonoBehaviour
             Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
             warningLoginText.text = "";
             confirmLoginText.text = "Logged In";
+
+            // And load main menu
+            gameObject.GetComponent<MainMenu>().BackToMain();
         }
     }
 

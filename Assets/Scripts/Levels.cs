@@ -38,6 +38,10 @@ public class Levels {
             isInited[level] = true;
         }
     }
+
+    public static Dictionary<int, List<PointReference>> GetLevelData() {
+	    return pointData;
+    }
     
     public static List<PointReference> GetPointData(int level) {
         return pointData[level];
