@@ -41,6 +41,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutorial/Tutorial4_3D.unity
     guid: 75c2443f114c157458db50d7a36c79ef
+  - enabled: 1
+    path: Assets/Scenes/LoginScene.unity
+    guid: d80b446188e9f75469667596e5b9fc53
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 765780b12ffac6a47a3e5fc53c0947d7,
       type: 2}
