@@ -15,9 +15,9 @@ public class CurveEditor : MonoBehaviour {
     public List<Vector3> DrawTrace(Vector3 h, Vector3 t, int material, int lineType) {
         head = h;
         tail = t;
-        control = (head + tail) / 2; 
+        control = head + (tail - head) / 4;  
         if (lineType == 1) {
-            control += new Vector3(0, 200, 0);
+            control += new Vector3(0, 100, 0);
             ActivateCurveEditor();
         } else {
             DeactivateCurveEditor();
@@ -35,8 +35,9 @@ public class CurveEditor : MonoBehaviour {
         points.Add(head);
         for (float i = 1f; i < numOfVert; i++) {
             float ratio = i / ((float) numOfVert);
-            Vector3 tangent1 = Vector3.Lerp(head, control, ratio);
-            Vector3 tangent2 = Vector3.Lerp(control, tail, ratio);
+            Vector3 corner = head + (control - head) * 2;
+            Vector3 tangent1 = Vector3.Lerp(head, corner, ratio);
+            Vector3 tangent2 = Vector3.Lerp(corner, tail, ratio);
             Vector3 curve = Vector3.Lerp(tangent1, tangent2, ratio);
 
             points.Add(curve);
