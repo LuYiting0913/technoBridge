@@ -13244,6 +13244,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1829428116}
     m_Modifications:
+    - target: {fileID: 800059364224663380, guid: 236abe4616fdda74f99b5b91ffb14582,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 800059364224663380, guid: 236abe4616fdda74f99b5b91ffb14582,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 4.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2273460587808864057, guid: 236abe4616fdda74f99b5b91ffb14582,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3444455654454790332, guid: 236abe4616fdda74f99b5b91ffb14582,
         type: 3}
       propertyPath: m_Pivot.x
@@ -13353,6 +13368,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CostDisplay
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259854861514426832, guid: 236abe4616fdda74f99b5b91ffb14582,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8334215256682194419, guid: 236abe4616fdda74f99b5b91ffb14582,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 236abe4616fdda74f99b5b91ffb14582, type: 3}

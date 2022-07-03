@@ -2290,6 +2290,7 @@ MonoBehaviour:
   pointParent: {fileID: 1590620279}
   gridParent: {fileID: 1527536029}
   audioManager: {fileID: 845706028}
+  gameInfo: {fileID: 0}
   backgroundPosition: {x: 0, y: 0, z: 0}
   slider: {fileID: 588413977}
   cursor: {fileID: 683733136}
@@ -9592,7 +9593,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 49.36, y: -4.2}
+  m_AnchoredPosition: {x: 51.3, y: 16.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &804640710
@@ -22582,7 +22583,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -3.5360107, w: 111.82353}
+  m_margin: {x: 0, y: 0, z: -3.5360107, w: 121.30884}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -25220,6 +25221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a84b1e5919da114fa54b48f47b6ffd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isEditing: 0
   traceParent: {fileID: 1507346159}
   barParent: {fileID: 0}
   pointParent: {fileID: 0}

@@ -181,7 +181,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
         UpdateCost(cost);
-        CheckOutOfMoney(cost);
+        // CheckOutOfMoney(cost);
 
         if (isPointerDown) {
             Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -190,15 +190,15 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
-    private void CheckOutOfMoney(int c) {
-        if (c > 1.5f * budget) {
-            outOfMoney = true;
-            costDisplay.transform.GetChild(2).gameObject.SetActive(true);
-        } else {
-            outOfMoney = false;
-            costDisplay.transform.GetChild(2).gameObject.SetActive(false);
-        }
-    }
+    // private void CheckOutOfMoney(int c) {
+    //     if (c > 1.5f * budget) {
+    //         outOfMoney = true;
+    //         costDisplay.transform.GetChild(2).gameObject.SetActive(true);
+    //     } else {
+    //         outOfMoney = false;
+    //         costDisplay.transform.GetChild(2).gameObject.SetActive(false);
+    //     }
+    // }
 
     public bool IsOutOfMoney() {
         return outOfMoney;
@@ -356,6 +356,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         costDisplay.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = MoneyToString(c);
         if (c > budget) {
             costDisplay.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().color = new Color(1, 0, 0);
+            costDisplay.transform.GetChild(3).gameObject.SetActive(c <= budget * 2);
+            costDisplay.transform.GetChild(2).gameObject.SetActive(c > budget * 2);
+            outOfMoney = c > budget * 2;
+
         } else {
             costDisplay.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().color = new Color(0, 1, 0);
         }
