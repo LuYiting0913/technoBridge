@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelButtonController : MonoBehaviour {
     public int level;
-    public LevelMenuController levelMenuController;
+    // private LevelMenuController levelMenuController;
     private bool isClicked = false;
     private int clickCount;
 
@@ -12,6 +12,7 @@ public class LevelButtonController : MonoBehaviour {
 		if (Levels.GetLevelData().ContainsKey(level)) {
 			GetComponent<MeshRenderer>().material.color = new Color(0, 0, 1);
 		}
+        // levelMenuController = transform.parent.parent.GetComponent<LevelMenuController>();
 	}
 
     // private void OnMouseEnter() {
