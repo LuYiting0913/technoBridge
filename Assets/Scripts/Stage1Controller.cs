@@ -29,6 +29,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private HydraulicInitiator hydraulicInitiator;
     // private SplitBarController splitBarController;
     public AudioManager audioManager;
+    public Transform gameInfo;
 
     private List<Point> existingPoints = new List<Point>();
     private List<SolidBar> existingBars = new List<SolidBar>();
@@ -413,6 +414,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public void DeactivateCursor() {
         for (int i = 0; i < cursor.transform.childCount; i++) cursor.transform.GetChild(i).gameObject.SetActive(false);
+    }
+
+    public void ToggleGameInfoPage(bool b) {
+        gameInfo.gameObject.SetActive(b);
     }
 
 }
