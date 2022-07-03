@@ -17,6 +17,7 @@ public class TraceController : MonoBehaviour {
     private Point head, tail;
     private SolidBar dummyBar;
     private List<Point> guidePoints = new List<Point>();
+    private Stage1Controller stage1;
 
     public Transform traceParent, barParent, pointParent;
     public GameObject dummyPointTemplate;
@@ -55,6 +56,7 @@ public class TraceController : MonoBehaviour {
             // Debug.Log("tracecontroller receieved release");
             e.DeactivateCursor();
             EndTrace();
+            stage1 = e;
         }
     }
 
@@ -145,6 +147,7 @@ public class TraceController : MonoBehaviour {
             AssetManager.AddBar(b);
             
             currHead = currTail;
+            
         }
         SolidBar bar = Instantiate(barTemplate, barParent).GetComponent<SolidBar>();
         bar.SetR(currHead, tail);
@@ -153,6 +156,7 @@ public class TraceController : MonoBehaviour {
         // bar.RenderSolidBar(Stage1Controller.backgroundScale);
         AssetManager.AddBar(bar);
         // DestroyAllDummy();
+        stage1.GetAudio().PlayBuildSound(stage1.GetCurrentMaterial());
         
     }
 
