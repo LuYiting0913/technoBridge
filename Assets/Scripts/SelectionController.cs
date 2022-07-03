@@ -96,7 +96,7 @@ public class SelectionController : MonoBehaviour {
         return transform.GetComponent<SolidBar>() != null || transform.GetComponent<Point>() != null;
     }
 
-    private void ClearAllDummy() {
+    public void ClearAllDummy() {
         foreach (Transform child in copiedParent) GameObject.Destroy(child.gameObject);
         dummyBars = new List<SolidBar>();
         dummyPoints = new List<Point>();

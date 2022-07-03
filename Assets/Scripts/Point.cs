@@ -8,7 +8,7 @@ public class Point : MonoBehaviour {
     // private Vector3 pointPosition;
     public bool isStationary = false;
     public bool isSplit = false;
-    private static int threshold = 5;
+    private static int threshold = 20;
 
     public static Point Instantiate2D(PointReference p, Transform parent) {
         Point pt = null;
