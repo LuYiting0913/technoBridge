@@ -21,6 +21,7 @@ public class Stage2Controller : MonoBehaviour {
     public int currentBatch;
     private float startAnimationTime, animationDuration;
     private bool animating = false;
+    // public AudioManager audioManager;
 
     public List<Animatable> AnimatableBatch1;
     public List<Animatable> AnimatableBatch2;

@@ -8,8 +8,10 @@ public class Animatable : MonoBehaviour {
 	// public Checkpoint checkpoint;
 	// public bool arrived;
 
-    public void StartAnimation() {
-        animating = true;
+    public void StartAnimation() 
+    {
+	    animating = true;
+	    GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayBoatSound();
     }
 	
     private void OnCollisionEnter(Collision other) {
@@ -21,7 +23,11 @@ public class Animatable : MonoBehaviour {
 			// arrived = true;
 		if (animating) {
             transform.position -= new Vector3(0, 0, speed); 
-            if (transform.position.z < -700) animating = false; 
+            if (transform.position.z < -700) // animating = false; 
+            {
+                animating = false;
+                GameObject.Find("AudioManager").GetComponent<AudioManager>().StopBoatSound();
+            }
         }
 
         // DetectCollision()

@@ -20,6 +20,7 @@ public class VehicleController : MonoBehaviour {
         Debug.Log(checkpointCount);
         nextCheckpoint = 0;
         waitingForHydraulic = false;
+        Restart();
     }
 
     private void Accelerate() {
@@ -82,6 +83,8 @@ public class VehicleController : MonoBehaviour {
     public void OnRestarted(object source, Stage2Controller e) {
         // Debug.Log("restarted");
         Restart();
+        Debug.Log("car sound played");
+        // e.GetAudio().PlayCarSound();
     }
 
     public bool Arrived() {
@@ -107,11 +110,14 @@ public class VehicleController : MonoBehaviour {
     public void Stop() {
         waitingForHydraulic = true;
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().StopCarSound();
+
     }
 
     public void Restart() {
         waitingForHydraulic = false;
         gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayCarSound();
     }
 
     private IEnumerator WaitForAWhile(int dur) {
