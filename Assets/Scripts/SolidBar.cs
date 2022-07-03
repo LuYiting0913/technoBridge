@@ -32,11 +32,26 @@ public class SolidBar : MonoBehaviour {
         Point tail = AssetManager.GetPoint(barReference.GetTail3D());
         head.AddConnectedBar(bar);
         tail.AddConnectedBar(bar);
+
         
+        // Debug.Log("ddd");
+        // Debug.Log(bar.headSplitNum);
+        // Debug.Log(bar.tailSplitNum);
+    
+        // bar.InitSplitController();
+
         bar.SetR(head, tail);
         bar.InitHydraulicParams(barReference.GetHydraulicFactor());
+
+        // some strange op here
+        bar.headSplitNum = (barReference.GetHeadSplitNum() + 1) % 2;
+        bar.tailSplitNum = (barReference.GetTailSplitNum() + 1) % 2;
+        if (head.IsSplit()) bar.ToggleSplitParent(0);
+        if (tail.IsSplit()) bar.ToggleSplitParent(1);
         return bar;
     }
+
+
 
     public static SolidBar Instantiate3D(SolidBarReference barReference, int z, Transform barParent, Transform hydraulicParent) {
         if (barReference.GetMaterial() < 3) {
@@ -217,12 +232,12 @@ public class SolidBar : MonoBehaviour {
         // Debug.Log(head.IsSplit());
         // Debug.Log(tail.IsSplit());
 
-        if (head.IsSplit()) {
-            headSplitNum = 0;
-        }
-        if (tail.IsSplit()) {
-            tailSplitNum = 0;
-        }
+        // if (head.IsSplit()) {
+        //     headSplitNum = 0;
+        // }
+        // if (tail.IsSplit()) {
+        //     tailSplitNum = 0;
+        // }
     }
 
     public void InitTemp(Point point1, Point point2) {
@@ -386,12 +401,12 @@ public class SolidBar : MonoBehaviour {
             // Vector3 newPos = (transform.position + head.transform.position) / 2;
             headSplitController.gameObject.SetActive(true);
             headSplitController.transform.localPosition = new Vector3(-GetLength() / 40, 0, 0);
-            headSplitNum = 0;
+            if (headSplitNum == -1) headSplitNum = 0;
         } else {
             // Vector3 newPos = (transform.position + tail.transform.position) / 2;
             tailSplitController.gameObject.SetActive(true);
             tailSplitController.transform.localPosition = new Vector3(GetLength() / 40, 0, 0);;
-            tailSplitNum = 0;
+            if (tailSplitNum == -1) tailSplitNum = 0;
         }
     }
 
@@ -399,12 +414,12 @@ public class SolidBar : MonoBehaviour {
         // 0: head, 1: tail
         Color red = new Color(1, 0, 0);
         Color green = new Color(0, 1, 0);
-        Color yellow = new Color(1, 1, 0);
+        Color yellow = new Color(1, 197f / 255, 0);
         Color color;
         // Debug.Log("toggled");
         // Debug.Log(i);
         if (i == 0) {
-            if (headSplitNum == 0) {
+            if (headSplitNum == 1) {
                 color = head.IsFixed() ? red : yellow;
                 // headSplitNum = 1;
             } else {
@@ -414,7 +429,7 @@ public class SolidBar : MonoBehaviour {
             headSplitController.GetComponent<SpriteRenderer>().material.color = color;
             headSplitNum = (headSplitNum + 1) % 2;
         } else {
-            if (tailSplitNum == 0) {
+            if (tailSplitNum == 1) {
                 color = tail.IsFixed() ? red : yellow;
                 // tailSplitNum = 1;
             } else {

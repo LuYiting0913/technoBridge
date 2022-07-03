@@ -24,7 +24,7 @@ public class SplitPointController : MonoBehaviour {
             }
         } else {
             if (!GetComponent<Point>().IsFixed()) {
-                GetComponent<SpriteRenderer>().color = new Color(1, 1, 0);
+                GetComponent<SpriteRenderer>().color = new Color(1, 197f / 255, 0);
                 GetComponent<SpriteRenderer>().sprite = PrefabManager.GetPointSprite();
             } else {
                 GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
