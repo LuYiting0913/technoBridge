@@ -5,26 +5,26 @@ using UnityEngine.UI;
 
 public class BGMPlayer : MonoBehaviour
 {
-    private AudioSource audioSource;
+	private AudioSource audioSource;
 	private float musicVolume = 1f;
-    public Slider volumeSlider;
-    public GameObject ObjectMusic;
+	public Slider volumeSlider;
+	public GameObject ObjectMusic;
 
-    void Start()
+	void Start()
 	{	
 		// audioSource.Play();
-        ObjectMusic = GameObject.FindWithTag("BackgroundBGM");
+		ObjectMusic = GameObject.FindWithTag("BackgroundBGM");
 		audioSource = ObjectMusic.GetComponent<AudioSource>();	
 
-        musicVolume = PlayerPrefs.GetFloat("volume");
+		musicVolume = PlayerPrefs.GetFloat("volume");
 		audioSource.volume = musicVolume;
 		volumeSlider.value = musicVolume;
 	}
 
-    void Update()
+	void Update()
 	{
 		audioSource.volume = musicVolume;
-        PlayerPrefs.SetFloat("volume", musicVolume);
+		PlayerPrefs.SetFloat("volume", musicVolume);
 	}
 	
 	public void updateVolume(float volume)
