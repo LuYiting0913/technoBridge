@@ -35,6 +35,16 @@ public class MainMenu : MonoBehaviour {
         SceneManager.LoadScene(2 * level + 2);
     }
 
+    public void LoadTutorial(int level) {
+        SceneManager.LoadScene(2 + level * 2);
+    }
+
+    public void ClearAllTutorial() {
+        for (int i = 1; i <= 4; i++) {
+            Levels.ClearLevel(i);
+        }
+    }
+
     public void Go(int level) {
         Debug.Log("Go");
         Levels.UpdateLevelData(level, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());

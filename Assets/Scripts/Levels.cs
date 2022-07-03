@@ -13,6 +13,11 @@ public class Levels {
     private static int[] budget = new int[10];
     //private static Dictionary<int, List<Checkpoint>> checkpointData = new Dictionary<int, List<Checkpoint>>();
 
+    public static void ClearLevel(int level) {
+        pointData[level] = new List<PointReference>();
+        barData[level] = new List<SolidBarReference>();
+    }
+    
     public static void InitLevel(int level) {
         if (!isInited[level]) {
             switch (level)
