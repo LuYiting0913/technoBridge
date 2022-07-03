@@ -12,7 +12,8 @@ public class SelectionController : MonoBehaviour {
     private List<SolidBar> selectedBars = new List<SolidBar>();
     private List<Point> selectedPoints = new List<Point>();
     private Vector2 firstCorner, SecondCorner;
-    private Transform SelectionBox, copiedParent;
+    private Transform copiedParent;
+    private Transform selectionBox;
     private GameObject dummyBar, dummyPoint;
     private List<Point> dummyPoints;
     private List<SolidBar> dummyBars;
@@ -32,7 +33,7 @@ public class SelectionController : MonoBehaviour {
         SecondCorner = Vector2.zero;
         copiedParent = GameObject.Find("CopiedParent").transform; 
         GameObject template = Resources.Load<GameObject>("Prefab/SelectionBox");
-        SelectionBox = Instantiate(template, firstCorner, Quaternion.identity).
+        selectionBox = Instantiate(template, firstCorner, Quaternion.identity).
             GetComponent<Transform>();
     }
 
@@ -110,12 +111,12 @@ public class SelectionController : MonoBehaviour {
     }
 
     private void RenderSelectionBox() {
-        SelectionBox.transform.position = (firstCorner + SecondCorner) / 2;
-        SelectionBox.transform.localScale = new Vector3(firstCorner.x - SecondCorner.x, firstCorner.y - SecondCorner.y, 0);
+        selectionBox.transform.position = (firstCorner + SecondCorner) / 2;
+        selectionBox.transform.localScale = new Vector3(firstCorner.x - SecondCorner.x, firstCorner.y - SecondCorner.y, 0);
     }
 
     public void FinalizeBoxSelection() {
-        SelectionBox.transform.localScale = new Vector3(0, 0, 1);
+        selectionBox.transform.localScale = new Vector3(0, 0, 1);
         int scanInterval = 5;
         int leftBound =  (int) Math.Round(Math.Min(firstCorner.x, SecondCorner.x));
         int rightBound = (int) Math.Round(Math.Max(firstCorner.x, SecondCorner.x));

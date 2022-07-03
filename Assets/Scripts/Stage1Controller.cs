@@ -9,6 +9,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public int level = 0;
     public bool isTutorial;
     public int budget;
+    private bool outOfMoney;
 
     private Vector2 startPoint, endPoint, curPoint;
     private bool isPointerDown = false;
@@ -180,13 +181,27 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
         }
         UpdateCost(cost);
+        CheckOutOfMoney(cost);
 
         if (isPointerDown) {
             Vector2 cursor = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             curPoint = SnapToGrid(cursor);
             OnDragged();
         }
+    }
 
+    private void CheckOutOfMoney(int c) {
+        if (c > 1.5f * budget) {
+            outOfMoney = true;
+            costDisplay.transform.GetChild(2).gameObject.SetActive(true);
+        } else {
+            outOfMoney = false;
+            costDisplay.transform.GetChild(2).gameObject.SetActive(false);
+        }
+    }
+
+    public bool IsOutOfMoney() {
+        return outOfMoney;
     }
 
     public Vector2 GetStartPoint() {
