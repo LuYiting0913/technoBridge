@@ -54,7 +54,7 @@ public class SolidBarInitiator : MonoBehaviour {
     public void OnPressed(object source, Stage1Controller e) {
         Vector3 temp = e.WorldToCanvas(new Vector3(e.GetStartPoint().x, e.GetStartPoint().y, 0));
 
-        if (isActive && AssetManager.HasPoint(temp)) {
+        if (isActive && !e.IsOutOfMoney() && AssetManager.HasPoint(temp)) {
             creating = true;
             currentMaterial = e.GetCurrentMaterial();
             backgroundPosition = e.backgroundPosition;
