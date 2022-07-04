@@ -88,6 +88,9 @@ public class DragController : MonoBehaviour {
     private Vector2 DragPointTo(Vector2 cursor, float scale) {
         Point point = selectedPoint.GetComponent<Point>();
         point.transform.position = point.GetReachablePosition(point.transform.position, cursor, scale);
+        if (Vector3.Distance(point.transform.position, cursor) >= 3) { // just to see if drag overbound
+			GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayDragSound();
+		}
         // point.UpdateConnectedBars();
         return new Vector2(point.transform.position.x, point.transform.position.y);
     }

@@ -22,6 +22,15 @@ public class AudioManager : MonoBehaviour {
 				break;
 		}
 	}
+
+	public void PlayHydraulicSound() {
+		transform.GetChild(3).GetComponent<AudioSource>().Play();
+	}
+
+	public void PlayDragSound()
+	{
+		transform.GetChild(4).GetComponent<AudioSource>().Play();
+	}
 	
 	// For 3D scene;
 	public void PlayBreakSound() {
@@ -42,6 +51,10 @@ public class AudioManager : MonoBehaviour {
 
 	public void StopBoatSound() {
 		transform.GetChild(2).GetComponent<AudioSource>().Stop();
+	}
+
+	public void PlayHydraulicSound3D() {
+		transform.GetChild(3).GetComponent<AudioSource>().Play();
 	}
 
 }
