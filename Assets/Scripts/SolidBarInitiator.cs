@@ -70,14 +70,22 @@ public class SolidBarInitiator : MonoBehaviour {
             creating = false;
             e.DeactivateCursor();
             DeactivateBoundary();
+            bool landOnHeadPoint = AssetManager.GetPoint(e.WorldToCanvas(e.GetEndPoint())) == currentBar.head;
+            Debug.Log(landOnHeadPoint);
             if (!e.isTutorial) {
-                FinalizeBar(e.GetEndPoint(), e, e.autoTriangulate, Stage1Controller.backgroundScale);
-				e.GetAudio().PlayBuildSound(e.GetCurrentMaterial());
+                if (!landOnHeadPoint) {
+                    FinalizeBar(e.GetEndPoint(), e, e.autoTriangulate, Stage1Controller.backgroundScale);
+				    e.GetAudio().PlayBuildSound(e.GetCurrentMaterial());    
+                } else {
+                    Destroy(endPoint.gameObject);
+                    Destroy(currentBar.gameObject);
+                }
             } else {
                 TutorialController tutorial = GameObject.Find("TutorialController").GetComponent<TutorialController>();
                 Point guidePoint = tutorial.FindGuidePoint(e.GetEndPoint());
                 // Debug.Log("The guidepoint is " + guidePoint.GetPosition());
                 if (guidePoint != null || AssetManager.HasPoint(e.WorldToCanvas(e.GetEndPoint()))) {
+    
                     FinalizeBar(e.GetEndPoint(), e, e.autoTriangulate, Stage1Controller.backgroundScale);
 					e.GetAudio().PlayBuildSound(e.GetCurrentMaterial());
                 } else {

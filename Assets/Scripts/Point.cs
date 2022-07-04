@@ -61,6 +61,7 @@ public class Point : MonoBehaviour {
 
     public void DeleteConnectedBar(SolidBar bar) {
         connectedBars.Remove(bar);
+        RemoveConnectedNull();
     }
 
     public int ConnectedBarCount() {
@@ -127,7 +128,6 @@ public class Point : MonoBehaviour {
     public void SetSplit() {
         GetComponent<SplitPointController>().InitSplit(isSplit);
         if (isSplit) {
-            
             foreach (SolidBar bar in connectedBars) {
                 // Debug.Log("activate spl");
                 if (bar.head.Contain(GetPosition())) {

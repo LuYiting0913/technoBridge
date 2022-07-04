@@ -44,8 +44,8 @@ public class Levels {
         }
     }
 
-    public static Dictionary<int, List<PointReference>> GetLevelData() {
-	    return pointData;
+    public static bool IsLevelEdited(int level) {
+	    return pointData.ContainsKey(level);
     }
     
     public static List<PointReference> GetPointData(int level) {

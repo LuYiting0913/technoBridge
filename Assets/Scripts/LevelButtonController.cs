@@ -9,7 +9,7 @@ public class LevelButtonController : MonoBehaviour {
     private int clickCount;
 
     void Start() {
-		if (Levels.GetLevelData().ContainsKey(level)) {
+		if (Levels.IsLevelEdited(level)) {
 			GetComponent<MeshRenderer>().material.color = new Color(0, 0, 1);
 		}
         // levelMenuController = transform.parent.parent.GetComponent<LevelMenuController>();

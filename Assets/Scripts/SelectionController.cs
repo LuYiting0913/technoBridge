@@ -190,6 +190,8 @@ public class SelectionController : MonoBehaviour {
     private void DeleteBar(SolidBar bar) {
         if (bar != null) {
             AssetManager.DeleteBar(bar);
+            bar.head.DeleteConnectedBar(bar);
+            bar.tail.DeleteConnectedBar(bar);
             
             Destroy(bar.gameObject);
         }
