@@ -111,10 +111,10 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         backgroundScale = 1f;
         backgroundPosition = new Vector3(0,0,0);
-        
+        gameInfo.gameObject.SetActive(!Levels.IsInited(level));
         Levels.InitLevel(level);
         costDisplay.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Budget: " + MoneyToString(budget);
-
+        // gameInfo.gameObject.SetActive(Levels.IsInited(level));
         // pointTemplate = PrefabManager.GetPoint2DTemplate();
         // fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();  
         List<PointReference> pointData = Levels.GetPointData(level);
