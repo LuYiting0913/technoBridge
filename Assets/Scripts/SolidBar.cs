@@ -133,6 +133,7 @@ public class SolidBar : MonoBehaviour {
 
     private static SolidBar Instantiate3DHydraulic(SolidBarReference barReference, int i, Transform parent) {
         return Instantiate3DBar(barReference, i, parent);
+        // b.GetComponent<HydraulicController>().ConvertToHydraulic()
     }
 
     private static void InitRopeJoint(ConfigurableJoint joint) {

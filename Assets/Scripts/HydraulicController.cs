@@ -13,6 +13,7 @@ public class HydraulicController : MonoBehaviour {
     private ConfigurableJoint controllJoint;
 
     public void ConvertToHydraulic(float f) {
+
         SetAction(f);
         ConfigurableJoint joint = GetComponent<ConfigurableJoint>();
         Rigidbody pivot = joint.connectedBody;
@@ -32,6 +33,11 @@ public class HydraulicController : MonoBehaviour {
         newJoint.zMotion = ConfigurableJointMotion.Locked;
         newJoint.angularXMotion = ConfigurableJointMotion.Locked;
         newJoint.angularZMotion = ConfigurableJointMotion.Locked;
+
+        // SoftJointLimit softJointLimit = new SoftJointLimit();
+        // softJointLimit.limit = 0.5f;
+        // newJoint.linearLimit = softJointLimit;
+        // newJoint.linearLimit.limit = 2f;
         newJoint.anchor = new Vector3(0, 0, 0);
         newJoint.axis = new Vector3(0, 0, 1);
         newJoint.autoConfigureConnectedAnchor = false;
@@ -60,6 +66,13 @@ public class HydraulicController : MonoBehaviour {
 
     public void Activate() {
         active = true;
+        // controllJoint.connectedAnchor += new Vector3(0, speed * 10, 0);
+        controllJoint.xMotion = ConfigurableJointMotion.Limited;
+        SoftJointLimit softJointLimit = new SoftJointLimit();
+        softJointLimit.limit = 0.5f;
+        controllJoint.linearLimit = softJointLimit;
+        controllJoint.connectedAnchor += new Vector3(0, speed * 2, 0);
+        controllJoint.xMotion = ConfigurableJointMotion.Locked;
     }
 
     public void Deactivate() {
@@ -69,6 +82,8 @@ public class HydraulicController : MonoBehaviour {
     private void FixedUpdate() {
         if (active) {
             Vector3 v = controllJoint.connectedAnchor;
+            // Debug.Log(controllJoint.connectedBody);
+        
             if (speed > 0) {
                 // contract
                 if (v.y < target) controllJoint.connectedAnchor = new Vector3(v.x, v.y + speed, v.z);
@@ -80,7 +95,7 @@ public class HydraulicController : MonoBehaviour {
     }
 
     public void OnActivated(object source, Stage2Controller e) {
-        // Debug.Log("recieve activation");
+        Debug.Log("recieve activation");
         this.Activate();
     }
 

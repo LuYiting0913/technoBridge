@@ -10,7 +10,9 @@ public class Stage2Controller : MonoBehaviour {
     public GameObject playSpeedSlider;
     public GameObject canvas;
     public Transform vehicleParent;//, hydraulicParent;
+
     public Transform splitPointParent, hydraulicParent;
+    private Transform pointParent;
     // public List<VehicleController> allVehicles = new List<VehicleController>();
 
     public List<VehicleController> VehicleBatch1;  
@@ -36,6 +38,7 @@ public class Stage2Controller : MonoBehaviour {
         // batches.Add(VehicleBatch4);
         animatableBatches.Add(AnimatableBatch1);
         animatableBatches.Add(AnimatableBatch2);
+        pointParent = GameObject.Find("PointParent").transform;
     }
 
     public delegate void HydraulicEventHandler(object source, Stage2Controller e);
@@ -129,10 +132,29 @@ public class Stage2Controller : MonoBehaviour {
         }
         return false;
     }
+    
+    private void ReconnectPoint() {
+        int threshold = 10;
+        Debug.Log("reconnecting");
+        for (int i = 0; i < pointParent.childCount; i++) {
+            Transform splitPoint = pointParent.GetChild(i);
+            for (int j = 0; j < pointParent.childCount; j++) {
+                Transform point = pointParent.GetChild(j);
+                if (i != j && (splitPoint.position - point.position).magnitude < threshold) {
+                    Debug.Log("reconnected");
+                    FixedJoint joint = splitPoint.gameObject.AddComponent<FixedJoint>();
+                    joint.connectedBody = point.GetComponent<Rigidbody>();
+                    splitPoint.GetComponent<MeshRenderer>().material.color = new Color(1, 1, 1);
+                }
+            }
+        }
+    }
 
     private IEnumerator PlayAnimation() {
         Debug.Log("enter");
-        yield return new WaitForSeconds(5); 
+        yield return new WaitForSeconds(8);
+        Debug.Log("Reconnecting");
+        ReconnectPoint(); 
         Debug.Log("playing animation");
         foreach (Animatable a in animatableBatches[currentBatch]) {
             Debug.Log(a);
@@ -164,6 +186,7 @@ public class Stage2Controller : MonoBehaviour {
             Debug.Log("all waiting");
             OnSplited();
             OnActivated();
+            
             // StartCoroutine(WaitForAWhile(5));
             animating = true;
             StartCoroutine(PlayAnimation());

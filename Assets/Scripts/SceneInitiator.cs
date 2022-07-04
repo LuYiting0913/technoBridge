@@ -39,7 +39,7 @@ public class SceneInitiator : MonoBehaviour {
             if (b.GetMaterial() != 0) {
                 for (int i = 0; i <= 1; i += 1) {
                     SolidBar newBar = SolidBar.Instantiate3D(b, i * roadWidth, barParent, hydraulicParent);
-                    if (b.GetMaterial() == 5) {
+                    if (newBar.GetMaterial() == 5) {
                         newBar.GetComponent<HydraulicController>().ConvertToHydraulic(b.GetHydraulicFactor());
                         allHydraulics.Add(newBar.GetComponent<HydraulicController>());
                     }
