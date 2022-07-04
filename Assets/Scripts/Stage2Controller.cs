@@ -10,21 +10,28 @@ public class Stage2Controller : MonoBehaviour {
     public GameObject playSpeedSlider;
     public GameObject canvas;
     public Transform vehicleParent;//, hydraulicParent;
+
     public Transform splitPointParent, hydraulicParent;
+    private Transform pointParent;
     // public List<VehicleController> allVehicles = new List<VehicleController>();
+    public int currentBatch;
+    public bool animating = false;
+
 
     public List<VehicleController> VehicleBatch1;  
     public List<VehicleController> VehicleBatch2;  
-    // public List<VehicleController> VehicleBatch3;  
-    // public List<VehicleController> VehicleBatch4;  
+    public List<VehicleController> VehicleBatch3;  
+    public List<VehicleController> VehicleBatch4;  
     private List<List<VehicleController>> batches = new List<List<VehicleController>>();
-    public int currentBatch;
+    
     private float startAnimationTime, animationDuration;
-    private bool animating = false;
+    
     // public AudioManager audioManager;
 
     public List<Animatable> AnimatableBatch1;
     public List<Animatable> AnimatableBatch2;
+    public List<Animatable> AnimatableBatch3;
+    public List<Animatable> AnimatableBatch4;
     private List<List<Animatable>> animatableBatches = new List<List<Animatable>>();
 
     public void Start() {
@@ -32,10 +39,13 @@ public class Stage2Controller : MonoBehaviour {
         currentBatch = 0;
         batches.Add(VehicleBatch1);
         batches.Add(VehicleBatch2);
-        // batches.Add(VehicleBatch3);
-        // batches.Add(VehicleBatch4);
+        batches.Add(VehicleBatch3);
+        batches.Add(VehicleBatch4);
         animatableBatches.Add(AnimatableBatch1);
         animatableBatches.Add(AnimatableBatch2);
+        animatableBatches.Add(AnimatableBatch3);
+        animatableBatches.Add(AnimatableBatch4);
+        pointParent = GameObject.Find("PointParent").transform;
     }
 
     public delegate void HydraulicEventHandler(object source, Stage2Controller e);
@@ -129,10 +139,29 @@ public class Stage2Controller : MonoBehaviour {
         }
         return false;
     }
+    
+    private void ReconnectPoint() {
+        int threshold = 10;
+        Debug.Log("reconnecting");
+        for (int i = 0; i < pointParent.childCount; i++) {
+            Transform splitPoint = pointParent.GetChild(i);
+            for (int j = 0; j < pointParent.childCount; j++) {
+                Transform point = pointParent.GetChild(j);
+                if (i != j && (splitPoint.position - point.position).magnitude < threshold) {
+                    Debug.Log("reconnected");
+                    FixedJoint joint = splitPoint.gameObject.AddComponent<FixedJoint>();
+                    joint.connectedBody = point.GetComponent<Rigidbody>();
+                    splitPoint.GetComponent<MeshRenderer>().material.color = new Color(1, 1, 1);
+                }
+            }
+        }
+    }
 
     private IEnumerator PlayAnimation() {
         Debug.Log("enter");
-        yield return new WaitForSeconds(5); 
+        yield return new WaitForSeconds(8);
+        Debug.Log("Reconnecting");
+        ReconnectPoint(); 
         Debug.Log("playing animation");
         foreach (Animatable a in animatableBatches[currentBatch]) {
             Debug.Log(a);
@@ -144,6 +173,7 @@ public class Stage2Controller : MonoBehaviour {
         currentBatch += 1; 
         InitVehicleDelegates();
         OnRestarted();
+        animating = false;
          
     }
 
@@ -154,9 +184,7 @@ public class Stage2Controller : MonoBehaviour {
 
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
-        // if (!Animating() && ) Debug.Log("animna");
-        // if(!Animating()) { 
-        // if (currentBatch > 1 || batches[currentBatch].Count == 0) {
+
         if (AllVehicleArrived()) {
             Debug.Log("all arrived");
             canvas.transform.GetChild(3).gameObject.SetActive(true);
@@ -164,10 +192,12 @@ public class Stage2Controller : MonoBehaviour {
             Debug.Log("all waiting");
             OnSplited();
             OnActivated();
+            
             // StartCoroutine(WaitForAWhile(5));
             animating = true;
             StartCoroutine(PlayAnimation());
             // OnRestarted();
+            // currentBatch += 1;
             
             
         } else if (AnyVehicleFailed()) {
