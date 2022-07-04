@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/LoginScene.unity
+    guid: d80b446188e9f75469667596e5b9fc53
+  - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: c850ee8c3b14cc8459e7e186857cf567
   - enabled: 1
@@ -42,8 +45,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial/Tutorial4_3D.unity
     guid: 75c2443f114c157458db50d7a36c79ef
   - enabled: 1
-    path: Assets/Scenes/LoginScene.unity
-    guid: d80b446188e9f75469667596e5b9fc53
+    path: Assets/Scenes/Levels/Level5.unity
+    guid: 78893984f4bfd2f4c8f91aa6c5ac278d
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level5_3D.unity
+    guid: fbc6dd979a4eded4c9e38dc9a0bc8ce1
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 765780b12ffac6a47a3e5fc53c0947d7,
       type: 2}

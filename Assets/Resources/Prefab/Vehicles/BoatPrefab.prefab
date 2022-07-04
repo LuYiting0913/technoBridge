@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4241449106837503288}
   - component: {fileID: 4241449106837503289}
   - component: {fileID: 4241449106837503270}
+  - component: {fileID: 2035031900}
   m_Layer: 0
   m_Name: BoatPrefab
   m_TagString: Untagged
@@ -63,6 +64,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 131.47426, y: 141.57562, z: 262.60486}
   m_Center: {x: -4.952385, y: -16.65543, z: 11.551834}
+--- !u!114 &2035031900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4241449106837503291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 208302ecbad305c4bbb3cc51ddcc1808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animating: 0
 --- !u!1001 &4241449107625780246
 PrefabInstance:
   m_ObjectHideFlags: 0
