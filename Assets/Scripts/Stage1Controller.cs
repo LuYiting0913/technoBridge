@@ -40,7 +40,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     public GameObject slider, cursor, costDisplay;
     public static float backgroundScale = 1f;
 
-    private int gridInterval = 20;
+    private int gridInterval = 10;
     // private Camera myCam;
     private int popUpSec = 1;
 
