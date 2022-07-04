@@ -106,6 +106,7 @@ public class HydraulicController : MonoBehaviour {
     public void OnActivated(object source, Stage2Controller e) {
         Debug.Log("recieve activation");
         this.Activate();
+		GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayHydraulicSound3D();
     }
 
     private void SwapDirection() {

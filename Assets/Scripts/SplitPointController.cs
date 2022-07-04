@@ -22,6 +22,7 @@ public class SplitPointController : MonoBehaviour {
                 Debug.Log(PrefabManager.GetSplitFixedPointSprite());
                 GetComponent<SpriteRenderer>().sprite = PrefabManager.GetSplitFixedPointSprite();
             }
+            GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayHydraulicSound();
         } else {
             if (!GetComponent<Point>().IsFixed()) {
                 GetComponent<SpriteRenderer>().color = new Color(1, 197f / 255, 0);
