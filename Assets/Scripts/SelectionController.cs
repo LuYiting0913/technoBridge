@@ -215,7 +215,7 @@ public class SelectionController : MonoBehaviour {
             if (p != null) {
                 Point newPoint = Instantiate(dummyPoint, p.GetPosition() + offset,
                                             Quaternion.identity, copiedParent).GetComponent<Point>();
-            dummyPoints.Add(newPoint);
+                dummyPoints.Add(newPoint);
             }
 
         } 
@@ -261,13 +261,13 @@ public class SelectionController : MonoBehaviour {
         List<Point> newPoints = new List<Point>();
 
         foreach (Point p in dummyPoints) {
-            if (!AssetManager.HasPoint(p.GetPosition())) {
-                Point newPoint = Instantiate(pointTemplate, p.GetPosition(), Quaternion.identity, pointParent).
+            if (!AssetManager.HasPoint(p.GetWorldPosition())) {
+                Point newPoint = Instantiate(pointTemplate, p.GetWorldPosition(), Quaternion.identity, pointParent).
                     GetComponent<Point>();
                 newPoints.Add(newPoint);
                 AssetManager.AddPoint(newPoint);     
             } else {
-                Point newPoint = AssetManager.GetPoint(p.GetPosition());
+                Point newPoint = AssetManager.GetPoint(p.GetWorldPosition());
                 newPoints.Add(newPoint);
             }
         }
@@ -277,8 +277,8 @@ public class SelectionController : MonoBehaviour {
             SolidBar newBar = Instantiate(barTemplate, barParent).
                 GetComponent<SolidBar>();
             // newBar.transform.localScale = new Vector2(bar.GetLength(), 10);
-            Point newHead = Search(newPoints, bar.GetHead());
-            Point newTail = Search(newPoints, bar.GetTail());
+            Point newHead = Search(newPoints, bar.head.GetWorldPosition());
+            Point newTail = Search(newPoints, bar.tail.GetWorldPosition());
             newBar.SetR(newHead, newTail);
             newHead.AddConnectedBar(newBar);
             newTail.AddConnectedBar(newBar);
@@ -292,9 +292,9 @@ public class SelectionController : MonoBehaviour {
     // snap upon release, instead of per frame, to reduce amount of calculation
     public void SnapToExistingPoint() {
         foreach (Point p in dummyPoints) {
-            Vector3 pos = p.GetPosition();
+            Vector3 pos = p.GetWorldPosition();
             if (AssetManager.HasSnap(pos)) {
-                Vector3 targetPos = AssetManager.GetSnap(pos).GetPosition();
+                Vector3 targetPos = AssetManager.GetSnap(pos).GetWorldPosition();
                 Vector3 dir = targetPos - pos;
                 copiedParent.transform.position += dir;
             }

@@ -2938,7 +2938,7 @@ MonoBehaviour:
   pointParent: {fileID: 1590620279}
   gridParent: {fileID: 1527536029}
   audioManager: {fileID: 733527598}
-  gameInfo: {fileID: 0}
+  gameInfo: {fileID: 737081054}
   backgroundPosition: {x: 0, y: 0, z: 0}
   slider: {fileID: 588413977}
   cursor: {fileID: 683733136}
