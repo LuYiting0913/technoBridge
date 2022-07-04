@@ -45,7 +45,9 @@ public class Stage2Controller : MonoBehaviour {
         animatableBatches.Add(AnimatableBatch2);
         animatableBatches.Add(AnimatableBatch3);
         animatableBatches.Add(AnimatableBatch4);
+        InitVehicleDelegates();
         pointParent = GameObject.Find("PointParent").transform;
+        OnRestarted();
     }
 
     public delegate void HydraulicEventHandler(object source, Stage2Controller e);
@@ -74,9 +76,9 @@ public class Stage2Controller : MonoBehaviour {
         for (int i = 0; i < hydraulicParent.childCount; i++) {
             Activated += hydraulicParent.GetChild(i).GetComponent<HydraulicController>().OnActivated;
         }
-        for (int i = 0; i < vehicleParent.childCount; i++) {
-            VehicleRestarted += vehicleParent.GetChild(i).GetComponent<VehicleController>().OnRestarted;
-        }
+        // for (int i = 0; i < vehicleParent.childCount; i++) {
+        //     VehicleRestarted += vehicleParent.GetChild(i).GetComponent<VehicleController>().OnRestarted;
+        // }
     }
 
     private void InitVehicleDelegates() {

@@ -20,7 +20,7 @@ public class VehicleController : MonoBehaviour {
         Debug.Log(checkpointCount);
         nextCheckpoint = 0;
         waitingForHydraulic = false;
-        Restart();
+        // Restart();
     }
 
     private void Accelerate() {

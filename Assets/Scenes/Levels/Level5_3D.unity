@@ -3163,6 +3163,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3095013362950115782, guid: edd560eec4c2f2847a49e31b278772b3,
+        type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3095013362950115784, guid: edd560eec4c2f2847a49e31b278772b3,
         type: 3}
       propertyPath: m_Name
@@ -5371,7 +5376,8 @@ MonoBehaviour:
   - {fileID: 1266305467}
   VehicleBatch2:
   - {fileID: 793634388}
-  VehicleBatch3: []
+  VehicleBatch3:
+  - {fileID: 793634388}
   VehicleBatch4: []
   AnimatableBatch1:
   - {fileID: 405585861}
