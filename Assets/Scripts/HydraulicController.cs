@@ -7,7 +7,7 @@ public class HydraulicController : MonoBehaviour {
     // private static float extendLimit = -1.5f;
     // private static float contractLimit = 0.5f;
     private float speed = 0.002f;
-    private float target;
+    public float target, f;
     public bool active;
 
     private ConfigurableJoint controllJoint;
@@ -46,6 +46,7 @@ public class HydraulicController : MonoBehaviour {
     }
 
     private void SetAction(float factor) {
+        f = factor;
         // Debug.Log(factor);
         if (factor >= 1) {
             SetExtend(factor);
@@ -86,10 +87,18 @@ public class HydraulicController : MonoBehaviour {
         
             if (speed > 0) {
                 // contract
-                if (v.y < target) controllJoint.connectedAnchor = new Vector3(v.x, v.y + speed, v.z);
+                if (v.y < target) {
+                    controllJoint.connectedAnchor = new Vector3(v.x, v.y + speed, v.z);
+                } else {
+                    SwapDirection();
+                }
             } else {
                 // extend
-                if (v.y > target) controllJoint.connectedAnchor = new Vector3(v.x, v.y + speed, v.z);
+                if (v.y > target) {
+                    controllJoint.connectedAnchor = new Vector3(v.x, v.y + speed, v.z);
+                } else {
+                    SwapDirection();
+                }
             }
         }
     }
@@ -97,6 +106,20 @@ public class HydraulicController : MonoBehaviour {
     public void OnActivated(object source, Stage2Controller e) {
         Debug.Log("recieve activation");
         this.Activate();
+    }
+
+    private void SwapDirection() {
+        // if (speed > 0) {
+        //     // set to extend
+        //     SetExtend(1f / f);
+        // } else {
+        //     SetContract(1f / f);
+        // }
+        speed = - speed;
+        target = -1;
+        f = 1f / f;
+        Deactivate();
+
     }
 
 

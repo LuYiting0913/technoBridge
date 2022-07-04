@@ -868,7 +868,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 0
   isTutorial: 0
-  budget: 1000
+  budget: 20000
   autoComplete: 0
   gridSnap: 0
   autoTriangulate: 0
@@ -3953,7 +3953,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -15.6, y: -93.1}
+  m_AnchoredPosition: {x: -15.599998, y: -93.1}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &603798611
