@@ -17,6 +17,8 @@ public class Stage2Controller : MonoBehaviour {
     public int currentBatch;
     public bool animating = false;
 
+    private static int totalCost, level;
+
 
     public List<VehicleController> VehicleBatch1;  
     public List<VehicleController> VehicleBatch2;  
@@ -79,6 +81,11 @@ public class Stage2Controller : MonoBehaviour {
         // for (int i = 0; i < vehicleParent.childCount; i++) {
         //     VehicleRestarted += vehicleParent.GetChild(i).GetComponent<VehicleController>().OnRestarted;
         // }
+    }
+
+    public static void SetTotalCost(int l, int c) {
+        level = l;
+        totalCost = c;
     }
 
     private void InitVehicleDelegates() {
@@ -189,6 +196,8 @@ public class Stage2Controller : MonoBehaviour {
 
         if (AllVehicleArrived()) {
             Debug.Log("all arrived");
+            Debug.Log(totalCost);
+            Levels.UpdateBestScore(level, totalCost);
             canvas.transform.GetChild(3).gameObject.SetActive(true);
         } else if (AllVehicleWaiting(currentBatch) && !animating) {
             Debug.Log("all waiting");
@@ -204,6 +213,7 @@ public class Stage2Controller : MonoBehaviour {
             
         } else if (AnyVehicleFailed()) {
             canvas.transform.GetChild(4).gameObject.SetActive(true);
+            
         } 
         // }
          

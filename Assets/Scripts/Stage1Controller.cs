@@ -365,6 +365,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         } else {
             costDisplay.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().color = new Color(0, 1, 0);
         }
+        AssetManager.UpdateCost(c);
     }
 
     private String MoneyToString(int c) {

@@ -9,10 +9,30 @@ public class Levels {
     private static Dictionary<int, List<Vehicle>> vehicleData = new Dictionary<int, List<Vehicle>>();
     private static Dictionary<int, Vector3> backgroundPosition = new Dictionary<int, Vector3>();
     private static Dictionary<int, float> backgroundScale = new Dictionary<int, float>();
+    
+    private static Dictionary<int, int> bestScore = new Dictionary<int, int>();
     private static bool[] isInited = new bool[10];
-    private static int[] budget = new int[10];
+    // private static int[] budget = new int[10];
     //private static Dictionary<int, List<Checkpoint>> checkpointData = new Dictionary<int, List<Checkpoint>>();
 
+    public Dictionary<string, List<PointReference>> pointDataIns = new Dictionary<string, List<PointReference>>();
+    public Dictionary<string, List<SolidBarReference>> barDataIns = new Dictionary<string, List<SolidBarReference>>();    
+    public Dictionary<string, int> bestScoreIns = new Dictionary<string, int>();
+
+    // public static Levels of() {
+    //     Debug.Log(bestScore.Count);
+    //     return new Levels(pointData, barData, bestScore);
+    // }
+
+    // private Levels(Dictionary<int, List<PointReference>> p, Dictionary<int, List<SolidBarReference>> b, Dictionary<int, int> s) {
+    //     for (int i = 1; i < 50; i++) {
+    //         if (p.ContainsKey(i)) pointDataIns[i.ToString()] = p[i];
+    //         if (b.ContainsKey(i)) barDataIns[i.ToString()] = b[i];
+    //         if (s.ContainsKey(i)) bestScoreIns[i.ToString()] = s[i];
+    //     }
+
+    // }
+    
     public static void ClearLevel(int level) {
         pointData[level] = new List<PointReference>();
         barData[level] = new List<SolidBarReference>();
@@ -105,5 +125,26 @@ public class Levels {
     // public static int GetBudget(int level) {
     //     return budget[level];
     // }
+
+    public static void UpdateBestScore(int level, int score) {
+        if (bestScore.ContainsKey(level)) {
+            if (bestScore[level] > score) bestScore[level] = score;
+        } else {
+            bestScore[level] = score;
+        }
+        
+        
+    }
+
+    public static Dictionary<string, int> GetAllBestScores() {
+        Dictionary<string, int> s = new Dictionary<string, int>();
+        for (int i = 1; i < 50; i++) {
+            // if (p.ContainsKey(i)) pointDataIns[i.ToString()] = p[i];
+            // if (b.ContainsKey(i)) barDataIns[i.ToString()] = b[i];
+            if (bestScore.ContainsKey(i)) s[i.ToString()] = bestScore[i];
+        }
+        return s;
+
+    }
 
 }

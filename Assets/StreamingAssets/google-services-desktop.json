@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "467410721286",
+    "firebase_url": "https://orbital-technobridge-default-rtdb.firebaseio.com",
     "project_id": "orbital-technobridge",
     "storage_bucket": "orbital-technobridge.appspot.com"
   },

@@ -6,6 +6,7 @@ using System;
 public class AssetManager : MonoBehaviour {
     public static List<Point> allPoints = new List<Point>();
     private static List<SolidBar> allBars = new List<SolidBar>();
+    private static int totalCost;
     private static double offsetDistance = 20.0;
     private static double snapDistance = 20.0;
     private static float backgroundScale;
@@ -166,13 +167,11 @@ public class AssetManager : MonoBehaviour {
         allBars.Remove(bar);
     }
 
-    // private static Vector3 WorldToCanvas(Vector3 v) {
-    //     Vector3 temp = (v - backgroundPosition) /  backgroundScale;
-    //     return new Vector3(temp.x, temp.y, v.z);
-    // }
+    public static void UpdateCost(int c) {
+        totalCost = c;
+    }
 
-    // private static Vector2 WorldToCanvas(Vector2 v) {
-    //     Vector3 temp = (v - new Vector2(backgroundPosition.x, backgroundPosition.y)) /  backgroundScale;
-    //     return new Vector2(temp.x, temp.y);
-    // }
+    public static int GetTotalCost() {
+        return totalCost;
+    }
 }
