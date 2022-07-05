@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Levels {
+    public static string currentUserName;
     private static Dictionary<int, List<PointReference>> pointData = new Dictionary<int, List<PointReference>>();
     private static Dictionary<int, List<SolidBarReference>> barData = new Dictionary<int, List<SolidBarReference>>();
     private static Dictionary<int, List<Vehicle>> vehicleData = new Dictionary<int, List<Vehicle>>();

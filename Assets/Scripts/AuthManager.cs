@@ -11,6 +11,7 @@ public class AuthManager : MonoBehaviour
 {
 
     // all user data
+    private string currentUser;
     
     //Firebase variables
     [Header("Firebase")]
@@ -125,11 +126,17 @@ public class AuthManager : MonoBehaviour
         {
             //User is now logged in
             //Now get the result
+            
             User = LoginTask.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})", User.DisplayName, User.Email);
             warningLoginText.text = "";
             confirmLoginText.text = "Logged In";
 
+            currentUser = User.DisplayName;
+            // Debug.Log(currentUser);
+            Levels.currentUserName = currentUser;
+
+            Load();
             // And load main menu
             gameObject.GetComponent<MainMenu>().BackToMain();
         }
@@ -217,28 +224,57 @@ public class AuthManager : MonoBehaviour
     }
 
     public void Upload() {
-        
-
         Debug.Log(dbReference);
-        DatabaseReference levelsRef = dbReference.Child("TestUser");
-        // string json = JsonUtility.ToJson(Levels.of());
-        // Debug.Log(json);
-        // mDatabaseRef.Child("users").Child(userId).SetRawJsonValueAsync(json);
-        // string localFile = "D:\\Unity\\Project\\technoBridge\\Assets\\Scripts\\Levels.cs";
-        // var bytes = File.ReadAllBytes("Assets\\Scripts\\Levels.cs");
+        Debug.Log(Levels.currentUserName);
+        DatabaseReference usersRef = dbReference.Child("Users").Child(Levels.currentUserName);
+        DatabaseReference levelsRef = dbReference.Child("Levels");
 
-        levelsRef.SetValueAsync(Levels.GetAllBestScores()).ContinueWith((task) => {
+        Dictionary<string, int> allScores = Levels.GetAllBestScores();
+        Dictionary<string, int> updates = new Dictionary<string, int>();
+        foreach (string i in allScores.Keys) {
+            usersRef.Child(i).SetValueAsync(allScores[i]).ContinueWith((task) => {
                 if (task.IsFaulted || task.IsCanceled) {
                     Debug.Log(task.Exception.ToString());
-                }
-                else {
-                    // Metadata contains file metadata such as size, content-type, and download URL.
-                    // StorageMetadata metadata = task.Result;
-                    // string md5Hash = metadata.Md5Hash;
-                    // Debug.Log("Finished uploading...");
+                } else {
                     Debug.Log("upload successfully ");
                 }
-        });
+            });
+
+            levelsRef.Child(i).Child(Levels.currentUserName).SetValueAsync(allScores[i]).ContinueWith((task) => {
+                if (task.IsFaulted || task.IsCanceled) {
+                    Debug.Log(task.Exception.ToString());
+                } else {
+                    Debug.Log("upload successfully ");
+                }
+            });
+        }
+
+        // levelsRef.SetValueAsync().ContinueWith((task) => {
+        //         if (task.IsFaulted || task.IsCanceled) {
+        //             Debug.Log(task.Exception.ToString());
+        //         }
+        //         else {
+        //             // Metadata contains file metadata such as size, content-type, and download URL.
+        //             // StorageMetadata metadata = task.Result;
+        //             // string md5Hash = metadata.Md5Hash;
+        //             // Debug.Log("Finished uploading...");
+        //             Debug.Log("upload successfully ");
+        //         }
+        // });
+    }
+
+    public void Load() {
+        DatabaseReference levelsRef = dbReference;
+        // Debug.Log(levelsRef.GetValueAsync().Result);
+    //     // .ContinueWithOnMainThread(task => {
+    //     if (task.IsFaulted) {
+    //       // Handle the error...
+    //     }
+    //     else if (task.IsCompleted) {
+    //       Debug.Log(task.Result);
+    //       // Do something with )snapshot...
+    //     }
+    //   });;
     }
 
     // private IEnumerator Load(string url) {

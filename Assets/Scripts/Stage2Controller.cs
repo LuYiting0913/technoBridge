@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class Stage2Controller : MonoBehaviour {
-    private bool isPaused, displayStress;
+    private bool isPaused, displayStress, ended;
     private float playSpeed;
     public GameObject playSpeedSlider;
     public GameObject canvas;
@@ -199,14 +199,15 @@ public class Stage2Controller : MonoBehaviour {
     }
 
     private void DisplayPass(int star) {
-        GameObject popup = canvas.transform.GetChild(4).gameObject;
+        Debug.Log("pass");
+        GameObject popup = canvas.transform.GetChild(3).gameObject;
         popup.SetActive(true);
         Transform starParent = popup.transform.GetChild(3);
         for (int i = 0; i < 3; i++) {
             starParent.GetChild(i).GetComponent<Image>().color = new Color(0.5f,0.5f,0.5f);
         }
         for (int i = 0; i < star; i++) {
-            starParent.GetChild(i).GetComponent<Image>().color = new Color(1,1,0);
+            starParent.GetChild(i).GetComponent<Image>().color = new Color(1,230f/255,0);
         }
         string s = "";
         if (star == 1) {
@@ -228,30 +229,33 @@ public class Stage2Controller : MonoBehaviour {
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
 
-        if (AllVehicleArrived()) {
-            Debug.Log("all arrived");
-            Debug.Log(totalCost);
-            star = star - (totalCost > budget ? 1 : 0);
-            Levels.UpdateBestScore(level, totalCost, star);
-            
-            DisplayPass(star);
-            
-        } else if (AllVehicleWaiting(currentBatch) && !animating) {
-            Debug.Log("all waiting");
-            OnSplited();
-            OnActivated();
-            
-            // StartCoroutine(WaitForAWhile(5));
-            animating = true;
-            StartCoroutine(PlayAnimation());
-            // OnRestarted();
-            // currentBatch += 1;
-            
-            
-        } else if (AnyVehicleFailed()) {
-            canvas.transform.GetChild(4).gameObject.SetActive(true);
-            
-        } 
+        if (!ended) {
+            if (AllVehicleArrived()) {
+                Debug.Log("all arrived");
+                Debug.Log(totalCost);
+                star = star - (totalCost > budget ? 1 : 0);
+                Levels.UpdateBestScore(level, totalCost, star);
+                
+                DisplayPass(star);
+                ended = true;
+                
+            } else if (AllVehicleWaiting(currentBatch) && !animating) {
+                Debug.Log("all waiting");
+                OnSplited();
+                OnActivated();
+                
+                // StartCoroutine(WaitForAWhile(5));
+                animating = true;
+                StartCoroutine(PlayAnimation());
+                // OnRestarted();
+                // currentBatch += 1;
+                
+                
+            } else if (AnyVehicleFailed()) {
+                canvas.transform.GetChild(4).gameObject.SetActive(true);
+                
+            } 
+        }
         // }
          
  
