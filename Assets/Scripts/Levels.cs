@@ -65,6 +65,9 @@ public class Levels {
                 case 6:
                     Level6.InitLevel();
                     break;
+                case 7:
+                    Level7.InitLevel();
+                    break;
                 default:
                     break;
             }

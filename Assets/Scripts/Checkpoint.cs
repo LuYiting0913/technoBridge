@@ -19,4 +19,11 @@ public class Checkpoint : MonoBehaviour{
     public bool Arrived(Vector3 pos) {
         return (transform.position - pos).magnitude <= threshold;
     } 
+
+    public void TurnOffVolume() {
+        if (gameObject.TryGetComponent(out MeshRenderer mesh)) {
+            mesh.enabled = false;
+        }
+    }
+
 }

@@ -104,7 +104,11 @@ public class VehicleController : MonoBehaviour {
     }
 
     public bool ArrivedAtCheckpoint(Checkpoint pt) {
-        return pt.Arrived(transform.position);
+		bool arrivedResult = pt.Arrived(transform.position);
+		if (arrivedResult) {
+			pt.TurnOffVolume();
+		}
+        return arrivedResult;
     }
 
     public void Stop() {
