@@ -11,12 +11,13 @@ public class Levels {
     private static Dictionary<int, float> backgroundScale = new Dictionary<int, float>();
     
     private static Dictionary<int, int> bestScore = new Dictionary<int, int>();
+    private static Dictionary<int, int> star = new Dictionary<int, int>();
     private static bool[] isInited = new bool[10];
     // private static int[] budget = new int[10];
     //private static Dictionary<int, List<Checkpoint>> checkpointData = new Dictionary<int, List<Checkpoint>>();
 
-    public Dictionary<string, List<PointReference>> pointDataIns = new Dictionary<string, List<PointReference>>();
-    public Dictionary<string, List<SolidBarReference>> barDataIns = new Dictionary<string, List<SolidBarReference>>();    
+    // public Dictionary<string, List<PointReference>> pointDataIns = new Dictionary<string, List<PointReference>>();
+    // public Dictionary<string, List<SolidBarReference>> barDataIns = new Dictionary<string, List<SolidBarReference>>();    
     public Dictionary<string, int> bestScoreIns = new Dictionary<string, int>();
 
     // public static Levels of() {
@@ -129,14 +130,21 @@ public class Levels {
     //     return budget[level];
     // }
 
-    public static void UpdateBestScore(int level, int score) {
+    public static void UpdateBestScore(int level, int score, int starLevel) {
         if (bestScore.ContainsKey(level)) {
             if (bestScore[level] > score) bestScore[level] = score;
+            // if (star[level] > starLevel) star[level]
         } else {
             bestScore[level] = score;
         }
-        
-        
+
+        if (star.ContainsKey(level)) {
+            if (star[level] > starLevel) star[level] = starLevel;
+            // if (star[level] > starLevel) star[level]
+        } else {
+            star[level] = starLevel;
+        }
+         
     }
 
     public static Dictionary<string, int> GetAllBestScores() {

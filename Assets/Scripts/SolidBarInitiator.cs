@@ -52,9 +52,10 @@ public class SolidBarInitiator : MonoBehaviour {
     }
 
     public void OnPressed(object source, Stage1Controller e) {
-        Vector3 temp = e.WorldToCanvas(new Vector3(e.GetStartPoint().x, e.GetStartPoint().y, 0));
+        // Vector3 temp = e.WorldToCanvas(new Vector3(e.GetStartPoint().x, e.GetStartPoint().y, 0));
+        Vector3 temp = new Vector3(e.GetStartPoint().x, e.GetStartPoint().y, 0);
 
-        if (isActive && !e.IsOutOfMoney() && AssetManager.HasPoint(temp)) {
+        if (isActive && !e.IsOutOfMoney() && AssetManager.HasPointInWorld(temp)) {
             creating = true;
             currentMaterial = e.GetCurrentMaterial();
             backgroundPosition = e.backgroundPosition;
@@ -70,7 +71,7 @@ public class SolidBarInitiator : MonoBehaviour {
             creating = false;
             e.DeactivateCursor();
             DeactivateBoundary();
-            bool landOnHeadPoint = AssetManager.GetPoint(e.WorldToCanvas(e.GetEndPoint())) == currentBar.head;
+            bool landOnHeadPoint = AssetManager.GetPointInWorld(e.GetEndPoint()) == currentBar.head;
             Debug.Log(landOnHeadPoint);
             if (!e.isTutorial) {
                 if (!landOnHeadPoint) {
@@ -136,7 +137,7 @@ public class SolidBarInitiator : MonoBehaviour {
         //Vector2 relativeToCanvas = WorldToCanvas(headPos);
         Vector3 head = new Vector3(headPos.x, headPos.y, 0);
         
-        beginPoint = AssetManager.GetPoint(headPos);
+        beginPoint = AssetManager.GetPointInWorld(headPos);
         currentBar.SetHead(beginPoint);
         endPoint = Instantiate(pointTemplate, pointParent).GetComponent<Point>();
         endPoint.transform.position = head;
@@ -153,9 +154,9 @@ public class SolidBarInitiator : MonoBehaviour {
         Vector3 cutOffVector = currentBar.CutOff(new Vector3(tailPos.x, tailPos.y, 0), scale);
 
         // check if endPoint already exists
-        if (AssetManager.HasPoint(e.WorldToCanvas(cutOffVector))) {
+        if (AssetManager.HasPointInWorld(cutOffVector)) {
             Destroy(endPoint.gameObject);
-            endPoint = AssetManager.GetPoint(e.WorldToCanvas(cutOffVector));
+            endPoint = AssetManager.GetPointInWorld(cutOffVector);
             endPoint.AddConnectedBar(currentBar);
         } else {
             endPoint.transform.position = cutOffVector; 

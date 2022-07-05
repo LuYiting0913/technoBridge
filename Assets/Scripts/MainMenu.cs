@@ -50,7 +50,7 @@ public class MainMenu : MonoBehaviour {
         Levels.UpdateLevelData(level, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
         Levels.UpdateBackground(level, AssetManager.GetBackgroundPosition(), AssetManager.GetBackgroundScale());
         SceneInitiator.InitScene(level);
-        Stage2Controller.SetTotalCost(level, AssetManager.GetTotalCost());
+        Stage2Controller.SetTotalCost(level, AssetManager.GetTotalCost(), AssetManager.GetBudget());
         SceneManager.LoadScene(2 * level + 4);
     }
 }   
