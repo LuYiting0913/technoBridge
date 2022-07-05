@@ -19,7 +19,10 @@ public class GlobalData : MonoBehaviour {
             11,
             2222,
             6666,
-            1000
+            1000,
+            22000,
+            35000,
+            30000
     
         }; 
         // return global[level.ToString()];

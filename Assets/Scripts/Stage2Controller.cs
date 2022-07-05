@@ -13,7 +13,7 @@ public class Stage2Controller : MonoBehaviour {
 
 
     public Transform splitPointParent, hydraulicParent;
-    public Transform onlineDistribution;
+    public Transform onlineDistributionBars;
     private Transform pointParent;
     
     // public List<VehicleController> allVehicles = new List<VehicleController>();
@@ -39,6 +39,7 @@ public class Stage2Controller : MonoBehaviour {
     public List<Animatable> AnimatableBatch3;
     public List<Animatable> AnimatableBatch4;
     private List<List<Animatable>> animatableBatches = new List<List<Animatable>>();
+    public List<bool> hydraulicAfterAnimation;
 
     public void Start() {
         playSpeed = 2f;
@@ -178,8 +179,8 @@ public class Stage2Controller : MonoBehaviour {
     }
 
     private IEnumerator PlayAnimation() {
-        Debug.Log("enter");
-        yield return new WaitForSeconds(8);
+        Debug.Log("start waiting for hydraulics");
+        yield return new WaitForSeconds(15);
         Debug.Log("Reconnecting");
         ReconnectPoint(); 
         Debug.Log("playing animation");
@@ -187,9 +188,16 @@ public class Stage2Controller : MonoBehaviour {
             Debug.Log(a);
             a.StartAnimation();
         }
-        Debug.Log("start waitng");
-        yield return new WaitForSeconds(10);  
+        Debug.Log("start waitng for animation");
+        yield return new WaitForSeconds(20);  
         Debug.Log("end waiting");
+
+    	if (hydraulicAfterAnimation[currentBatch]) {
+            OnActivated();
+            Debug.Log("start waiting for hydraulics after animation");
+            yield return new WaitForSeconds(15); 
+        }
+
         currentBatch += 1; 
         InitVehicleDelegates();
         OnRestarted();
@@ -239,18 +247,21 @@ public class Stage2Controller : MonoBehaviour {
             Debug.Log(score);
             int temp = (int) (((float) score) / interval);
             Debug.Log(temp);
-            countInInterval[temp] += 1;
-            if (maxCount < countInInterval[temp]) maxCount = countInInterval[temp];
+            if (temp < intervalNum) {
+                countInInterval[temp] += 1;
+                if (maxCount < countInInterval[temp]) maxCount = countInInterval[temp];
+            }
+            
         }
 
         for (int i = 0; i < 12; i++) {
             float ratio = ((float) countInInterval[i]) / maxCount;
-            onlineDistribution.GetChild(i).localScale = new Vector3(1, ratio, 1);
+            onlineDistributionBars.GetChild(i).localScale = new Vector3(1, ratio, 1);
         }
 
         int pos = (int) (((float) totalCost) / budget / 2 * 120 - 60);
-        onlineDistribution.GetChild(12).localPosition = new Vector3(pos, 0, 0);
-        onlineDistribution.GetChild(13).GetComponent<TMPro.TextMeshProUGUI>().text = MoneyToString(totalCost);
+        onlineDistributionBars.GetChild(12).localPosition = new Vector3(pos, 0, 0);
+        onlineDistributionBars.GetChild(13).GetComponent<TMPro.TextMeshProUGUI>().text = MoneyToString(totalCost);
     }
 
     private string MoneyToString(int c) {
