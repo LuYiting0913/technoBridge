@@ -171,7 +171,7 @@ public class SolidBar : MonoBehaviour {
         BoxCollider2D collider = gameObject.GetComponent<BoxCollider2D>();
         Transform onSelect = gameObject.transform.GetChild(0);
         Transform exceedLimit = gameObject.transform.GetChild(1);
-        collider.size = new Vector2(length / 10, collider.size.y);
+        collider.size = new Vector2(length / 12, collider.size.y);
         onSelect.localScale = new Vector2(length / 10, onSelect.localScale.y);
         exceedLimit.localScale = new Vector2(length / 20, exceedLimit.localScale.y);
         barRenderer.size = new Vector2(length / 10, barRenderer.size.y);

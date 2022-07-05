@@ -36,22 +36,23 @@ public class HydraulicInitiator : MonoBehaviour {
     }
 
     public void OnPressed(object source, Stage1Controller e) {
-        if (isActive) {
-            RaycastHit2D hit = Physics2D.Raycast(e.GetStartPoint(), new Vector3(0, 0, 1));
-            if (hit.collider != null && hit.transform.gameObject.GetComponent<HydraulicController>() != null) {
+        RaycastHit2D hit = Physics2D.Raycast(e.GetStartPoint(), new Vector3(0, 0, 1));
+        if (isActive && hit.collider != null) {
+            
+            if (hit.transform.gameObject.GetComponent<HydraulicController>() != null) {
                 slider = hit.transform;
                 hydraulic = hit.transform.parent.gameObject.GetComponent<SolidBar>();
                 limit = hit.transform.parent.gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
                 limit /= hit.transform.parent.localScale.x;
                 isModifying = true;
-            } else if (hit.collider != null && hit.transform.gameObject.GetComponent<Point>() != null) {
+            } else if (hit.transform.gameObject.GetComponent<Point>() != null) {
                 DoubleClick clickedPoint = hit.transform.gameObject.GetComponent<DoubleClick>();
                 // Debug.Log("chckking double");
                 if (clickedPoint.RegisterClick()) {
                     // Debug.Log("regied 2 click");
                     clickedPoint.GetComponent<SplitPointController>().ToggleSplit();
                 }
-            } else if (hit.collider != null && hit.transform.gameObject.GetComponent<SplitBarController>() != null) {
+            } else if (hit.transform.gameObject.GetComponent<SplitBarController>() != null) {
                 SplitBarController splitBar = hit.transform.gameObject.GetComponent<SplitBarController>();
                 splitBar.ToggleSplit();
             }

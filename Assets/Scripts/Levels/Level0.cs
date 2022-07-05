@@ -41,7 +41,6 @@ public class Level0 : MonoBehaviour {
         // vehicles.Add(Vehicle.Of(1, new Vector3(-350, -80, 90), new Vector3(350,0, 90)));
         // Levels.SetVehicleData(0, vehicles);
 
-        Levels.SetBudget(0, budget);
 
     }
 

@@ -120,6 +120,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         // fixedPointTemplate = PrefabManager.GetFixedPoint2DTemplate();  
         List<PointReference> pointData = Levels.GetPointData(level);
         List<SolidBarReference> barData = Levels.GetBarData(level);
+        // existingPoints = pointData
 
         select = GameObject.Find("Select").GetComponent<ToggleButton>();
         drag = GameObject.Find("Drag").GetComponent<ToggleButton>();

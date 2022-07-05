@@ -95,12 +95,12 @@ public class Levels {
         return backgroundScale.ContainsKey(level) ? backgroundScale[level] : 1f;
     }
 
-    public static void SetBudget(int level, int b) {
-        budget[level] = b;
-    }
+    // public static void SetBudget(int level, int b) {
+    //     budget[level] = b;
+    // }
 
-    public static int GetBudget(int level) {
-        return budget[level];
-    }
+    // public static int GetBudget(int level) {
+    //     return budget[level];
+    // }
 
 }

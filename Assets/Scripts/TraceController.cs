@@ -8,7 +8,7 @@ using System;
 public class TraceController : MonoBehaviour {
     private static TraceController m_Instance; 
     private bool isActive = false;
-    public bool isEditing;
+    public bool isEditing, isRegistered;
     private float scale;
     private int lineType = 0;
     // 0: straight, 1: curve
@@ -19,7 +19,8 @@ public class TraceController : MonoBehaviour {
     private List<Point> guidePoints = new List<Point>();
     private Stage1Controller stage1;
 
-    public Transform traceParent, barParent, pointParent;
+    public Transform traceParent;
+    private Transform barParent, pointParent;
     public GameObject dummyPointTemplate;
     public GameObject PointTemplate;
     public GameObject dummyBarTemplate;
@@ -42,26 +43,33 @@ public class TraceController : MonoBehaviour {
     }
 
     public void OnPressed(object source, Stage1Controller e) {
-        if (isActive && !isEditing) {
+        if (isActive && !isEditing && AssetManager.HasPointInWorld(e.GetStartPoint())) {
             // Debug.Log("stracecontroller receieved press");
             e.ActivateCursor();
             StartTrace(e.GetStartPoint(), e.GetCurrentMaterial(), e.barParent, e.pointParent);
             scale = Stage1Controller.backgroundScale;
+            isRegistered = true;
 
         }
     }
 
     public void OnReleased(object source, Stage1Controller e) {
-        if (isActive && !isEditing) {
+        if (isActive && !isEditing  && isRegistered) {
             // Debug.Log("tracecontroller receieved release");
             e.DeactivateCursor();
-            EndTrace();
-            stage1 = e;
+            // if (AssetManager.HasPoint(tail.transform.position)) {
+                EndTrace();
+                stage1 = e;
+            // } else {
+            //     DestroyAllDummy();
+            // }
+            // isRegistered = false;
+            
         }
     }
 
     public void OnDragged(object source, Stage1Controller e) {
-        if (isActive) {
+        if (isActive && isRegistered) {
             // Debug.Log("tracecontroller receieved drag");
             if (!isEditing) {
                 e.UpdateCursor(e.GetCurPoint());
@@ -96,20 +104,20 @@ public class TraceController : MonoBehaviour {
         guidePoints = new List<Point>();
         dummyBar = Instantiate(dummyBarTemplate, traceParent).GetComponent<SolidBar>();
         dummyBar.GetComponent<SpriteRenderer>().enabled = true;
-        if (AssetManager.HasPoint(headPosition)) {
-            head = AssetManager.GetPoint(headPosition);
-        } else {
-            head = Instantiate(PointTemplate, headPosition, Quaternion.identity, traceParent).GetComponent<Point>();
-            AssetManager.AddPoint(head);
-        }
+        // if (AssetManager.HasPoint(headPosition)) {
+            head = AssetManager.GetPointInWorld(headPosition);
+        // } else {
+            // head = Instantiate(PointTemplate, headPosition, Quaternion.identity, traceParent).GetComponent<Point>();
+            // AssetManager.AddPoint(head);
+        // }
         tail = Instantiate(PointTemplate, headPosition, Quaternion.identity, traceParent).GetComponent<Point>();
         dummyBar.SetR(head, tail);
     }
 
     public void EndTrace() {
-        if (AssetManager.HasPoint(tail.transform.position)) {
+        if (AssetManager.HasPointInWorld(tail.transform.position)) {
             GameObject.Destroy(tail.gameObject);
-            tail = AssetManager.GetPoint(tail.transform.position);
+            tail = AssetManager.GetPointInWorld(tail.transform.position);
         } else {
             AssetManager.AddPoint(tail);
         }
@@ -157,7 +165,7 @@ public class TraceController : MonoBehaviour {
         AssetManager.AddBar(bar);
         // DestroyAllDummy();
         stage1.GetAudio().PlayBuildSound(stage1.GetCurrentMaterial());
-        
+        isRegistered = false;
     }
 
 
@@ -169,7 +177,7 @@ public class TraceController : MonoBehaviour {
     public void DestroyAllDummy() {
         foreach (Point p in guidePoints) if (p != null) p.gameObject.SetActive(false);
         // if (dummyBar != null) dummyBar.gameObject.SetActive(false);
-        // dummyBar = null;
+        // dummyBar.GetComponent<SpriteRenderer>().enabled = false;
         guidePoints = new List<Point>();
         // isEditing = false;
     }

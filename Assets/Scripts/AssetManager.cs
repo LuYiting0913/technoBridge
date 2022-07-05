@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 public class AssetManager : MonoBehaviour {
-    private static List<Point> allPoints = new List<Point>();
+    public static List<Point> allPoints = new List<Point>();
     private static List<SolidBar> allBars = new List<SolidBar>();
     private static double offsetDistance = 20.0;
     private static double snapDistance = 20.0;
@@ -57,7 +57,20 @@ public class AssetManager : MonoBehaviour {
 
     public static bool HasPoint(Vector3 v) {
         foreach (Point point in allPoints) {
+            // Vector2 v1 = new Vector2(point.GetPosition().x, point.GetPosition().y);
+            // Vector2 v2 = new Vecotr2(v.x, v.y);
             if ((point.GetPosition() - v).magnitude < offsetDistance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static bool HasPointInWorld(Vector3 v) {
+        foreach (Point point in allPoints) {
+            // Vector2 v1 = new Vector2(point.GetWorldPosition().x, point.GetWorldPosition().y);
+            // Vector2 v2 = new Vecotr2(v.x, v.y);
+            if ((point.GetWorldPosition() - v).magnitude < offsetDistance) {
                 return true;
             }
         }
@@ -67,6 +80,16 @@ public class AssetManager : MonoBehaviour {
     public static Point GetPoint(Vector3 v) {
         foreach (Point point in allPoints) {
             if ((point.GetPosition() - v).magnitude < offsetDistance) {
+                return point;
+            }
+        }
+        return null;
+    }
+
+    public static Point GetPointInWorld(Vector3 v) {
+        foreach (Point point in allPoints) {
+            // Vector2 v1 = new Vector2(point.GetWorldPosition().x, point.GetWorldPosition().y);
+            if ((point.GetWorldPosition() - v).magnitude < offsetDistance) {
                 return point;
             }
         }
