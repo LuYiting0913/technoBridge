@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SceneInitiator : MonoBehaviour {
     public GameObject barTemplate;
@@ -9,6 +10,7 @@ public class SceneInitiator : MonoBehaviour {
     public Transform pointParent, barParent, vehicleParent, hydraulicParent;
     public Transform splitPointParent;
     public AudioManager audioManager;
+    public Transform stressPercentageDisplay;
 
 
     private int roadWidth = 100;
@@ -61,7 +63,32 @@ public class SceneInitiator : MonoBehaviour {
         // cost = totalCost;
     }
 
-    // public void
+    private void UpdateStressPercentage(float f) {
+        Transform ring = stressPercentageDisplay.GetChild(0).GetChild(0);
+        Transform pointer = stressPercentageDisplay.GetChild(0).GetChild(1);
+        Transform numberDisplay = stressPercentageDisplay.GetChild(1).GetChild(0);
+        float angle = 90f - f * 180;
+        Color color = GetLoadColor(f);
+        ring.GetComponent<Image>().color = color;
+        pointer.rotation = Quaternion.Euler(0, 0, angle);
+        numberDisplay.GetComponent<TMPro.TextMeshProUGUI>().text = LoadToString(f);
+    }
+
+    private Color GetLoadColor(float load) {
+        if (load < 0.5) {
+            return new Color(load * 2, 1, 0);
+        } else if (load < 1) {
+            return new Color(1, 2 - load * 2, 0);
+        } else {
+            return new Color(1, 0, 0);
+        }
+    }
+
+    private string LoadToString(float load) {
+        int i = (int) (load * 100);
+        int j = ((int) (load * 1000)) % 10;
+        return i + "." + j + "%";
+    }
 
     public void ToggleStressDisplay() {
         displayStress = !displayStress;
@@ -103,6 +130,7 @@ public class SceneInitiator : MonoBehaviour {
         if (highestLoad >= 1) {
             transform.parent.GetComponent<Stage2Controller>().SomethingBroken();
         }
+        UpdateStressPercentage(highestLoad);
     }
 
 
