@@ -10200,9 +10200,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isEditing: 0
+  isRegistered: 0
   traceParent: {fileID: 1507346159}
-  barParent: {fileID: 661020757}
-  pointParent: {fileID: 1590620279}
   dummyPointTemplate: {fileID: 397061632768504934, guid: 9afc1405728fcc740b6d31f29213617d,
     type: 3}
   PointTemplate: {fileID: 6431229652509840814, guid: 2ebde93bcf171d0459ee87d7329bd573,
@@ -28898,7 +28897,7 @@ GameObject:
   - component: {fileID: 1648155712}
   - component: {fileID: 1648155711}
   m_Layer: 5
-  m_Name: LevelReference (1)
+  m_Name: Boat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
