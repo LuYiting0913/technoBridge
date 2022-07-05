@@ -11,8 +11,11 @@ public class Stage2Controller : MonoBehaviour {
     public GameObject canvas;
     public Transform vehicleParent;//, hydraulicParent;
 
+
     public Transform splitPointParent, hydraulicParent;
+    public Transform onlineDistribution;
     private Transform pointParent;
+    
     // public List<VehicleController> allVehicles = new List<VehicleController>();
     public int currentBatch;
     public bool animating = false;
@@ -219,10 +222,49 @@ public class Stage2Controller : MonoBehaviour {
                 s = "Over 100% Stress!";
             }
         } else {
-            s = "Under Budget and Under 100% Stress. Well Done!";
+            s = "Well Done!";
         }
         popup.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = s;
-        
+        UpdateDistribution();
+    }
+
+    private void UpdateDistribution() {
+        int intervalNum = 12;
+        int[] countInInterval = new int[intervalNum];
+        int maxCount = 0;
+        float interval = ((float) budget * 2) / intervalNum;
+
+        List<int> allScores = GlobalData.GetGlobalData(level);
+        foreach (int score in allScores) {
+            Debug.Log(score);
+            int temp = (int) (((float) score) / interval);
+            Debug.Log(temp);
+            countInInterval[temp] += 1;
+            if (maxCount < countInInterval[temp]) maxCount = countInInterval[temp];
+        }
+
+        for (int i = 0; i < 12; i++) {
+            float ratio = ((float) countInInterval[i]) / maxCount;
+            onlineDistribution.GetChild(i).localScale = new Vector3(1, ratio, 1);
+        }
+
+        int pos = (int) (((float) totalCost) / budget / 2 * 120 - 60);
+        onlineDistribution.GetChild(12).localPosition = new Vector3(pos, 0, 0);
+        onlineDistribution.GetChild(13).GetComponent<TMPro.TextMeshProUGUI>().text = MoneyToString(totalCost);
+    }
+
+    private string MoneyToString(int c) {
+        string s = "$";
+        if (c < 1000) {
+            s += c;
+        } else {
+            s += c / 1000 + ",";
+            int r = c % 1000;
+            if (r < 100) s += "0";
+            if (r < 10) s += "0";
+            s += r;
+        }
+        return s;
     }
 
 
