@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GlobalData : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public class GlobalData : MonoBehaviour {
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private static Dictionary<string, List<int>> global = new Dictionary<string, List<int>>();
+
+    public static void StoreAllScores(Dictionary<string, List<int>> dic) {
+        global = dic;
     }
 }

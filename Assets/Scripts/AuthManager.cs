@@ -248,33 +248,32 @@ public class AuthManager : MonoBehaviour
                 }
             });
         }
-
-        // levelsRef.SetValueAsync().ContinueWith((task) => {
-        //         if (task.IsFaulted || task.IsCanceled) {
-        //             Debug.Log(task.Exception.ToString());
-        //         }
-        //         else {
-        //             // Metadata contains file metadata such as size, content-type, and download URL.
-        //             // StorageMetadata metadata = task.Result;
-        //             // string md5Hash = metadata.Md5Hash;
-        //             // Debug.Log("Finished uploading...");
-        //             Debug.Log("upload successfully ");
-        //         }
-        // });
     }
 
     public void Load() {
-        DatabaseReference levelsRef = dbReference;
-        // Debug.Log(levelsRef.GetValueAsync().Result);
-    //     // .ContinueWithOnMainThread(task => {
-    //     if (task.IsFaulted) {
-    //       // Handle the error...
-    //     }
-    //     else if (task.IsCompleted) {
-    //       Debug.Log(task.Result);
-    //       // Do something with )snapshot...
-    //     }
-    //   });;
+        DatabaseReference levelsRef = dbReference.Child("Levels");
+        levelsRef.GetValueAsync().ContinueWith(task => {
+            if (task.IsFaulted) {
+            // Handle the error...
+            } else if (task.IsCompleted) {
+                DataSnapshot snapshot = task.Result;
+                var dictionary1 = snapshot.Value as Dictionary<string, object>;
+                Dictionary<string, List<int>> allScores = new Dictionary<string, List<int>>();
+                if (dictionary1 != null) {
+                    foreach (string level in dictionary1.Keys) {
+                        // Debug.Log(level);
+                        List<int> currentLevel = new List<int>();
+                        var dictionary2 = dictionary1[level] as Dictionary<string, object>;
+                        // Debug.Log(dictionary2["ddd"]);
+                        foreach (string player in dictionary2.Keys) currentLevel.Add((int)dictionary2[player]);
+                        allScores[level] = currentLevel;
+                    }
+                    
+                }
+                GlobalData.StoreAllScores(allScores);
+            }
+        });
+
     }
 
     // private IEnumerator Load(string url) {
