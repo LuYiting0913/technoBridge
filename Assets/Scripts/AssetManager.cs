@@ -6,7 +6,7 @@ using System;
 public class AssetManager : MonoBehaviour {
     public static List<Point> allPoints = new List<Point>();
     private static List<SolidBar> allBars = new List<SolidBar>();
-    private static int totalCost;
+    private static int totalCost, budget;
     private static double offsetDistance = 20.0;
     private static double snapDistance = 20.0;
     private static float backgroundScale;
@@ -173,5 +173,13 @@ public class AssetManager : MonoBehaviour {
 
     public static int GetTotalCost() {
         return totalCost;
+    }
+
+    public static void SetBudget(int b) {
+        budget = b;
+    }
+
+    public static int GetBudget() {
+        return budget;
     }
 }

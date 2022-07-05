@@ -68,13 +68,12 @@ public class SceneInitiator : MonoBehaviour {
     }
 
     public void Update() {
+        float highestLoad = 0f;
         foreach (SolidBar bar in allBars) {
             if (bar != null && !bar.disabled) {
-                if (bar.GetCurrentLoad() >= 1) {
-                    // Transform piece1 = bar.transform.GetChild(0);
-                    // Transform piece2 = bar.transform.GetChild(1);
-                    // ActivateBrokenPiece(piece1);
-                    // ActivateBrokenPiece(piece2);
+                float load = bar.GetCurrentLoad();
+                if (load > highestLoad) highestLoad = load;
+                if (load >= 1) {
                     bar.Break();
                     audioManager.PlayBreakSound();
                 } else if (displayStress) {
@@ -88,12 +87,9 @@ public class SceneInitiator : MonoBehaviour {
 
         foreach (Pavement pave in allPaves) {
             if (pave != null && !pave.disabled) {
-                if (pave.GetCurrentLoad() >= 1) {
-                    // Transform piece1 = pave.transform.GetChild(2);
-                    // Transform piece2 = pave.transform.GetChild(3);
-                    // ActivateBrokenPiece(piece1);
-                    // ActivateBrokenPiece(piece2);
-                    // pave.DisablePave();
+                float load = pave.GetCurrentLoad();
+                if (load > highestLoad) highestLoad = load;
+                if (load >= 1) {
                     pave.Break();
                     audioManager.PlayBreakSound();
                 } else if (displayStress) {
@@ -102,6 +98,10 @@ public class SceneInitiator : MonoBehaviour {
                     pave.DisplayNormal();
                 }
             }
+        }
+
+        if (highestLoad >= 1) {
+            transform.parent.GetComponent<Stage2Controller>().SomethingBroken();
         }
     }
 

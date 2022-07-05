@@ -17,7 +17,8 @@ public class Stage2Controller : MonoBehaviour {
     public int currentBatch;
     public bool animating = false;
 
-    private static int totalCost, level;
+    private static int totalCost, level, budget;
+    public int star = 3;
 
 
     public List<VehicleController> VehicleBatch1;  
@@ -83,9 +84,14 @@ public class Stage2Controller : MonoBehaviour {
         // }
     }
 
-    public static void SetTotalCost(int l, int c) {
+    public static void SetTotalCost(int l, int c, int bud) {
         level = l;
         totalCost = c;
+        budget = bud;
+    }
+
+    public void SomethingBroken() {
+        star = 2;
     }
 
     private void InitVehicleDelegates() {
@@ -119,6 +125,7 @@ public class Stage2Controller : MonoBehaviour {
     }
 
     private bool AllVehicleArrived() {
+        if (batches[currentBatch].Count == 0) return true;
         for (int i = 0; i < vehicleParent.childCount; i++) {
             if (!vehicleParent.GetChild(i).GetComponent<VehicleController>().Arrived()) return false; 
         }
@@ -129,6 +136,7 @@ public class Stage2Controller : MonoBehaviour {
     }
 
     private bool AllVehicleWaiting(int batch) {
+        
         foreach (VehicleController vc in batches[batch]) {
             if (!vc.IsWaiting()) return false; 
         }
@@ -190,6 +198,32 @@ public class Stage2Controller : MonoBehaviour {
         yield return new WaitForSeconds(sec);
     }
 
+    private void DisplayPass(int star) {
+        GameObject popup = canvas.transform.GetChild(4).gameObject;
+        popup.SetActive(true);
+        Transform starParent = popup.transform.GetChild(3);
+        for (int i = 0; i < 3; i++) {
+            starParent.GetChild(i).GetComponent<Image>().color = new Color(0.5f,0.5f,0.5f);
+        }
+        for (int i = 0; i < star; i++) {
+            starParent.GetChild(i).GetComponent<Image>().color = new Color(1,1,0);
+        }
+        string s = "";
+        if (star == 1) {
+            s = "Over Budget and Over 100% Stress!";
+        } else if (star == 2) {
+            if (totalCost > budget) {
+                s = "Over Budget!";
+            } else {
+                s = "Over 100% Stress!";
+            }
+        } else {
+            s = "Under Budget and Under 100% Stress. Well Done!";
+        }
+        popup.transform.GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = s;
+        
+    }
+
 
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
@@ -197,8 +231,11 @@ public class Stage2Controller : MonoBehaviour {
         if (AllVehicleArrived()) {
             Debug.Log("all arrived");
             Debug.Log(totalCost);
-            Levels.UpdateBestScore(level, totalCost);
-            canvas.transform.GetChild(3).gameObject.SetActive(true);
+            star = star - (totalCost > budget ? 1 : 0);
+            Levels.UpdateBestScore(level, totalCost, star);
+            
+            DisplayPass(star);
+            
         } else if (AllVehicleWaiting(currentBatch) && !animating) {
             Debug.Log("all waiting");
             OnSplited();

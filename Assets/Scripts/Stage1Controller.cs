@@ -149,7 +149,7 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         AssetManager.Init(existingPoints, existingBars);
         AssetManager.UpdateBackground(backgroundPosition, backgroundScale);
-
+        AssetManager.SetBudget(budget);
         InstantiateGrid();
 
         transform.localScale = new Vector3(backgroundScale, backgroundScale, transform.localScale.z);
