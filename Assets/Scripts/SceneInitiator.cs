@@ -58,7 +58,10 @@ public class SceneInitiator : MonoBehaviour {
         currentLevel = level;
         allPoints = new List<Point>();
         allBars = new List<SolidBar>();
+        // cost = totalCost;
     }
+
+    // public void
 
     public void ToggleStressDisplay() {
         displayStress = !displayStress;

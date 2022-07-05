@@ -1,17 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 using Firebase;
 using Firebase.Auth;
+using Firebase.Database;
 using TMPro;
 
 public class AuthManager : MonoBehaviour
 {
+
+    // all user data
+    
     //Firebase variables
     [Header("Firebase")]
     public DependencyStatus dependencyStatus;
     public FirebaseAuth auth;    
     public FirebaseUser User;
+    public FirebaseDatabase db;
+    public DatabaseReference dbReference;
+    // public Levels levels;
+
 
     //Login variables
     [Header("Login")]
@@ -51,6 +60,13 @@ public class AuthManager : MonoBehaviour
         Debug.Log("Setting up Firebase Auth");
         //Set the authentication instance object
         auth = FirebaseAuth.DefaultInstance;
+
+        Debug.Log("Setting up Firebase Storage");
+        db = FirebaseDatabase.DefaultInstance;
+        Debug.Log(FirebaseDatabase.DefaultInstance);
+        dbReference = FirebaseDatabase.DefaultInstance.RootReference;
+        Debug.Log("Set up Firebase Storage");
+        
     }
 
     //Function for the login button
@@ -65,6 +81,10 @@ public class AuthManager : MonoBehaviour
         //Call the register coroutine passing the email, password, and username
         StartCoroutine(Register(emailRegisterField.text, passwordRegisterField.text, usernameRegisterField.text));
     }
+
+    // public void UploadLevelsData() {
+
+    // }
 
     private IEnumerator Login(string _email, string _password)
     {
@@ -195,4 +215,35 @@ public class AuthManager : MonoBehaviour
             }
         }
     }
+
+    public void Upload() {
+        
+
+        Debug.Log(dbReference);
+        DatabaseReference levelsRef = dbReference.Child("TestUser");
+        // string json = JsonUtility.ToJson(Levels.of());
+        // Debug.Log(json);
+        // mDatabaseRef.Child("users").Child(userId).SetRawJsonValueAsync(json);
+        // string localFile = "D:\\Unity\\Project\\technoBridge\\Assets\\Scripts\\Levels.cs";
+        // var bytes = File.ReadAllBytes("Assets\\Scripts\\Levels.cs");
+
+        levelsRef.SetValueAsync(Levels.GetAllBestScores()).ContinueWith((task) => {
+                if (task.IsFaulted || task.IsCanceled) {
+                    Debug.Log(task.Exception.ToString());
+                }
+                else {
+                    // Metadata contains file metadata such as size, content-type, and download URL.
+                    // StorageMetadata metadata = task.Result;
+                    // string md5Hash = metadata.Md5Hash;
+                    // Debug.Log("Finished uploading...");
+                    Debug.Log("upload successfully ");
+                }
+        });
+    }
+
+    // private IEnumerator Load(string url) {
+
+    // }
+
+
 }
