@@ -5700,7 +5700,7 @@ MonoBehaviour:
   vehicleParent: {fileID: 1646396425}
   splitPointParent: {fileID: 731047097}
   hydraulicParent: {fileID: 278233480}
-  onlineDistribution: {fileID: 2066122407}
+  onlineDistributionBars: {fileID: 2066122407}
   currentBatch: 0
   animating: 0
   star: 3
@@ -5714,6 +5714,7 @@ MonoBehaviour:
   AnimatableBatch2: []
   AnimatableBatch3: []
   AnimatableBatch4: []
+  hydraulicAfterAnimation: 
 --- !u!1 &1393754429
 GameObject:
   m_ObjectHideFlags: 0

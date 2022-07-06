@@ -3783,7 +3783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e970395436f87245bc7391bb49c3a9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  barTemplate: {fileID: 0}
+  barTemplate: {fileID: 387352985}
   pointTemplate: {fileID: 7793943448874819990, guid: be6f0d5ac56428c4fb7c9b4a1aae7655,
     type: 3}
   splitPointTemplate: {fileID: 5207192504011620362, guid: cadfdd13bb9402b4e9c4f846a8bf6844,
@@ -9142,7 +9142,7 @@ MonoBehaviour:
   vehicleParent: {fileID: 1646396425}
   splitPointParent: {fileID: 1784205479}
   hydraulicParent: {fileID: 278233480}
-  onlineDistribution: {fileID: 450358177}
+  onlineDistributionBars: {fileID: 450358177}
   currentBatch: 0
   animating: 0
   star: 3
@@ -9158,6 +9158,7 @@ MonoBehaviour:
   AnimatableBatch2: []
   AnimatableBatch3: []
   AnimatableBatch4: []
+  hydraulicAfterAnimation: 
 --- !u!1 &1410836366
 GameObject:
   m_ObjectHideFlags: 0
