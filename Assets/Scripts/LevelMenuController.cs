@@ -5,18 +5,28 @@ using UnityEngine;
 public class LevelMenuController : MonoBehaviour {
     private static LevelMenuController m_Instance;
 
+    public int ThemeNumber;
+    private int currentThemeNumber;
+    public Camera cam;
     public int firstLevel;
     public Transform infoPageParent;
     public Transform pointer;
     private LevelButtonController currentLevelButton;
 
+    private int camMovingSpeed, camMoved;
+    private int camMoveTarget = 800;
+
     private void Awake() {
         if (m_Instance == null) {
             m_Instance = this;
-            //DontDestroyOnLoad(m_Instance);
+            // DontDestroyOnLoad(m_Instance);
         } else if (m_Instance != this) {
             Destroy(m_Instance);
         }
+    }
+
+    private void Start() {
+        currentThemeNumber = 1;
     }
 
 
@@ -55,6 +65,30 @@ public class LevelMenuController : MonoBehaviour {
             "Best Score: $" + score;
 
         
+    }
+
+    public void NextTheme() {
+        if (currentThemeNumber < ThemeNumber) {
+            camMovingSpeed = -30;
+            currentThemeNumber += 1;
+        }
+    }
+
+    public void PreviousTheme() {
+        if (currentThemeNumber > 1) { 
+            camMovingSpeed = 30;
+            currentThemeNumber -= 1;
+        }
+    }
+
+    private void FixedUpdate() {
+        if (camMoved < camMoveTarget) {
+            cam.transform.position += new Vector3(camMovingSpeed, 0, 0);
+            camMoved += camMovingSpeed > 0 ? camMovingSpeed : - camMovingSpeed;
+        } else {
+            camMovingSpeed = 0;
+            camMoved = 0;
+        }
     }
 
     
