@@ -5667,7 +5667,7 @@ MonoBehaviour:
   AnimatableBatch2: []
   AnimatableBatch3: []
   AnimatableBatch4: []
-  hydraulicAfterAnimation: 
+  hydraulicAfterAnimation: 00000000
 --- !u!1 &1393754429
 GameObject:
   m_ObjectHideFlags: 0
