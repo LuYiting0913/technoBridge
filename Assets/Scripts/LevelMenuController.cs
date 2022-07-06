@@ -19,6 +19,7 @@ public class LevelMenuController : MonoBehaviour {
         }
     }
 
+
     public static LevelMenuController GetInstance() {
         return m_Instance;
     }
@@ -49,6 +50,11 @@ public class LevelMenuController : MonoBehaviour {
 
     public void ShowLevelInfoPanel(LevelButtonController button) {
         infoPageParent.GetChild(button.level - firstLevel).gameObject.SetActive(true);
+        int score = GlobalData.GetLocalData(button.level);
+        infoPageParent.GetChild(button.level - firstLevel).GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = 
+            "Best Score: $" + score;
+
+        
     }
 
     
