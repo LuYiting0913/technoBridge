@@ -53,8 +53,16 @@ public class HydraulicInitiator : MonoBehaviour {
                     clickedPoint.GetComponent<SplitPointController>().ToggleSplit();
                 }
             } else if (hit.transform.gameObject.GetComponent<SplitBarController>() != null) {
-                SplitBarController splitBar = hit.transform.gameObject.GetComponent<SplitBarController>();
-                splitBar.ToggleSplit();
+                RaycastHit2D[] hits = Physics2D.RaycastAll(e.GetStartPoint(), new Vector3(0, 0, 1), 30);
+                foreach (RaycastHit2D h in hits) {
+                    SplitBarController splitBar = h.transform.gameObject.GetComponent<SplitBarController>();
+                    if (splitBar != null) {
+                        Debug.Log(h.transform.gameObject);
+                        splitBar.ToggleSplit();
+                    }
+                }
+                
+                
             }
         }
 
