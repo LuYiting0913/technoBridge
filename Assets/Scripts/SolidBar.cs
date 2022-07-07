@@ -51,8 +51,6 @@ public class SolidBar : MonoBehaviour {
         return bar;
     }
 
-
-
     public static SolidBar Instantiate3D(SolidBarReference barReference, int z, Transform barParent, Transform hydraulicParent) {
         if (barReference.GetMaterial() < 3) {
             return Instantiate3DBar(barReference, z, barParent);
@@ -85,6 +83,7 @@ public class SolidBar : MonoBehaviour {
         newBar.InitTemp(head, tail);
         return newBar;
     }
+
 
     private static SolidBar Instantiate3DRope(SolidBarReference bar, int i, Transform parent) {
         GameObject ropeParent = new GameObject("RopeParent");
@@ -183,7 +182,7 @@ public class SolidBar : MonoBehaviour {
         headJoint.connectedBody = head.GetComponent<Rigidbody>();
         InitJointSetting(headJoint);
         headJoint.anchor = new Vector3(0, -1, 0);
-        
+        // Debug.Log("inited head");
         // breakable child
         ConfigurableJoint joint = transform.GetChild(0).gameObject.AddComponent<ConfigurableJoint>();
         joint.connectedBody = head.GetComponent<Rigidbody>();

@@ -23,11 +23,22 @@ public class VehicleController : MonoBehaviour {
         // Restart();
     }
 
+    public void InitVehicleStatus() {
+        nextCheckpoint = 0; 
+        waitingForHydraulic = false;
+        // Accelerate();
+        arrived = false;
+    }
+
     private void Accelerate() {
         rearLeft.motorTorque = motor;
         rearRight.motorTorque = motor;
         frontLeft.motorTorque = motor;
         frontRight.motorTorque = motor;
+        // rearLeft.brakeTorque = 1;
+        // rearRight.brakeTorque = 1;
+        // frontLeft.brakeTorque = 1;
+        // frontRight.brakeTorque = 1;
     }
 
     private void Brake() {
@@ -113,6 +124,7 @@ public class VehicleController : MonoBehaviour {
 
     public void Stop() {
         waitingForHydraulic = true;
+        // Brake();
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
         GameObject.Find("AudioManager").GetComponent<AudioManager>().StopCarSound();
 

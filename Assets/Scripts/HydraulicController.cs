@@ -6,7 +6,7 @@ using System;
 public class HydraulicController : MonoBehaviour {
     // private static float extendLimit = -1.5f;
     // private static float contractLimit = 0.5f;
-    private float speed = 0.002f;
+    public float speed = 0.002f;
     public float target, f;
     public bool active;
 
@@ -82,6 +82,7 @@ public class HydraulicController : MonoBehaviour {
 
     private void FixedUpdate() {
         if (active) {
+            Debug.Log("working");
             Vector3 v = controllJoint.connectedAnchor;
             // Debug.Log(controllJoint.connectedBody);
         
@@ -117,10 +118,14 @@ public class HydraulicController : MonoBehaviour {
         //     SetContract(1f / f);
         // }
         speed = - speed;
-        target = -1;
         f = 1f / f;
+        if (target != -1) {
+            target = -1;
+        } else {
+            target = 1 - 2 * f; 
+        }
+        
         Deactivate();
-
     }
 
 
