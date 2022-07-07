@@ -80,6 +80,12 @@ public class Levels {
                 case 11:
                     Level11.InitLevel();
                     break;
+                case 12:
+                    Level12.InitLevel();
+                    break;
+                case 13:
+                    Level13.InitLevel();
+                    break;
                 default:
                     break;
             }
