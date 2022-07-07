@@ -177,9 +177,9 @@ public class SelectionController : MonoBehaviour {
 
         foreach (Point point in selectedPoints) {
             if (!point.IsFixed()) {
-                foreach (SolidBar bar in point.connectedBars) {
-                    DeleteBar(bar);
-                }
+                // foreach (SolidBar bar in point.connectedBars) {
+                //     DeleteBar(bar);
+                // }
                 DeletePoint(point);
             }
         }  
@@ -193,15 +193,26 @@ public class SelectionController : MonoBehaviour {
             bar.head.DeleteConnectedBar(bar);
             bar.tail.DeleteConnectedBar(bar);
             
-            Destroy(bar.gameObject);
+            // Destroy(bar.gameObject);
+            bar.gameObject.SetActive(false);
         }
     }
 
     private void DeletePoint(Point point) {
         if (point != null) {
             AssetManager.DeletePoint(point);
-            // selectedPoints.Remove(point);
-            Destroy(point.gameObject);
+            for (int i = 0; i < point.connectedBars.Count; i++) {
+                AssetManager.DeleteBar(point.connectedBars[i]);
+                if (point.Equals(point.connectedBars[i].head)) {
+                    point.connectedBars[i].tail.DeleteConnectedBar(point.connectedBars[i]);
+                } else {
+                    point.connectedBars[i].head.DeleteConnectedBar(point.connectedBars[i]);
+                }
+                point.connectedBars[i].gameObject.SetActive(false);
+                point.connectedBars[i] = null;
+            }
+            // Destroy(point.gameObject);
+            point.gameObject.SetActive(false);
         }
     }
 
