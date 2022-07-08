@@ -74,6 +74,7 @@ public class HydraulicController : MonoBehaviour {
         controllJoint.linearLimit = softJointLimit;
         controllJoint.connectedAnchor += new Vector3(0, speed * 2, 0);
         controllJoint.xMotion = ConfigurableJointMotion.Locked;
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayHydraulicSound3D();
     }
 
     public void Deactivate() {
@@ -107,7 +108,6 @@ public class HydraulicController : MonoBehaviour {
     public void OnActivated(object source, Stage2Controller e) {
         Debug.Log("recieve activation");
         this.Activate();
-		GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayHydraulicSound3D();
     }
 
     private void SwapDirection() {
