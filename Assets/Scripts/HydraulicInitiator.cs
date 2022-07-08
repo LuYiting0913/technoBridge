@@ -13,6 +13,8 @@ public class HydraulicInitiator : MonoBehaviour {
     private Transform slider;
     private float l, limit;
     private int duration = 2;
+    //
+    public GameObject percentagePanel; 
     
     private void Awake() {
         if (m_Instance == null) {
@@ -91,10 +93,16 @@ public class HydraulicInitiator : MonoBehaviour {
             slider.localPosition = new Vector3(position, slider.localPosition.z, slider.localPosition.z);
             float factor = Math.Abs(position) / limit + 0.5f;
             
-            transform.GetChild(0).GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = GetString(factor);
+            // transform.GetChild(0).GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = GetString(factor);
+            percentagePanel.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = GetString(factor);
+            /*
             if (!transform.GetChild(0).gameObject.activeSelf) {
                 StartCoroutine(ShowForAWhile(transform.GetChild(0).gameObject, duration));
+            }*/
+            if (!percentagePanel.activeSelf) {
+                StartCoroutine(ShowForAWhile(percentagePanel, duration));
             }
+
             hydraulic.SetHydraulicFactor(factor);
             // 0.5 - 1: contract, 1 - 1.5 extend
             
