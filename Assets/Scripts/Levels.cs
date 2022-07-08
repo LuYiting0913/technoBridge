@@ -86,6 +86,15 @@ public class Levels {
                 case 13:
                     Level13.InitLevel();
                     break;
+                case 14:
+                    Level14.InitLevel();
+                    break;
+                case 15:
+                    Level15.InitLevel();
+                    break;
+                case 16:
+                    Level16.InitLevel();
+                    break;
                 default:
                     break;
             }

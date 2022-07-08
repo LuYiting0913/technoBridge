@@ -98,6 +98,24 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/Level13_3D.unity
     guid: 3068a93de93daa24a9b1194b2322271d
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level14.unity
+    guid: b0c56af2fb95d8749b35828216ecf2bf
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level14_3D.unity
+    guid: 1ee00fa87963fd8459d4e5b06e6d1ead
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level15.unity
+    guid: d03952272643d174388ea73a9cdc69fa
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level15_3D.unity
+    guid: c6c4ae5b3f0ddcc4f9005ee5b22519a3
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level16.unity
+    guid: 173434dfc1a4d944e84677d73e283cb4
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level16_3D.unity
+    guid: 00893c8eb07f99941820681c83cd56e1
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 765780b12ffac6a47a3e5fc53c0947d7,
       type: 2}
