@@ -408,6 +408,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Water
       objectReference: {fileID: 0}
+    - target: {fileID: -5944884353484478446, guid: 0de7386f29cd578439e0df61f662c74d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -5090355075760594317, guid: 0de7386f29cd578439e0df61f662c74d,
         type: 3}
       propertyPath: m_Name
@@ -432,6 +437,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 29.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7140274829192787273, guid: 0de7386f29cd578439e0df61f662c74d,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7140274829192787273, guid: 0de7386f29cd578439e0df61f662c74d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9714719e2c504c94ba5d29252620db41, type: 2}
+    - target: {fileID: 7140274829192787273, guid: 0de7386f29cd578439e0df61f662c74d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8198423828554859068, guid: 0de7386f29cd578439e0df61f662c74d,
         type: 3}
@@ -5522,7 +5542,7 @@ MonoBehaviour:
   vehicleParent: {fileID: 1646396425}
   splitPointParent: {fileID: 731047097}
   hydraulicParent: {fileID: 278233480}
-  onlineDistribution: {fileID: 1272325185}
+  onlineDistributionBars: {fileID: 0}
   currentBatch: 0
   animating: 0
   star: 3
@@ -5535,6 +5555,7 @@ MonoBehaviour:
   AnimatableBatch2: []
   AnimatableBatch3: []
   AnimatableBatch4: []
+  hydraulicAfterAnimation: 
 --- !u!1 &1393754429
 GameObject:
   m_ObjectHideFlags: 0
@@ -8843,6 +8864,75 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1001 &6327673716813017467
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -198
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2812599634698608430, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8650009963936010396, guid: 2a8e375995aa55f4e979ebf46b2009c6,
+        type: 3}
+      propertyPath: m_Name
+      value: Water
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2a8e375995aa55f4e979ebf46b2009c6, type: 3}
 --- !u!114 &6657100594332168648
 MonoBehaviour:
   m_ObjectHideFlags: 0
