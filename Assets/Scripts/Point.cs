@@ -13,13 +13,21 @@ public class Point : MonoBehaviour {
     public static Point Instantiate2D(PointReference p, Transform parent) {
         Point pt = null;
         if (p.IsFixed()) {
-            pt = Instantiate(PrefabManager.GetFixedPoint2DTemplate(), parent).GetComponent<Point>();
+            if (!p.IsSplit()) {
+                pt = Instantiate(PrefabManager.GetFixedPoint2DTemplate(), parent).GetComponent<Point>();
+            } else {
+                pt = Instantiate(PrefabManager.GetSplitFixedPoint2DTemplate(), parent).GetComponent<Point>();
+                pt.InitSplitSetting2D(p);
+            }
+            
             pt.SetFixed();
-        } else if (!p.IsSplit()) {
-            pt = Instantiate(PrefabManager.GetPoint2DTemplate(),parent).GetComponent<Point>();
         } else {
-            pt = Instantiate(PrefabManager.GetSplitPoint2DTemplate(), parent).GetComponent<Point>();
-            pt.InitSplitSetting2D(p);
+            if (!p.IsSplit()) {
+                pt = Instantiate(PrefabManager.GetPoint2DTemplate(),parent).GetComponent<Point>();     
+            } else {
+                pt = Instantiate(PrefabManager.GetSplitPoint2DTemplate(), parent).GetComponent<Point>();
+                pt.InitSplitSetting2D(p);
+            }
         }
         pt.transform.localPosition = p.GetPosition();
         return pt;      

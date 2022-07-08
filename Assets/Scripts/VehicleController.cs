@@ -17,7 +17,7 @@ public class VehicleController : MonoBehaviour {
 
     public void Start() {
         checkpointCount = checkpoints.Count;
-        Debug.Log(checkpointCount);
+        // Debug.Log(checkpointCount);
         nextCheckpoint = 0;
         waitingForHydraulic = false;
         // Restart();
@@ -35,17 +35,17 @@ public class VehicleController : MonoBehaviour {
         rearRight.motorTorque = motor;
         frontLeft.motorTorque = motor;
         frontRight.motorTorque = motor;
-        // rearLeft.brakeTorque = 1;
-        // rearRight.brakeTorque = 1;
-        // frontLeft.brakeTorque = 1;
-        // frontRight.brakeTorque = 1;
+        rearLeft.brakeTorque = 0;
+        rearRight.brakeTorque = 0;
+        frontLeft.brakeTorque = 0;
+        frontRight.brakeTorque = 0;
     }
 
     private void Brake() {
-        rearLeft.motorTorque = 1;
-        rearRight.motorTorque = 1;
-        frontLeft.motorTorque = 1;
-        frontRight.motorTorque = 1;
+        // rearLeft.motorTorque = 1;
+        // rearRight.motorTorque = 1;
+        // frontLeft.motorTorque = 1;
+        // frontRight.motorTorque = 1;
         rearLeft.brakeTorque = brake;
         rearRight.brakeTorque = brake;
         frontLeft.brakeTorque = brake;
@@ -84,6 +84,7 @@ public class VehicleController : MonoBehaviour {
                 // if (gameObject.name == "Boat") {
                 //     gameObject.transform.position -= new Vector3(0, 0, boatSpeed);
                 // } else {
+                    // Debug.Log("accing"); 
                 Accelerate();
                 UpdateWheels();
                 // }
@@ -124,25 +125,29 @@ public class VehicleController : MonoBehaviour {
 
     public void Stop() {
         waitingForHydraulic = true;
-        // Brake();
+        Brake();
+        UpdateWheels();
         gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        gameObject.GetComponent<Rigidbody>().isKinematic = false;
         GameObject.Find("AudioManager").GetComponent<AudioManager>().StopCarSound();
 
     }
 
     public void Restart() {
+        // Accelerate();
+        // UpdateWheels();
         waitingForHydraulic = false;
-        gameObject.GetComponent<Rigidbody>().isKinematic = false;
+        // gameObject.GetComponent<Rigidbody>().isKinematic = false;
         GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayCarSound();
     }
 
-    private IEnumerator WaitForAWhile(int dur) {
-        waitingForHydraulic = true;
-        gameObject.GetComponent<Rigidbody>().isKinematic = true;
-        yield return new WaitForSeconds(dur);
-        gameObject.GetComponent<Rigidbody>().isKinematic = false;
-        waitingForHydraulic = false;
-    }
+    // private IEnumerator WaitForAWhile(int dur) {
+    //     waitingForHydraulic = true;
+    //     gameObject.GetComponent<Rigidbody>().isKinematic = true;
+    //     yield return new WaitForSeconds(dur);
+    //     gameObject.GetComponent<Rigidbody>().isKinematic = false;
+    //     waitingForHydraulic = false;
+    // }
 
     public bool IsWaiting() {
         return waitingForHydraulic;

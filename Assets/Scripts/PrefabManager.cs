@@ -6,6 +6,7 @@ public class PrefabManager {
     private static string point2D = "Prefab/Object2D/Point";
     private static string fixedPoint2D = "Prefab/Object2D/FixedPoint";
     private static string splitPoint2D = "Prefab/Object2D/SplitPoint";
+    private static string splitFixedPoint2D = "Prefab/Object2D/SplitFixedPoint";
     private static string gridLine = "Prefab/GridLine";
 
     private static string point3D = "Prefab/Object3D/Point3D";
@@ -29,7 +30,11 @@ public class PrefabManager {
 
     public static GameObject GetSplitPoint2DTemplate() {
         return Resources.Load<GameObject>(splitPoint2D);
-    } 
+    }
+    
+    public static GameObject GetSplitFixedPoint2DTemplate() {
+        return Resources.Load<GameObject>(splitFixedPoint2D);
+    }
 
     public static GameObject GetPoint3DTemplate() {
         return Resources.Load<GameObject>(point3D);
