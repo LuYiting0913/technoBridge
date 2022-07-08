@@ -14,7 +14,7 @@ public class LevelMenuController : MonoBehaviour {
     private LevelButtonController currentLevelButton;
 
     private int camMovingSpeed, camMoved;
-    private int camMoveTarget = 800;
+    public int themeGap = 1000;
 
     private void Awake() {
         if (m_Instance == null) {
@@ -69,20 +69,20 @@ public class LevelMenuController : MonoBehaviour {
 
     public void NextTheme() {
         if (currentThemeNumber < ThemeNumber) {
-            camMovingSpeed = -30;
+            camMovingSpeed = -10;
             currentThemeNumber += 1;
         }
     }
 
     public void PreviousTheme() {
         if (currentThemeNumber > 1) { 
-            camMovingSpeed = 30;
+            camMovingSpeed = 10;
             currentThemeNumber -= 1;
         }
     }
 
     private void FixedUpdate() {
-        if (camMoved < camMoveTarget) {
+        if (camMoved < themeGap) {
             cam.transform.position += new Vector3(camMovingSpeed, 0, 0);
             camMoved += camMovingSpeed > 0 ? camMovingSpeed : - camMovingSpeed;
         } else {
