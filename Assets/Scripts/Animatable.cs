@@ -13,6 +13,11 @@ public class Animatable : MonoBehaviour {
 	    animating = true;
 	    GameObject.Find("AudioManager").GetComponent<AudioManager>().PlayBoatSound();
     }
+
+    public void EndAnimation() {
+        animating = false;
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().StopBoatSound();
+    }
 	
     private void OnCollisionEnter(Collision other) {
         Debug.Log("hit sth");

@@ -19,7 +19,10 @@ public class MainMenu : MonoBehaviour {
 
     public void SaveAndBackToMain(int level) {
         Levels.UpdateLevelData(level, AssetManager.GeneratePointReference(), AssetManager.GenerateBarReference());
+        
         SceneManager.LoadScene(2);
+        LevelMenuController.currentThemeNumber = (level - 1) / 10 + 1;
+        Debug.Log((level - 1) / 10 + 1);
     }
 
     public void LoadLevelMenu() {

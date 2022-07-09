@@ -6,8 +6,8 @@ public class LevelMenuController : MonoBehaviour {
     private static LevelMenuController m_Instance;
 
     public int ThemeNumber;
-    private int currentThemeNumber;
-    public Camera cam;
+    public static int currentThemeNumber;
+    private Camera cam;
     public int firstLevel;
     public Transform infoPageParent;
     public Transform pointer;
@@ -26,8 +26,21 @@ public class LevelMenuController : MonoBehaviour {
     }
 
     private void Start() {
-        currentThemeNumber = 1;
+        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+        Debug.Log("loadded");
+        Debug.Log(currentThemeNumber);
+        if(currentThemeNumber == 0) {
+            currentThemeNumber = 1;
+        } else {
+            cam.transform.position -= new Vector3(themeGap, 0, 0) * (currentThemeNumber - 1); 
+        }
     }
+
+    // public void StartAtTheme(int theme) {
+    //     Debug.Log("received theme update");
+    //     currentThemeNumber = theme;
+    //     // cam.transform.position -= new Vector3(themeGap, 0, 0) * (currentThemeNumber - 1);
+    // }
 
 
     public static LevelMenuController GetInstance() {
@@ -63,8 +76,7 @@ public class LevelMenuController : MonoBehaviour {
         int score = GlobalData.GetLocalData(button.level);
         infoPageParent.GetChild(button.level - firstLevel).GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = 
             "Best Score: $" + score;
-
-        
+ 
     }
 
     public void NextTheme() {
