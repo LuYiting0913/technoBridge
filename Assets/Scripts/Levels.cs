@@ -13,7 +13,7 @@ public class Levels {
     
     private static Dictionary<int, int> bestScore = new Dictionary<int, int>();
     private static Dictionary<int, int> star = new Dictionary<int, int>();
-    private static bool[] isInited = new bool[20];
+    private static bool[] isInited = new bool[21];
     // private static int[] budget = new int[10];
     //private static Dictionary<int, List<Checkpoint>> checkpointData = new Dictionary<int, List<Checkpoint>>();
 
@@ -97,6 +97,15 @@ public class Levels {
                     break;
                 case 17:
                     Level17.InitLevel();
+                    break;
+                case 18:
+                    Level18.InitLevel();
+                    break;
+                case 19:
+                    Level19.InitLevel();
+                    break;
+                case 20:
+                    Level20.InitLevel();
                     break;
                 default:
                     break;
