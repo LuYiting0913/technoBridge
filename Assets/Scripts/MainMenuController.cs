@@ -68,6 +68,7 @@ public class MainMenuController : MonoBehaviour {
         animatable.StartAnimation();
         Debug.Log("animatable start");
         yield return new WaitForSeconds(animatableTime);
+        animatable.EndAnimation();
         foreach (HydraulicController hydraulic in hydraulics) {
             hydraulic.Activate();
         }
