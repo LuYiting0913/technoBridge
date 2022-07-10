@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class Levels {
     public static string currentUserName;
-    // public static int numberOfLevelsCompleted;
+
     private static Dictionary<int, List<PointReference>> pointData = new Dictionary<int, List<PointReference>>();
     private static Dictionary<int, List<SolidBarReference>> barData = new Dictionary<int, List<SolidBarReference>>();
     private static Dictionary<int, List<Vehicle>> vehicleData = new Dictionary<int, List<Vehicle>>();
@@ -15,31 +15,10 @@ public class Levels {
     private static Dictionary<int, int> bestScore = new Dictionary<int, int>();
     private static Dictionary<int, int> star = new Dictionary<int, int>();
     private static bool[] isInited = new bool[21];
-    // private static int[] budget = new int[10];
-    //private static Dictionary<int, List<Checkpoint>> checkpointData = new Dictionary<int, List<Checkpoint>>();
-
-    // public Dictionary<string, List<PointReference>> pointDataIns = new Dictionary<string, List<PointReference>>();
-    // public Dictionary<string, List<SolidBarReference>> barDataIns = new Dictionary<string, List<SolidBarReference>>();    
+   
     public Dictionary<string, int> bestScoreIns = new Dictionary<string, int>();
 
-    // public static int GetNumOfLevelCompleted() {
-    //     return bestScore.Keys.Count;
-    // }
 
-    // public static Levels of() {
-    //     Debug.Log(bestScore.Count);
-    //     return new Levels(pointData, barData, bestScore);
-    // }
-
-    // private Levels(Dictionary<int, List<PointReference>> p, Dictionary<int, List<SolidBarReference>> b, Dictionary<int, int> s) {
-    //     for (int i = 1; i < 50; i++) {
-    //         if (p.ContainsKey(i)) pointDataIns[i.ToString()] = p[i];
-    //         if (b.ContainsKey(i)) barDataIns[i.ToString()] = b[i];
-    //         if (s.ContainsKey(i)) bestScoreIns[i.ToString()] = s[i];
-    //     }
-
-    // }
-    
     public static void ClearLevel(int level) {
         pointData[level] = new List<PointReference>();
         barData[level] = new List<SolidBarReference>();
