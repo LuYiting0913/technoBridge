@@ -57,6 +57,7 @@ public class LevelMenuController : MonoBehaviour {
                 HideLevelInfoPanel(currentLevelButton);
             }
             currentLevelButton = clickedButton;
+            Debug.Log(currentLevelButton.transform.position);
             pointer.position = currentLevelButton.transform.position + new Vector3(0, 13, 0);
             ShowLevelInfoPanel(currentLevelButton);
         }
