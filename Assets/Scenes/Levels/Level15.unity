@@ -1493,7 +1493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 15
   isTutorial: 0
-  budget: 17500
+  budget: 5000
   autoComplete: 0
   gridSnap: 0
   autoTriangulate: 0
