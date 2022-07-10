@@ -27,8 +27,8 @@ public class LevelMenuController : MonoBehaviour {
 
     private void Start() {
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
-        Debug.Log("loadded");
-        Debug.Log(currentThemeNumber);
+        // Debug.Log("loadded");
+        // Debug.Log(currentThemeNumber);
         if(currentThemeNumber == 0) {
             currentThemeNumber = 1;
         } else {

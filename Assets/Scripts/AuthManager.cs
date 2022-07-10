@@ -133,7 +133,7 @@ public class AuthManager : MonoBehaviour
             confirmLoginText.text = "Logged In";
 
             currentUser = User.DisplayName;
-            Debug.Log(currentUser);
+            
             Levels.currentUserName = currentUser;
 
             Load();
@@ -224,8 +224,8 @@ public class AuthManager : MonoBehaviour
     }
 
     public void Upload() {
-        Debug.Log(dbReference);
-        Debug.Log(Levels.currentUserName);
+        // Debug.Log(dbReference);
+        // Debug.Log(Levels.currentUserName);
         DatabaseReference usersRef = dbReference.Child("Users").Child(Levels.currentUserName);
         DatabaseReference levelsRef = dbReference.Child("Levels");
 
@@ -248,33 +248,21 @@ public class AuthManager : MonoBehaviour
                 }
             });
         }
+
+       
+        // Debug.Log(Levels.GetNumOfLevelCompleted());
+
+        dbReference.Child("LevelsCompleted").Child(Levels.currentUserName).SetValueAsync(GlobalData.GetNumOfLevelCompleted()).ContinueWith((task) => {
+                if (task.IsFaulted || task.IsCanceled) {
+                    Debug.Log(task.Exception.ToString());
+                } else {
+                    Debug.Log("upload level completed successfully ");
+                }
+        });
     }
 
     public void Load() {
-         // load local data
-        // List<object> keys = new List<object>();
-        // List<object> val = new List<object>();
-        // Dictionary<object, object> allScores = new Dictionary<object, object>();
 
-        // for (int i = 0; i < 25; i++) {
-        //     DatabaseReference userRef = dbReference.Child("Users").Child(Levels.currentUserName).Child(i.ToString());
-        //     userRef.GetValueAsync().ContinueWith(task => {
-        //         if (task.IsFaulted) {
-        //             Debug.Log("failed load");
-        //         // Handle the error...
-        //         } else if (task.IsCompleted) {
-        //             DataSnapshot snapshot = task.Result;
-        //             if (snapshot.Value != null) {
-        //                 allScores[snapshot.Key] = snapshot.Value;
-        //                 Debug.Log(snapshot.Key);
-        //                 Debug.Log(snapshot.Value);
-        //                 Debug.Log("--------");
-        //             }
-        //         } 
-        //     });
-        // }
-        // GlobalData.StoreAllLocalScores(allScores);
-        // load global data;
         DatabaseReference usersRef = dbReference.Child("Users").Child(Levels.currentUserName);
         usersRef.GetValueAsync().ContinueWith(task => {
             if (task.IsFaulted) {
@@ -283,30 +271,52 @@ public class AuthManager : MonoBehaviour
                 DataSnapshot snapshot = task.Result;
                 // var dictionary1 = snapshot.Value as List<object>;
                 Dictionary<string, int> allScores = new Dictionary<string, int>();
+                // int count = 0;
                 for (int i = 1; i < 25; i++) {
                     if (snapshot.Child(i.ToString()) != null) {
                         int j = int.Parse(snapshot.Child(i.ToString()).GetValue(true).ToString());
-                    // Debug.Log(j);
-                    // allScores[i.ToString()] = j;
+                        // Levels.numberOfLevelsCompleted += 1;
                         GlobalData.AddLocalData(i.ToString(), j);
                     }
                     
                 }
-
-                // for (int i = 0; i < 25; i++) {
-                //     Debug.Log(i);
-                //     Debug.Log(allScores[i.ToString()]);
-                //     // allScores[i.ToString()] = snapshot.Child(i.ToString()).GetValue(true).ToString();
-                // }
-                
- 
-
-                // GlobalData.StoreAllLocalScores(allScores);
-                Debug.Log("loaded local data");
             }
         });
-        
+        //  Debug.Log("num completed");
+        // Debug.Log(GlobalData.GetNumOfLevelCompleted());
 
+        dbReference.Child("LevelsCompleted").GetValueAsync().ContinueWith(task => {
+            if (task.IsFaulted) {
+            // Handle the error...
+            } else if (task.IsCompleted) {
+                DataSnapshot snapshot = task.Result;
+                // var dictionary1 = snapshot.Value as List<object>;
+                // var dictionary1 = snapshot.Value as Dictionary<string, object>;
+                // Dictionary<string, int> allScores = new Dictionary<string, int>();
+                // if (dictionary1 != null) {
+                //     foreach (string name in dictionary1.Keys) {
+                //         // Debug.Log("name");
+                //         // Debug.Log(dictionary1[name]);
+                //         GlobalData.AddLevelCompleted(name, (int) dictionary1[name]);
+                //         // val = (int) dictionary1[level];
+                //         // Debug.Log(dictionary2["a"]);
+                //         // foreach (string player in dictionary2.Keys) {
+                //         //     currentLevel.Add((int)dictionary2[player]);
+                //         //     // GlobalData.IncrementPlayer(player);
+                //         // }
+                //         // allScores[level] = currentLevel;
+                //     }
+                    
+                // }
+                foreach(var player in snapshot.Children){
+                    // GlobalData.IncrementPlayer(player.Key.ToString());
+                    int j = int.Parse(snapshot.Child(player.Key.ToString()).GetValue(true).ToString());
+                    // Debug.Log(j);
+                    GlobalData.AddLevelCompleted(player.Key.ToString(), j);
+                    // Debug.Log(player.Key.ToString());
+                }
+            }
+        });
 
         // load global data;
         DatabaseReference levelsRef = dbReference.Child("Levels");
@@ -317,13 +327,18 @@ public class AuthManager : MonoBehaviour
                 DataSnapshot snapshot = task.Result;
                 var dictionary1 = snapshot.Value as Dictionary<string, object>;
                 Dictionary<string, List<int>> allScores = new Dictionary<string, List<int>>();
+                // Dictionary<string, int> levelCount = new Dictionary<string, int>();
                 if (dictionary1 != null) {
                     foreach (string level in dictionary1.Keys) {
                         // Debug.Log(level);
                         List<int> currentLevel = new List<int>();
                         var dictionary2 = dictionary1[level] as Dictionary<string, object>;
                         // Debug.Log(dictionary2["a"]);
-                        foreach (string player in dictionary2.Keys) currentLevel.Add((int)dictionary2[player]);
+                        foreach (string player in dictionary2.Keys) {
+    
+                            currentLevel.Add((int)dictionary2[player]);
+
+                        }
                         allScores[level] = currentLevel;
                     }
                     

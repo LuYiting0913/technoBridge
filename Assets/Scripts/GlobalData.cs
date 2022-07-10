@@ -8,6 +8,10 @@ public class GlobalData : MonoBehaviour {
 
     private static Dictionary<string, int> local = new Dictionary<string, int>();
 
+    private static Dictionary<string, int> levelCompleted = new Dictionary<string, int>();
+
+    private static Dictionary<int, List<string>> map = new Dictionary<int, List<string>>();
+
     public static void StoreAllGlobalScores(Dictionary<string, List<int>> dic) {
         global = dic;
     }
@@ -15,7 +19,7 @@ public class GlobalData : MonoBehaviour {
 
     public static void StoreAllLocalScores(Dictionary<string, int> dic) {
         foreach (string key in dic.Keys) {
-            Debug.Log(key);
+            // Debug.Log(key);
         }
     }
 
@@ -46,8 +50,35 @@ public class GlobalData : MonoBehaviour {
     }
 
     public static void AddLocalData(string level, int score) {
-        Debug.Log(level);
-        Debug.Log(score);
         local[level] = score;
     }
+
+    public static void AddLevelCompleted(string name, int num) {
+        levelCompleted[name] = num;
+    }
+
+    public static int GetNumOfLevelCompleted() {
+        return local.Count;
+    }
+
+    public static void IncrementPlayer(string name) {
+        Debug.Log("increment");
+        Debug.Log(name);
+        if (!levelCompleted.ContainsKey(name)) {
+            levelCompleted[name] = 1;
+        } else {
+            levelCompleted[name] += 1;
+        }
+
+    }
+
+    public static Dictionary<string, int> GetLevelCompleted() {
+        // foreach (string name in levelCompleted.Keys) {
+        //     Debug.Log(name);
+        //     Debug.Log(levelCompleted[name]);
+        // }
+        // Debug.Log("before sending");
+        return levelCompleted;
+    }
+
 }
