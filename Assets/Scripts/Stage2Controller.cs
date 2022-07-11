@@ -290,6 +290,7 @@ public class Stage2Controller : MonoBehaviour {
                 Levels.UpdateBestScore(level, totalCost, star);
                 
                 DisplayPass(star);
+                // GlobalData.AddLocalData(level.ToString(), totalCost);
                 ended = true;
                 
             } else if (AllVehicleWaiting(currentBatch) && !animating) {

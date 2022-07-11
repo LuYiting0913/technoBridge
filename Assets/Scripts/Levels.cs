@@ -182,4 +182,8 @@ public class Levels {
 
     }
 
+    public static int GetNumOfLevelCompleted() {
+        return GetAllBestScores().Count;
+    }
+
 }

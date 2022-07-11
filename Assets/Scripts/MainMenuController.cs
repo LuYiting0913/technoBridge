@@ -95,10 +95,10 @@ public class MainMenuController : MonoBehaviour {
         // Dictionary<string, int> sorted = new Dictionary<string, int>();
         int curNumOnPodium = 0;
 
-        foreach (string s in levelCompleted.Keys) {
-            Debug.Log(s);
-            Debug.Log(levelCompleted[s]);
-        }
+        // foreach (string s in levelCompleted.Keys) {
+        //     Debug.Log(s);
+        //     Debug.Log(levelCompleted[s]);
+        // }
 
         for (int i = totalLevels; i > 0; i--) {
             if (curNumOnPodium < numOnPodium) {

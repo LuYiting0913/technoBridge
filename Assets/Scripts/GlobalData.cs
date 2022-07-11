@@ -51,6 +51,8 @@ public class GlobalData : MonoBehaviour {
 
     public static void AddLocalData(string level, int score) {
         local[level] = score;
+        Levels.UpdateBestScore(int.Parse(level), score, 0);
+        // levelCompleted[Levels.currentUserName] += 1;
     }
 
     public static void AddLevelCompleted(string name, int num) {
@@ -62,8 +64,8 @@ public class GlobalData : MonoBehaviour {
     }
 
     public static void IncrementPlayer(string name) {
-        Debug.Log("increment");
-        Debug.Log(name);
+        // Debug.Log("increment");
+        // Debug.Log(name);
         if (!levelCompleted.ContainsKey(name)) {
             levelCompleted[name] = 1;
         } else {

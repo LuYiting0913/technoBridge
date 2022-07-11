@@ -251,8 +251,9 @@ public class AuthManager : MonoBehaviour
 
        
         // Debug.Log(Levels.GetNumOfLevelCompleted());
-
-        dbReference.Child("LevelsCompleted").Child(Levels.currentUserName).SetValueAsync(GlobalData.GetNumOfLevelCompleted()).ContinueWith((task) => {
+        Debug.Log("num of scores");
+        Debug.Log(allScores.Count);
+        dbReference.Child("LevelsCompleted").Child(Levels.currentUserName).SetValueAsync(allScores.Count).ContinueWith((task) => {
                 if (task.IsFaulted || task.IsCanceled) {
                     Debug.Log(task.Exception.ToString());
                 } else {
