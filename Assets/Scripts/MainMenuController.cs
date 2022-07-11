@@ -88,9 +88,9 @@ public class MainMenuController : MonoBehaviour {
 
     public void DisplayLeaderBoard() {
         int totalLevels = 30;
-        int numOnPodium = 2;
-        Transform nameParent = leaderBoard.GetChild(0);
-        Transform scoreParent = leaderBoard.GetChild(1);
+        int numOnPodium = 8;
+        // Transform nameParent = leaderBoard.GetChild(0);
+        // Transform scoreParent = leaderBoard.GetChild(1);
         Dictionary<string, int> levelCompleted = GlobalData.GetLevelCompleted();
         // Dictionary<string, int> sorted = new Dictionary<string, int>();
         int curNumOnPodium = 0;
@@ -104,15 +104,21 @@ public class MainMenuController : MonoBehaviour {
             if (curNumOnPodium < numOnPodium) {
                 foreach (string name in levelCompleted.Keys) {
                     if (curNumOnPodium < numOnPodium && levelCompleted[name] == i) {
-                        nameParent.GetChild(curNumOnPodium).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = name;
-                        scoreParent.GetChild(curNumOnPodium).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = i.ToString();
+                        Transform nameParent = leaderBoard.GetChild(curNumOnPodium).GetChild(1);
+                        Transform scoreParent = leaderBoard.GetChild(curNumOnPodium).GetChild(2);
+                        Transform rank = leaderBoard.GetChild(curNumOnPodium).GetChild(3);    
+                        nameParent.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = name;
+                        scoreParent.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = i.ToString();
+                        rank.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = (curNumOnPodium + 1).ToString();
                         curNumOnPodium += 1;
                     } 
                 }
-
             }
             
         }
+        Transform yourScore = leaderBoard.GetChild(numOnPodium);
+        yourScore.GetChild(1).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Levels.currentUserName;
+        yourScore.GetChild(2).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = levelCompleted[Levels.currentUserName].ToString();
         // List<string> names = new List<string>();
         // foreach (string s in levelCompleted.Keys) {
         //     names.Add(s);
