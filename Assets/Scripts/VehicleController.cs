@@ -110,7 +110,7 @@ public class VehicleController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
         Debug.Log(other.gameObject.name);
-        if (other.gameObject.name == "Water" && gameObject.name != "Boat") {
+        if (other.gameObject.name == "WaterBody" && gameObject.name != "Boat") {
             failed = true;
         }
     }
