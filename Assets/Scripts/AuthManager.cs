@@ -252,7 +252,8 @@ public class AuthManager : MonoBehaviour
        
         // Debug.Log(Levels.GetNumOfLevelCompleted());
         Debug.Log("num of scores");
-        Debug.Log(allScores.Count);
+        Debug.Log(GlobalData.GetNumOfLevelCompleted());
+        Debug.Log(GlobalData.GetLevelCompleted()[Levels.currentUserName]);
         dbReference.Child("LevelsCompleted").Child(Levels.currentUserName).SetValueAsync(allScores.Count).ContinueWith((task) => {
                 if (task.IsFaulted || task.IsCanceled) {
                     Debug.Log(task.Exception.ToString());
@@ -271,12 +272,18 @@ public class AuthManager : MonoBehaviour
             } else if (task.IsCompleted) {
                 DataSnapshot snapshot = task.Result;
                 Dictionary<string, int> allScores = new Dictionary<string, int>();
-                for (int i = 1; i < 25; i++) {
-                    if (snapshot.Child(i.ToString()) != null) {
-                        int j = int.Parse(snapshot.Child(i.ToString()).GetValue(true).ToString());
-                        GlobalData.AddLocalData(i.ToString(), j);
-                    }
+                // for (int i = 1; i < 30; i++) {
+                //     Debug.Log(i);
+                //     // if (snapshot.Child(i.ToString()) != null) {
+                //         int j = int.Parse(snapshot.Child(i.ToString()).GetValue(true).ToString());
+                //         GlobalData.AddLocalData(i.ToString(), j, 0);
+                //     // }
                     
+                // }
+
+                foreach(var player in snapshot.Children){
+                    int j = int.Parse(snapshot.Child(player.Key.ToString()).GetValue(true).ToString());
+                    GlobalData.AddLocalData(player.Key.ToString(), j, 0);
                 }
             }
         });

@@ -287,10 +287,10 @@ public class Stage2Controller : MonoBehaviour {
                 Debug.Log("all arrived");
                 Debug.Log(totalCost);
                 star = star - (totalCost > budget ? 1 : 0);
-                Levels.UpdateBestScore(level, totalCost, star);
+                // Levels.UpdateBestScore(level, totalCost, star);
                 
                 DisplayPass(star);
-                // GlobalData.AddLocalData(level.ToString(), totalCost);
+                GlobalData.AddLocalData(level.ToString(), totalCost, star);
                 ended = true;
                 
             } else if (AllVehicleWaiting(currentBatch) && !animating) {

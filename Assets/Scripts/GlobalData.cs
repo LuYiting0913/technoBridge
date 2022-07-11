@@ -49,9 +49,13 @@ public class GlobalData : MonoBehaviour {
 
     }
 
-    public static void AddLocalData(string level, int score) {
+    public static void AddLocalData(string level, int score, int star) {
+        // if (!local.ContainsKey(level)) levelCompleted[Levels.currentUserName] += 1;
+        Debug.Log(level);
+        Debug.Log(score);
         local[level] = score;
-        Levels.UpdateBestScore(int.Parse(level), score, 0);
+        Levels.UpdateBestScore(int.Parse(level), score, star);
+        levelCompleted[Levels.currentUserName] = local.Count;
         // levelCompleted[Levels.currentUserName] += 1;
     }
 
@@ -63,16 +67,16 @@ public class GlobalData : MonoBehaviour {
         return local.Count;
     }
 
-    public static void IncrementPlayer(string name) {
-        // Debug.Log("increment");
-        // Debug.Log(name);
-        if (!levelCompleted.ContainsKey(name)) {
-            levelCompleted[name] = 1;
-        } else {
-            levelCompleted[name] += 1;
-        }
+    // public static void IncrementPlayer(string name) {
+    //     // Debug.Log("increment");
+    //     // Debug.Log(name);
+    //     if (!levelCompleted.ContainsKey(name)) {
+    //         levelCompleted[name] = 1;
+    //     } else {
+    //         levelCompleted[name] += 1;
+    //     }
 
-    }
+    // }
 
     public static Dictionary<string, int> GetLevelCompleted() {
         // foreach (string name in levelCompleted.Keys) {
