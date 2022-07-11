@@ -171,6 +171,15 @@ public class Levels {
          
     }
 
+    // public static int GetStarLevel(int level) {
+    //     if (star.ContainsKey(level)) {
+    //         return star[level];
+    //     } else {
+    //         Debug.Log(false);
+    //         return 0;
+    //     }
+    // }
+
     public static Dictionary<string, int> GetAllBestScores() {
         Dictionary<string, int> s = new Dictionary<string, int>();
         for (int i = 1; i < 50; i++) {

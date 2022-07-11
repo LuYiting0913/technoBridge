@@ -8,6 +8,8 @@ public class GlobalData : MonoBehaviour {
 
     private static Dictionary<string, int> local = new Dictionary<string, int>();
 
+    private static Dictionary<string, int> star = new Dictionary<string, int>();
+
     private static Dictionary<string, int> levelCompleted = new Dictionary<string, int>();
 
     private static Dictionary<int, List<string>> map = new Dictionary<int, List<string>>();
@@ -49,15 +51,32 @@ public class GlobalData : MonoBehaviour {
 
     }
 
-    public static void AddLocalData(string level, int score, int star) {
+    public static void AddLocalData(string level, int score, int s) {
         // if (!local.ContainsKey(level)) levelCompleted[Levels.currentUserName] += 1;
         Debug.Log(level);
         Debug.Log(score);
+        Debug.Log(star);
         local[level] = score;
-        Levels.UpdateBestScore(int.Parse(level), score, star);
+        star[level] = s;
+        // UpdateScore(level, score, s);
+        Levels.UpdateBestScore(int.Parse(level), score, s);
         levelCompleted[Levels.currentUserName] = local.Count;
         // levelCompleted[Levels.currentUserName] += 1;
     }
+
+    private static void UpdateScore(string level, int sc, int st) {
+        if (local.ContainsKey(level)) {
+            local[level] = local[level] > sc ? sc : local[level];
+        } else {
+            local[level] = sc;
+        }
+
+        if (star.ContainsKey(level)) {
+            star[level] = star[level] > st ? st : star[level];
+        } else {
+            star[level] = st;
+        }
+    } 
 
     public static void AddLevelCompleted(string name, int num) {
         levelCompleted[name] = num;
@@ -65,6 +84,15 @@ public class GlobalData : MonoBehaviour {
 
     public static int GetNumOfLevelCompleted() {
         return local.Count;
+    }
+
+    public static int GetStarLevel(int level) {
+        if (star.ContainsKey(level.ToString())) {
+            return star[level.ToString()];
+        } else {
+            Debug.Log(false);
+            return 0;
+        }
     }
 
     // public static void IncrementPlayer(string name) {

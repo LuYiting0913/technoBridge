@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelMenuController : MonoBehaviour {
     private static LevelMenuController m_Instance;
@@ -75,6 +76,15 @@ public class LevelMenuController : MonoBehaviour {
     public void ShowLevelInfoPanel(LevelButtonController button) {
         infoPageParent.GetChild(button.level - firstLevel).gameObject.SetActive(true);
         int score = GlobalData.GetLocalData(button.level);
+        int star = GlobalData.GetStarLevel(button.level);
+        Debug.Log(star);
+        Color grey = new Color(0.5f, 0.5f, 0.5f);
+        Color yellow = new Color(1, 230f/255f, 30f/255f);
+        Transform starParent = infoPageParent.GetChild(button.level - firstLevel).GetChild(3);
+        for (int i = 0; i < 3; i++) {
+            starParent.GetChild(i).GetComponent<Image>().color = i < star ? yellow : grey;
+        }
+
         infoPageParent.GetChild(button.level - firstLevel).GetChild(2).GetComponent<TMPro.TextMeshProUGUI>().text = 
             "Best Score: $" + score;
  
