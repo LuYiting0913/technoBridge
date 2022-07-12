@@ -286,7 +286,10 @@ public class Stage2Controller : MonoBehaviour {
             if (AllVehicleArrived()) {
                 Debug.Log("all arrived");
                 Debug.Log(totalCost);
-                star = star - (totalCost > budget ? 1 : 0);
+                if (totalCost > budget) {
+                    star = star == 2 ? 1 : 2;
+                }
+                // star = star - (totalCost > budget ? 1 : 0);
                 // Levels.UpdateBestScore(level, totalCost, star);
                 
                 DisplayPass(star);
