@@ -196,7 +196,7 @@ public class SolidBarInitiator : MonoBehaviour {
     private void ActivateBoundary(Vector2 center) {
         for (int i = 0; i < boundary.transform.childCount; i++) boundary.transform.GetChild(i).gameObject.SetActive(true);
         int numOfPoints = 50;
-        float radius = MaterialManager.GetMaxLength(currentMaterial) * backgroundScale;
+        float radius = MaterialManager.GetMaxLength(currentMaterial);// * backgroundScale;
         Transform boundParent = boundary.transform.GetChild(0);
         Vector3 newPos = new Vector3(center.x, center.y, 0);
         boundParent.position = newPos;
