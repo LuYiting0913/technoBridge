@@ -5099,7 +5099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axis: {x: 0, y: 1, z: 0}
-  speed: -50
+  speed: -25
 --- !u!1001 &615072576
 PrefabInstance:
   m_ObjectHideFlags: 0
