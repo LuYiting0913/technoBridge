@@ -152,6 +152,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/SnowTheme/Level22_3D.unity
     guid: 433d0c7bf7e72434d9fcf67b8722b563
+  - enabled: 1
+    path: Assets/Scenes/Levels/SnowTheme/Level23.unity
+    guid: ff51713cae6b86f40acbce3927615155
+  - enabled: 1
+    path: Assets/Scenes/Levels/SnowTheme/Level23_3D.unity
+    guid: 1d1b86064dae19c4da643981b9038a34
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 765780b12ffac6a47a3e5fc53c0947d7,
       type: 2}

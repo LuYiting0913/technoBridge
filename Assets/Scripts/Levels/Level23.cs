@@ -13,6 +13,7 @@ public class Level23 : MonoBehaviour {
         PointReference p3 = new PointReference();
         PointReference p4 = new PointReference();
         PointReference p5 = new PointReference();
+        PointReference p6 = new PointReference();
 
         List<Vehicle> vehicles = new List<Vehicle>();
 
@@ -20,20 +21,23 @@ public class Level23 : MonoBehaviour {
         p2.SetFixed(); 
         p3.SetFixed();
         p4.SetFixed(); 
-        // p5.SetFixed();
+        p5.SetFixed();
+        p6.SetFixed();
         // 
-        p1.SetPosition(new Vector3(-500, -20, 0));
-        p2.SetPosition(new Vector3(-610, -20, 0));
-        p3.SetPosition(new Vector3(500, -20, 0));
-        p4.SetPosition(new Vector3(610, -20, 0));
-        // p5.SetPosition(new Vector3(320, -170, 0));
+        p1.SetPosition(new Vector3(320, -20, 0));
+        p2.SetPosition(new Vector3(320, 50, 0));
+        p3.SetPosition(new Vector3(320, 100, 0));
+        p4.SetPosition(new Vector3(-370, -20, 0));
+        p5.SetPosition(new Vector3(-370, 50, 0));
+        p6.SetPosition(new Vector3(-370, 100, 0));
 
         fixedPoints.Add(p1);
         fixedPoints.Add(p2);
         fixedPoints.Add(p3);
         fixedPoints.Add(p4);
-        // fixedPoints.Add(p5);
+        fixedPoints.Add(p5);
+        fixedPoints.Add(p6);
         
-        Levels.UpdateLevelData(21, fixedPoints, new List<SolidBarReference>());
+        Levels.UpdateLevelData(23, fixedPoints, new List<SolidBarReference>());
     }
 }
