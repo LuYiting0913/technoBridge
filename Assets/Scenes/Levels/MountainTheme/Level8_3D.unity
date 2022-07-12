@@ -10346,10 +10346,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: TruckPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 5606715232939935422, guid: aec301f3fc1c2dd4fbb1c251c454bf34,
+        type: 3}
+      propertyPath: m_Mass
+      value: 400
+      objectReference: {fileID: 0}
     - target: {fileID: 7992014591109148792, guid: aec301f3fc1c2dd4fbb1c251c454bf34,
         type: 3}
       propertyPath: motor
-      value: 1000
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 7992014591109148792, guid: aec301f3fc1c2dd4fbb1c251c454bf34,
         type: 3}

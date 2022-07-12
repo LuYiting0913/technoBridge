@@ -1638,7 +1638,7 @@ PrefabInstance:
     - target: {fileID: 3095013362950115782, guid: edd560eec4c2f2847a49e31b278772b3,
         type: 3}
       propertyPath: m_Mass
-      value: 150
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 3095013362950115782, guid: edd560eec4c2f2847a49e31b278772b3,
         type: 3}
@@ -1658,7 +1658,7 @@ PrefabInstance:
     - target: {fileID: 3095013362950115785, guid: edd560eec4c2f2847a49e31b278772b3,
         type: 3}
       propertyPath: motor
-      value: 1800
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 3095013362950115785, guid: edd560eec4c2f2847a49e31b278772b3,
         type: 3}
