@@ -45,101 +45,107 @@ EditorBuildSettings:
     path: Assets/Scenes/Tutorial/Tutorial4_3D.unity
     guid: 75c2443f114c157458db50d7a36c79ef
   - enabled: 1
-    path: Assets/Scenes/Levels/Level5.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level5.unity
     guid: 78893984f4bfd2f4c8f91aa6c5ac278d
   - enabled: 1
-    path: Assets/Scenes/Levels/Level5_3D.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level5_3D.unity
     guid: fbc6dd979a4eded4c9e38dc9a0bc8ce1
   - enabled: 1
-    path: Assets/Scenes/Levels/Level6.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level6.unity
     guid: 9e05c9a7813774a4480726a2a3eec951
   - enabled: 1
-    path: Assets/Scenes/Levels/Level6_3D.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level6_3D.unity
     guid: a15399e4062248b4a803ede57b27ad3f
   - enabled: 1
-    path: Assets/Scenes/Levels/Level7.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level7.unity
     guid: 04d1fd5567169d940afe9a55c3f3c5bf
   - enabled: 1
-    path: Assets/Scenes/Levels/Level7_3D.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level7_3D.unity
     guid: 055f9cd864d64db488ef6feb90f9c776
   - enabled: 1
-    path: Assets/Scenes/Levels/Level8.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level8.unity
     guid: f5afe6db657b23b4aa135b83d15a1607
   - enabled: 1
-    path: Assets/Scenes/Levels/Level8_3D.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level8_3D.unity
     guid: 7557ee60e2b12c342a73769906fa846e
   - enabled: 1
-    path: Assets/Scenes/Levels/Level9.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level9.unity
     guid: 4a7006af9edd29b4a83a4f7bf288ac43
   - enabled: 1
-    path: Assets/Scenes/Levels/Level9_3D.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level9_3D.unity
     guid: b191608ef3b6f9d4fa376dfcca799ba6
   - enabled: 1
-    path: Assets/Scenes/Levels/Level10.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level10.unity
     guid: f58ce7b5937c9a6488c6d38a8055045c
   - enabled: 1
-    path: Assets/Scenes/Levels/Level10_3D.unity
+    path: Assets/Scenes/Levels/MountainTheme/Level10_3D.unity
     guid: e54d66f3871311f4895335a81e712ad5
   - enabled: 1
-    path: Assets/Scenes/Levels/Level11.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level11.unity
     guid: 211785359bb218447bcfa816f821da4d
   - enabled: 1
-    path: Assets/Scenes/Levels/Level11_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level11_3D.unity
     guid: 04f4f5a66dd200842ba06f4eb37c1543
   - enabled: 1
-    path: Assets/Scenes/Levels/Level12.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level12.unity
     guid: 85dd2ccb37ce3874e966263448597375
   - enabled: 1
-    path: Assets/Scenes/Levels/Level12_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level12_3D.unity
     guid: 43977306e7df37849bee4f7d72839bd1
   - enabled: 1
-    path: Assets/Scenes/Levels/Level13.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level13.unity
     guid: 798381a0c66011c49b768a8ba9df3b56
   - enabled: 1
-    path: Assets/Scenes/Levels/Level13_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level13_3D.unity
     guid: 3068a93de93daa24a9b1194b2322271d
   - enabled: 1
-    path: Assets/Scenes/Levels/Level14.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level14.unity
     guid: b0c56af2fb95d8749b35828216ecf2bf
   - enabled: 1
-    path: Assets/Scenes/Levels/Level14_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level14_3D.unity
     guid: 1ee00fa87963fd8459d4e5b06e6d1ead
   - enabled: 1
-    path: Assets/Scenes/Levels/Level15.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level15.unity
     guid: d03952272643d174388ea73a9cdc69fa
   - enabled: 1
-    path: Assets/Scenes/Levels/Level15_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level15_3D.unity
     guid: c6c4ae5b3f0ddcc4f9005ee5b22519a3
   - enabled: 1
-    path: Assets/Scenes/Levels/Level16.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level16.unity
     guid: 173434dfc1a4d944e84677d73e283cb4
   - enabled: 1
-    path: Assets/Scenes/Levels/Level16_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level16_3D.unity
     guid: 00893c8eb07f99941820681c83cd56e1
   - enabled: 1
-    path: Assets/Scenes/Levels/Level17.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level17.unity
     guid: 5bc19c880ec1398449ba1da56581dae5
   - enabled: 1
-    path: Assets/Scenes/Levels/Level17_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level17_3D.unity
     guid: 0473909c75c2de145bc8cc73c156b009
   - enabled: 1
-    path: Assets/Scenes/Levels/Level18.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level18.unity
     guid: 28062730f3871294d854a4fc770302fd
   - enabled: 1
-    path: Assets/Scenes/Levels/Level18_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level18_3D.unity
     guid: 757e4d582fb782e49a1d285ee1b407ed
   - enabled: 1
-    path: Assets/Scenes/Levels/Level19.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level19.unity
     guid: 7a8207bee418dd74e83e9b9195cdf43a
   - enabled: 1
-    path: Assets/Scenes/Levels/Level19_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level19_3D.unity
     guid: d024b471a29f2b24997e924579aef8bf
   - enabled: 1
-    path: Assets/Scenes/Levels/Level20.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level20.unity
     guid: d6f2b33cb94f81044a3fb5282f0261be
   - enabled: 1
-    path: Assets/Scenes/Levels/Level20_3D.unity
+    path: Assets/Scenes/Levels/DesertTheme/Level20_3D.unity
     guid: 8c6b3ce2965f4684fabdd79f183ca790
+  - enabled: 1
+    path: Assets/Scenes/Levels/SnowTheme/Level21.unity
+    guid: ab3d9b599707ddf4da99bed1fd080707
+  - enabled: 1
+    path: Assets/Scenes/Levels/SnowTheme/Level21_3D.unity
+    guid: f8da59d77d2ab1f4aa4c3887316bf000
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 765780b12ffac6a47a3e5fc53c0947d7,
       type: 2}
