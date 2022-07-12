@@ -24,8 +24,8 @@ public class Level14 : MonoBehaviour {
         p5.SetFixed();
         p6.SetFixed();
         
-        p1.SetPosition(new Vector3(-400, -20, 0));
-        p2.SetPosition(new Vector3(340, -20, 0));
+        p1.SetPosition(new Vector3(-500, -20, 0));
+        p2.SetPosition(new Vector3(440, -20, 0));
         p3.SetPosition(new Vector3(-250, -200, 0));
         p4.SetPosition(new Vector3(-160, -200, 0));   
         p5.SetPosition(new Vector3(110, -200, 0));  
