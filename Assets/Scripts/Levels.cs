@@ -94,15 +94,15 @@ public class Levels {
                 case 21:
                     Level21.InitLevel();
                     break;
-                // case 22:
-                //     Level22.InitLevel();
-                //     break;
-                // case 23:
-                //     Level23.InitLevel();
-                //     break;
-                // case 24:
-                //     Level24.InitLevel();
-                //     break;
+                case 22:
+                    Level22.InitLevel();
+                    break;
+                case 23:
+                    Level23.InitLevel();
+                    break;
+                case 24:
+                    Level24.InitLevel();
+                    break;
                 default:
                     break;
             }
