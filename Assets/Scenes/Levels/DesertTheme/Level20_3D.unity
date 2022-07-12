@@ -2533,7 +2533,7 @@ PrefabInstance:
     - target: {fileID: 878891346843407210, guid: 78345c26be92b574c9e428c10d26fb54,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -509.7
+      value: -545.6
       objectReference: {fileID: 0}
     - target: {fileID: 878891346843407210, guid: 78345c26be92b574c9e428c10d26fb54,
         type: 3}
@@ -2583,7 +2583,7 @@ PrefabInstance:
     - target: {fileID: 878891346843407213, guid: 78345c26be92b574c9e428c10d26fb54,
         type: 3}
       propertyPath: motor
-      value: 1500
+      value: 1200
       objectReference: {fileID: 0}
     - target: {fileID: 878891346843407213, guid: 78345c26be92b574c9e428c10d26fb54,
         type: 3}
@@ -7687,7 +7687,7 @@ PrefabInstance:
     - target: {fileID: 9134046678699507032, guid: edbb4d22334526148a8fd214bf1be5e8,
         type: 3}
       propertyPath: motor
-      value: 1800
+      value: 2200
       objectReference: {fileID: 0}
     - target: {fileID: 9134046678699507032, guid: edbb4d22334526148a8fd214bf1be5e8,
         type: 3}

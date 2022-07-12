@@ -9702,6 +9702,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 9134046678699507032, guid: edbb4d22334526148a8fd214bf1be5e8,
         type: 3}
+      propertyPath: motor
+      value: 2200
+      objectReference: {fileID: 0}
+    - target: {fileID: 9134046678699507032, guid: edbb4d22334526148a8fd214bf1be5e8,
+        type: 3}
       propertyPath: checkpoints.Array.size
       value: 1
       objectReference: {fileID: 0}

@@ -6390,10 +6390,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: TruckPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 5606715232939935422, guid: aec301f3fc1c2dd4fbb1c251c454bf34,
+        type: 3}
+      propertyPath: m_Mass
+      value: 400
+      objectReference: {fileID: 0}
     - target: {fileID: 7992014591109148792, guid: aec301f3fc1c2dd4fbb1c251c454bf34,
         type: 3}
       propertyPath: motor
-      value: 1200
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 7992014591109148792, guid: aec301f3fc1c2dd4fbb1c251c454bf34,
         type: 3}
@@ -7892,7 +7897,7 @@ PrefabInstance:
     - target: {fileID: 6356771345415526828, guid: 4c90465aa7edb0d4aabf1f1062ed4662,
         type: 3}
       propertyPath: motor
-      value: 1200
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 6356771345415526828, guid: 4c90465aa7edb0d4aabf1f1062ed4662,
         type: 3}

@@ -496,7 +496,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 41b8de60388a16445aa40c93abf648a3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1322.3
+      value: 1254
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 41b8de60388a16445aa40c93abf648a3,
         type: 3}
@@ -3980,12 +3980,12 @@ PrefabInstance:
     - target: {fileID: 5606715232939935422, guid: aec301f3fc1c2dd4fbb1c251c454bf34,
         type: 3}
       propertyPath: m_Mass
-      value: 150
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 7992014591109148792, guid: aec301f3fc1c2dd4fbb1c251c454bf34,
         type: 3}
       propertyPath: motor
-      value: 1600
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 7992014591109148792, guid: aec301f3fc1c2dd4fbb1c251c454bf34,
         type: 3}
@@ -4737,7 +4737,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052496339}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 504.5, y: -26, z: 42.9}
+  m_LocalPosition: {x: 419, y: -26, z: 42.9}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5789,7 +5789,7 @@ PrefabInstance:
     - target: {fileID: 6356771345415526828, guid: 4c90465aa7edb0d4aabf1f1062ed4662,
         type: 3}
       propertyPath: motor
-      value: 1300
+      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 6356771345415526828, guid: 4c90465aa7edb0d4aabf1f1062ed4662,
         type: 3}
@@ -7782,7 +7782,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 41b8de60388a16445aa40c93abf648a3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1248
+      value: 1321.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 41b8de60388a16445aa40c93abf648a3,
         type: 3}
@@ -9655,7 +9655,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980676167}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 416, y: -27.9, z: 84.953896}
+  m_LocalPosition: {x: 518, y: -27.9, z: 84.953896}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
