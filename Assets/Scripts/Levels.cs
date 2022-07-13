@@ -103,6 +103,24 @@ public class Levels {
                 case 24:
                     Level24.InitLevel();
                     break;
+                case 25:
+                    Level25.InitLevel();
+                    break;
+                case 26:
+                    Level26.InitLevel();
+                    break;
+                case 27:
+                    Level27.InitLevel();
+                    break;
+                case 28:
+                    Level28.InitLevel();
+                    break;
+                case 29:
+                    Level29.InitLevel();
+                    break;
+                case 30:
+                    Level30.InitLevel();
+                    break;
                 default:
                     break;
             }

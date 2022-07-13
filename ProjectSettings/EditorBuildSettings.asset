@@ -158,6 +158,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels/SnowTheme/Level23_3D.unity
     guid: 1d1b86064dae19c4da643981b9038a34
+  - enabled: 1
+    path: Assets/Scenes/Levels/SnowTheme/Level24.unity
+    guid: a175a34269fe31d4a8231b23d12dfd4c
+  - enabled: 1
+    path: Assets/Scenes/Levels/SnowTheme/Level24_3D.unity
+    guid: 4e0f7b2b26429fd43bad0412f243bca7
+  - enabled: 1
+    path: Assets/Scenes/Levels/SnowTheme/Level25.unity
+    guid: 745c477be1d09c445a834b7a711fc98e
+  - enabled: 1
+    path: Assets/Scenes/Levels/SnowTheme/Level25_3D.unity
+    guid: 5003bfe348cb653418f9a07ad8de61be
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 765780b12ffac6a47a3e5fc53c0947d7,
       type: 2}

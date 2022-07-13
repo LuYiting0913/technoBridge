@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // store all information abt this level
-public class Level24 : MonoBehaviour {
+public class Level29 : MonoBehaviour {
     // private static m_Instance;
     private static List<PointReference> fixedPoints = new List<PointReference>();
 
@@ -16,6 +16,8 @@ public class Level24 : MonoBehaviour {
         PointReference p6 = new PointReference();
         PointReference p7 = new PointReference();
         PointReference p8 = new PointReference();
+        PointReference p9 = new PointReference();
+        PointReference p10 = new PointReference();
         // PointReference p5 = new PointReference();
 
         List<Vehicle> vehicles = new List<Vehicle>();
@@ -28,15 +30,19 @@ public class Level24 : MonoBehaviour {
         p6.SetFixed();
         p7.SetFixed();
         p8.SetFixed();
+        p9.SetFixed();
+        p10.SetFixed();
         // 
-        p1.SetPosition(new Vector3(-360, 60, 0));
+        p1.SetPosition(new Vector3(-280, 40, 0));
         p2.SetPosition(new Vector3(-280, -20, 0));
-        p3.SetPosition(new Vector3(-280, 60, 0));
-        p4.SetPosition(new Vector3(-40, 20, 0));
-        p5.SetPosition(new Vector3(40, 20, 0));
-        p6.SetPosition(new Vector3(280, -20, 0));
-        p7.SetPosition(new Vector3(280, 60, 0));
-        p8.SetPosition(new Vector3(360, 60, 0));
+        p3.SetPosition(new Vector3(-280, 100, 0));
+        p4.SetPosition(new Vector3(-280, 160, 0));
+        p5.SetPosition(new Vector3(280, -20, 0));
+        p6.SetPosition(new Vector3(280, 40, 0));
+        p7.SetPosition(new Vector3(280, 100, 0));
+        p8.SetPosition(new Vector3(280, 160, 0));
+        p9.SetPosition(new Vector3(100, 280, 0));
+        p10.SetPosition(new Vector3(-100, 280, 0));
 
         fixedPoints.Add(p1);
         fixedPoints.Add(p2);
@@ -47,6 +53,6 @@ public class Level24 : MonoBehaviour {
         fixedPoints.Add(p7);
         fixedPoints.Add(p8);
         
-        Levels.UpdateLevelData(24, fixedPoints, new List<SolidBarReference>());
+        Levels.UpdateLevelData(25, fixedPoints, new List<SolidBarReference>());
     }
 }
