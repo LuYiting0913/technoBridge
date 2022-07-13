@@ -13,6 +13,10 @@ public class Level24 : MonoBehaviour {
         PointReference p3 = new PointReference();
         PointReference p4 = new PointReference();
         PointReference p5 = new PointReference();
+        PointReference p6 = new PointReference();
+        PointReference p7 = new PointReference();
+        PointReference p8 = new PointReference();
+        // PointReference p5 = new PointReference();
 
         List<Vehicle> vehicles = new List<Vehicle>();
 
@@ -20,20 +24,29 @@ public class Level24 : MonoBehaviour {
         p2.SetFixed(); 
         p3.SetFixed();
         p4.SetFixed(); 
-        // p5.SetFixed();
+        p5.SetFixed();
+        p6.SetFixed();
+        p7.SetFixed();
+        p8.SetFixed();
         // 
-        p1.SetPosition(new Vector3(-500, -20, 0));
-        p2.SetPosition(new Vector3(-610, -20, 0));
-        p3.SetPosition(new Vector3(500, -20, 0));
-        p4.SetPosition(new Vector3(610, -20, 0));
-        // p5.SetPosition(new Vector3(320, -170, 0));
+        p1.SetPosition(new Vector3(-360, 60, 0));
+        p2.SetPosition(new Vector3(-280, -20, 0));
+        p3.SetPosition(new Vector3(-280, 60, 0));
+        p4.SetPosition(new Vector3(-40, 20, 0));
+        p5.SetPosition(new Vector3(40, 20, 0));
+        p6.SetPosition(new Vector3(280, -20, 0));
+        p7.SetPosition(new Vector3(280, 60, 0));
+        p8.SetPosition(new Vector3(360, 60, 0));
 
         fixedPoints.Add(p1);
         fixedPoints.Add(p2);
         fixedPoints.Add(p3);
         fixedPoints.Add(p4);
-        // fixedPoints.Add(p5);
+        fixedPoints.Add(p5);
+        fixedPoints.Add(p6);
+        fixedPoints.Add(p7);
+        fixedPoints.Add(p8);
         
-        Levels.UpdateLevelData(21, fixedPoints, new List<SolidBarReference>());
+        Levels.UpdateLevelData(24, fixedPoints, new List<SolidBarReference>());
     }
 }
