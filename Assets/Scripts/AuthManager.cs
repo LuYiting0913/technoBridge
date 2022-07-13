@@ -133,6 +133,8 @@ public class AuthManager : MonoBehaviour
             confirmLoginText.text = "Logged In";
 
             currentUser = User.DisplayName;
+            // Use user email as data unique key instead
+            // currentUser = User.Email;
             
             Levels.currentUserName = currentUser;
 
