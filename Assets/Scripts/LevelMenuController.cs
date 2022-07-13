@@ -27,6 +27,7 @@ public class LevelMenuController : MonoBehaviour {
     }
 
     private void Start() {
+        Time.timeScale = 1f;
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         // Debug.Log("loadded");
         // Debug.Log(currentThemeNumber);
