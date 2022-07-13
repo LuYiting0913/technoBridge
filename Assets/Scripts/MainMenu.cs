@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour {
         
         SceneManager.LoadScene(2);
         LevelMenuController.currentThemeNumber = (level - 1) / 10 + 1;
-        Debug.Log((level - 1) / 10 + 1);
+        // Debug.Log((level - 1) / 10 + 1);
     }
 
     public void LoadLevelMenu() {
