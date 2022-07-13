@@ -252,9 +252,9 @@ WheelCollider:
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 2
-    m_ExtremumValue: 5
+    m_ExtremumValue: 10
     m_AsymptoteSlip: 5
-    m_AsymptoteValue: 2
+    m_AsymptoteValue: 8
     m_Stiffness: 0.4
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -314,9 +314,9 @@ WheelCollider:
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 2
-    m_ExtremumValue: 5
+    m_ExtremumValue: 10
     m_AsymptoteSlip: 5
-    m_AsymptoteValue: 2
+    m_AsymptoteValue: 8
     m_Stiffness: 0.4
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -649,7 +649,7 @@ MonoBehaviour:
   frontRightWheel: {fileID: 4410039802623970534}
   rearLeftWheel: {fileID: 4410039801649724227}
   rearRightWheel: {fileID: 4410039802700029927}
-  motor: 1400
+  motor: 4500
   brake: 20000
   checkpoints: []
   arrived: 0
@@ -706,9 +706,9 @@ WheelCollider:
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 2
-    m_ExtremumValue: 5
+    m_ExtremumValue: 10
     m_AsymptoteSlip: 5
-    m_AsymptoteValue: 2
+    m_AsymptoteValue: 8
     m_Stiffness: 0.4
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
@@ -801,9 +801,9 @@ WheelCollider:
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 2
-    m_ExtremumValue: 5
+    m_ExtremumValue: 10
     m_AsymptoteSlip: 5
-    m_AsymptoteValue: 2
+    m_AsymptoteValue: 8
     m_Stiffness: 0.4
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2

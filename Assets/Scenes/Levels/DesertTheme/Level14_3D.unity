@@ -1276,7 +1276,7 @@ PrefabInstance:
     - target: {fileID: 3095013362950115785, guid: edd560eec4c2f2847a49e31b278772b3,
         type: 3}
       propertyPath: motor
-      value: 2000
+      value: 4000
       objectReference: {fileID: 0}
     - target: {fileID: 3095013362950115785, guid: edd560eec4c2f2847a49e31b278772b3,
         type: 3}
