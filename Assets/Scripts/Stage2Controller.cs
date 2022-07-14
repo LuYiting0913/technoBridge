@@ -128,14 +128,12 @@ public class Stage2Controller : MonoBehaviour {
         s.transform.GetChild(3).GetComponent<TMPro.TextMeshProUGUI>().text = percentage + "%";
     }
 
-    private bool AllVehicleArrived() {
+    public bool AllVehicleArrived() {
         if (batches[currentBatch].Count == 0) return true;
         for (int i = 0; i < vehicleParent.childCount; i++) {
             if (!vehicleParent.GetChild(i).GetComponent<VehicleController>().Arrived()) return false; 
         }
-        // if (GameObject.Find("Boat") != null && !GameObject.Find("Boat").GetComponent<Animatable>().Arrived()) {
-        //     return false;
-        // }
+        Debug.Log("all arrived!!!!!");
         return true;
     }
 
