@@ -127,7 +127,7 @@ public class SceneInitiator : MonoBehaviour {
             }
         }
 
-        if (highestLoad >= 1) {
+        if (highestLoad >= 1 && !transform.parent.GetComponent<Stage2Controller>().AllVehicleArrived()) {
             transform.parent.GetComponent<Stage2Controller>().SomethingBroken();
         }
         UpdateStressPercentage(highestLoad);
