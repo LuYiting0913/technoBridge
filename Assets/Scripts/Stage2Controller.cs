@@ -276,12 +276,23 @@ public class Stage2Controller : MonoBehaviour {
         return s;
     }
 
+    public void AfterEnded() {
+        Debug.Log("all arrived");
+        Debug.Log(totalCost);
+        if (totalCost > budget) {
+            star = star == 2 ? 1 : 2;
+        }
+        DisplayPass(star);
+        GlobalData.AddLocalData(level.ToString(), totalCost, star);
+    }
+
 
     public void Update() {
         if (!isPaused) Time.timeScale = playSpeed;
 
         if (!ended) {
             if (AllVehicleArrived()) {
+                /*
                 Debug.Log("all arrived");
                 Debug.Log(totalCost);
                 if (totalCost > budget) {
@@ -292,7 +303,9 @@ public class Stage2Controller : MonoBehaviour {
                 
                 DisplayPass(star);
                 GlobalData.AddLocalData(level.ToString(), totalCost, star);
+                */
                 ended = true;
+                AfterEnded();
                 
             } else if (AllVehicleWaiting(currentBatch) && !animating) {
                 Debug.Log("all waiting");
