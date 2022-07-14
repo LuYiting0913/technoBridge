@@ -11216,7 +11216,7 @@ PrefabInstance:
     - target: {fileID: 7887069937601595888, guid: 58a4ce3b1809d5349adcb08c6069ec61,
         type: 3}
       propertyPath: m_text
-      value: '3 - 9:'
+      value: '3 - 9: Canal'
       objectReference: {fileID: 0}
     - target: {fileID: 7887069937685349576, guid: 58a4ce3b1809d5349adcb08c6069ec61,
         type: 3}
@@ -13962,7 +13962,12 @@ PrefabInstance:
     - target: {fileID: 7887069937601595888, guid: 58a4ce3b1809d5349adcb08c6069ec61,
         type: 3}
       propertyPath: m_text
-      value: '3 - 10:'
+      value: '3 - 10: Nice Landing'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7887069937601595889, guid: 58a4ce3b1809d5349adcb08c6069ec61,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 208.58
       objectReference: {fileID: 0}
     - target: {fileID: 7887069937685349576, guid: 58a4ce3b1809d5349adcb08c6069ec61,
         type: 3}
