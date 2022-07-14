@@ -74,3 +74,7 @@ crashlytics-build.properties
 # Ignore the large file
 /[Aa]ssets/[Ff]irebase/[Pp]lugins/x86_64/[Ff]irebaseCppApp-9_1_0.bundle
 /[Aa]ssets/[Ff]irebase/[Pp]lugins/x86_64/[Ff]irebaseCppApp-9_1_0.bundle.meta
+
+# Ignore the frequently changed file
+/[Aa]ssets/Low Poly Water/Plane Meshes/Plane10x10W500H500.asset
+/[Aa]ssets/Low Poly Water/Plane Meshes/Plane10x10W500H500.asset.meta
