@@ -111,7 +111,8 @@ public class Stage1Controller : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         // backgroundScale = 1f;
         backgroundScale = slider.GetComponent<Slider>().value;
-        backgroundPosition = new Vector3(0,0,0);
+        // backgroundPosition = new Vector3(0,0,0);
+        backgroundPosition = new Vector3(transform.position.x, transform.position.y, 0);
         gameInfo.gameObject.SetActive(!Levels.IsInited(level));
         Levels.InitLevel(level);
         costDisplay.transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>().text = "Budget: " + MoneyToString(budget);
