@@ -92,14 +92,14 @@ public class LevelMenuController : MonoBehaviour {
     }
 
     public void NextTheme() {
-        if (currentThemeNumber < ThemeNumber) {
+        if (currentThemeNumber < ThemeNumber && camMovingSpeed == 0) {
             camMovingSpeed = -10;
             currentThemeNumber += 1;
         }
     }
 
     public void PreviousTheme() {
-        if (currentThemeNumber > 1) { 
+        if (currentThemeNumber > 1  && camMovingSpeed == 0) { 
             camMovingSpeed = 10;
             currentThemeNumber -= 1;
         }

@@ -9,10 +9,11 @@ public class LevelButtonController : MonoBehaviour {
     private int clickCount;
 
     void Start() {
-        /*
-		if (Levels.IsLevelEdited(level) || GlobalData.GetLocalData(level) != 0) {
+        
+		if (Levels.IsLevelEdited(level)) {// || GlobalData.GetLocalData(level) != 0) {
 			GetComponent<MeshRenderer>().material.color = new Color(0, 0, 1);
-		}*/
+		}
+
         int star = GlobalData.GetStarLevel(level);
         if (GlobalData.GetLocalData(level) != 0) {
 	        if (star == 3) {
