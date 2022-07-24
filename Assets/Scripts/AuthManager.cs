@@ -87,6 +87,13 @@ public class AuthManager : MonoBehaviour
 
     // }
 
+    public void DummyLogin()
+    {
+	    string userEmail = "dummy@dummy.com";
+	    string userPassword = "123456";
+	    StartCoroutine(Login(userEmail, userPassword));
+    }
+
     private IEnumerator Login(string _email, string _password)
     {
         //Call the Firebase auth signin function passing the email and password
@@ -218,7 +225,7 @@ public class AuthManager : MonoBehaviour
                         //Now return to login screen
                         // UIManager.instance.LoginScreen(); -- No UIManager
                         Debug.Log("Register successful");
-                        warningRegisterText.text = "";
+                        warningRegisterText.text = "Success";
                     }
                 }
             }
@@ -228,41 +235,42 @@ public class AuthManager : MonoBehaviour
     public void Upload() {
         // Debug.Log(dbReference);
         // Debug.Log(Levels.currentUserName);
-        DatabaseReference usersRef = dbReference.Child("Users").Child(Levels.currentUserName);
-        DatabaseReference levelsRef = dbReference.Child("Levels");
+        if (Levels.currentUserName != "NewUser") {
+            DatabaseReference usersRef = dbReference.Child("Users").Child(Levels.currentUserName);
+            DatabaseReference levelsRef = dbReference.Child("Levels");
 
-        Dictionary<string, int> allScores = Levels.GetAllBestScores();
-        Dictionary<string, int> updates = new Dictionary<string, int>();
-        foreach (string i in allScores.Keys) {
-            usersRef.Child(i).SetValueAsync(allScores[i]).ContinueWith((task) => {
-                if (task.IsFaulted || task.IsCanceled) {
-                    Debug.Log(task.Exception.ToString());
-                } else {
-                    Debug.Log("upload successfully ");
-                }
-            });
+            Dictionary<string, int> allScores = Levels.GetAllBestScores();
+            Dictionary<string, int> updates = new Dictionary<string, int>();
+            foreach (string i in allScores.Keys) {
+                usersRef.Child(i).SetValueAsync(allScores[i]).ContinueWith((task) => {
+                    if (task.IsFaulted || task.IsCanceled) {
+                        Debug.Log(task.Exception.ToString());
+                    } else {
+                        Debug.Log("upload successfully ");
+                    }
+                });
 
-            levelsRef.Child(i).Child(Levels.currentUserName).SetValueAsync(allScores[i]).ContinueWith((task) => {
-                if (task.IsFaulted || task.IsCanceled) {
-                    Debug.Log(task.Exception.ToString());
-                } else {
-                    Debug.Log("upload successfully ");
-                }
+                levelsRef.Child(i).Child(Levels.currentUserName).SetValueAsync(allScores[i]).ContinueWith((task) => {
+                    if (task.IsFaulted || task.IsCanceled) {
+                        Debug.Log(task.Exception.ToString());
+                    } else {
+                        Debug.Log("upload successfully ");
+                    }
+                });
+            }
+       
+            // Debug.Log(Levels.GetNumOfLevelCompleted());
+            Debug.Log("num of scores");
+            Debug.Log(GlobalData.GetNumOfLevelCompleted());
+            Debug.Log(GlobalData.GetLevelCompleted()[Levels.currentUserName]);
+            dbReference.Child("LevelsCompleted").Child(Levels.currentUserName).SetValueAsync(allScores.Count).ContinueWith((task) => {
+                    if (task.IsFaulted || task.IsCanceled) {
+                        Debug.Log(task.Exception.ToString());
+                    } else {
+                        Debug.Log("upload level completed successfully ");
+                    }
             });
         }
-
-       
-        // Debug.Log(Levels.GetNumOfLevelCompleted());
-        Debug.Log("num of scores");
-        Debug.Log(GlobalData.GetNumOfLevelCompleted());
-        Debug.Log(GlobalData.GetLevelCompleted()[Levels.currentUserName]);
-        dbReference.Child("LevelsCompleted").Child(Levels.currentUserName).SetValueAsync(allScores.Count).ContinueWith((task) => {
-                if (task.IsFaulted || task.IsCanceled) {
-                    Debug.Log(task.Exception.ToString());
-                } else {
-                    Debug.Log("upload level completed successfully ");
-                }
-        });
     }
 
     public void Load() {
