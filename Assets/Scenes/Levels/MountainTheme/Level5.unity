@@ -1441,7 +1441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 5
   isTutorial: 0
-  budget: 12000
+  budget: 5000
   autoComplete: 0
   gridSnap: 0
   autoTriangulate: 0
@@ -8599,6 +8599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a8af20fb656b146b8f5e74259034e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  axis: {x: 0, y: 0, z: 1}
   speed: 20
 --- !u!1 &1054326000
 GameObject:

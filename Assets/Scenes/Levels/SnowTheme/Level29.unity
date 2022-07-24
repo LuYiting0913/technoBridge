@@ -1256,7 +1256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 29
   isTutorial: 0
-  budget: 20000
+  budget: 15000
   autoComplete: 0
   gridSnap: 0
   autoTriangulate: 0
@@ -9717,7 +9717,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1191667711
 RectTransform:
   m_ObjectHideFlags: 0
